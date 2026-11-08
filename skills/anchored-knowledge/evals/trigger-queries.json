@@ -1,0 +1,58 @@
+[
+  {
+    "query": "turn these scattered notes and memory files into a proper knowledge base with sources",
+    "should_trigger": true
+  },
+  {
+    "query": "we have a Docs folder with business-rules.md — audit it, is everything actually sourced?",
+    "should_trigger": true
+  },
+  {
+    "query": "the operations lead just told me labels are per parcel, not per order. our rules say per order. what now?",
+    "should_trigger": true
+  },
+  {
+    "query": "add a business rule that an order on credit hold can't be labelled, and record the decision",
+    "should_trigger": true
+  },
+  {
+    "query": "Q-0003 got answered in today's review. where does the answer go?",
+    "should_trigger": true
+  },
+  {
+    "query": "set up a glossary and open-questions register for this project",
+    "should_trigger": true
+  },
+  {
+    "query": "this feature might be outside the SOW. how do I track that without blocking the work?",
+    "should_trigger": true
+  },
+  {
+    "query": "we're reversing ADR-0004. write the new decision record",
+    "should_trigger": true
+  },
+  {
+    "query": "our rule ids are a mess and some are cited from stories that don't exist any more — sort out the knowledge base",
+    "should_trigger": true
+  },
+  {
+    "query": "build a sourced index from the forty transcripts in ./meetings with per-turn citations",
+    "should_trigger": false
+  },
+  {
+    "query": "write the user stories for the label voiding feature with acceptance criteria",
+    "should_trigger": false
+  },
+  {
+    "query": "draft a PRD for shipping labels from the SOW",
+    "should_trigger": false
+  },
+  {
+    "query": "commit and push the docs folder",
+    "should_trigger": false
+  },
+  {
+    "query": "summarise what this repo's code does and write a README",
+    "should_trigger": false
+  }
+]

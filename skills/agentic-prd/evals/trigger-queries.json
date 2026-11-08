@@ -1,0 +1,58 @@
+[
+  {
+    "query": "draft a PRD from the SOW and the three discovery transcripts in docs/sources",
+    "should_trigger": true
+  },
+  {
+    "query": "is this spec ready to hand to an agent? what would it have to guess?",
+    "should_trigger": true
+  },
+  {
+    "query": "break this accepted PRD into epics, features and user stories with acceptance criteria",
+    "should_trigger": true
+  },
+  {
+    "query": "R-012 now says a supervisor approves the void. update the affected stories and show me the diff",
+    "should_trigger": true
+  },
+  {
+    "query": "we need a functional spec for the label feature before engineering starts",
+    "should_trigger": true
+  },
+  {
+    "query": "the stakeholders disagree about whether a credit hold blocks labelling — one call says yes, a later email implies no. how should the requirement read?",
+    "should_trigger": true
+  },
+  {
+    "query": "push the approved backlog into azure devops, epics and features first",
+    "should_trigger": true
+  },
+  {
+    "query": "this story has eleven acceptance criteria and none of them cite anything. tighten it up",
+    "should_trigger": true
+  },
+  {
+    "query": "I want to do spec-driven development on this project — what should the spec look like so claude can build from it?",
+    "should_trigger": true
+  },
+  {
+    "query": "the label print button throws a null reference when the address is missing a postcode. fix it",
+    "should_trigger": false
+  },
+  {
+    "query": "what's the team's velocity this sprint and which stories are still in progress?",
+    "should_trigger": false
+  },
+  {
+    "query": "build a knowledge index from the meeting transcripts in this folder with citations",
+    "should_trigger": false
+  },
+  {
+    "query": "break US-04 into implementation tasks and estimate each one",
+    "should_trigger": false
+  },
+  {
+    "query": "write an ADR for choosing the carrier's REST API over their SOAP endpoint",
+    "should_trigger": false
+  }
+]

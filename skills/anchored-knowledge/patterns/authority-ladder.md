@@ -12,7 +12,8 @@ record the conflict, never resolve it silently.
     5  Internal interpretation     team analysis, an inferred rule
     6  Unreviewed intake           draft note, brainstorm, uncited memory
 
-Recorded per source on its register row: `3 - Client clarification`.
+Recorded on each source note as `authority: 3-client-clarification`, and on every note that cites
+it, so a conflict can be weighed without opening the source.
 
 **Notes.**
 - Overridable per project in the config. An internal project with no SOW names what serves as its
@@ -24,9 +25,9 @@ Recorded per source on its register row: `3 - Client clarification`.
   understanding ([`knowledge-change-entry.md`](knowledge-change-entry.md)).
 - Equal levels do not settle anything. Two level-3 clarifications that disagree are an open question
   ([`open-question.md`](open-question.md)).
-- A rule set resting mostly on levels 5 and 6 is a rule set nobody has confirmed. Say so in the audit
-  rather than letting the markers imply otherwise
+- A record resting mostly on levels 5 and 6 is a record nobody has confirmed. The sources MOC groups
+  by `authority`, so this is visible rather than a judgement you have to make
   ([`../principles/authority-is-explicit.md`](../principles/authority-is-explicit.md)).
 
-**Related.** [`source-register-row.md`](source-register-row.md), [`scope-watch-item.md`](scope-watch-item.md),
+**Related.** [`source-note.md`](source-note.md), [`scope-watch-item.md`](scope-watch-item.md),
 [`../principles/conflicts-are-recorded-not-resolved.md`](../principles/conflicts-are-recorded-not-resolved.md).

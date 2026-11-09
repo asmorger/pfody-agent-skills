@@ -13,13 +13,18 @@ second kind as though it were the first imports that unreliability into a build,
 makes it look checked.
 
 **In the base.**
-- Reference Layer lives under `docs_dir`; everything governance lives under `knowledge_root`;
-  everything unpromoted lives in `working_dir`
+- The Reference Layer is the vault's `rules/`, `glossary/`, `scope/`, `decisions/`, `facts/` and
+  `reference/` notes. Governance is `sources/`, `questions/`, `scope-watch/` and `changes/`.
+  Everything unpromoted is in the workbench, outside the vault
   ([`../patterns/the-two-trees.md`](../patterns/the-two-trees.md)).
+- Every source note carries `citable: false`, so the distinction is queryable rather than
+  remembered ([`../patterns/source-note.md`](../patterns/source-note.md)).
+- The home note states the three layers. It is the only place a newcomer learns which they may cite
+  ([`../patterns/home-note.md`](../patterns/home-note.md)).
 - The transcript index is registered as a supplemental source and reconciled in, never cited
   ([`transcripts-are-delegated.md`](transcripts-are-delegated.md)).
-- Supporting folders — `meetings/`, `examples/`, `answered-questions/` — are supplemental even though
-  they sit inside the Docs folder. Register each one in the Source Register.
+- Keep supplemental material out of the vault entirely rather than in a folder inside it. A note that
+  appears in search, the graph and a Bases view will be cited whatever its folder says.
 - The test of a finished base: a developer or spec author can act on the Reference Layer alone,
   without opening a raw source.
 

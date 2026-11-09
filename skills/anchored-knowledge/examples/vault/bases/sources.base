@@ -1,0 +1,23 @@
+filters:
+  and:
+    - file.hasTag("source")
+views:
+  - type: table
+    name: By authority
+    order:
+      - note.id
+      - file.name
+      - note.source-type
+      - note.source-date
+      - note.citable
+    groupBy:
+      property: note.authority
+      direction: ASC
+  - type: table
+    name: Meetings
+    filters:
+      - 'note.source-type == "transcript"'
+    order:
+      - file.name
+      - note.source-date
+      - note.participants

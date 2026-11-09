@@ -1,0 +1,12 @@
+filters:
+  and:
+    - file.hasTag("change")
+views:
+  - type: table
+    name: Recent shifts
+    order:
+      - note.id
+      - file.name
+      - note.change-type
+      - note.identified
+      - note.affects

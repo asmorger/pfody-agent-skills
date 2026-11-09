@@ -1,0 +1,48 @@
+filters:
+  and:
+    - file.hasTag("rule")
+    - 'note.status != "superseded"'
+    - 'note.status != "rejected"'
+properties:
+  note.id:
+    displayName: ID
+  note.status:
+    displayName: Status
+  note.topic:
+    displayName: Topic
+  note.sources:
+    displayName: Sources
+views:
+  - type: table
+    name: All rules
+    order:
+      - note.id
+      - file.name
+      - note.status
+      - note.sources
+    groupBy:
+      property: note.topic
+      direction: ASC
+  - type: table
+    name: Unconfirmed
+    filters:
+      or:
+        - 'note.status == "draft"'
+        - 'note.status == "needs-review"'
+    order:
+      - note.id
+      - file.name
+      - note.status
+      - note.pending-on
+      - note.updated
+  - type: table
+    name: Deprecated and superseded
+    filters:
+      or:
+        - 'note.status == "out-of-scope"'
+        - 'note.status == "superseded"'
+    order:
+      - note.id
+      - file.name
+      - note.status
+      - note.superseded-by

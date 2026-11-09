@@ -1,0 +1,16 @@
+filters:
+  and:
+    - file.hasTag("scope-watch")
+views:
+  - type: table
+    name: Open watch items
+    filters:
+      and:
+        - 'note.status != "closed"'
+        - 'note.status != "in-scope"'
+    order:
+      - note.id
+      - file.name
+      - note.status
+      - note.owner
+      - note.affects

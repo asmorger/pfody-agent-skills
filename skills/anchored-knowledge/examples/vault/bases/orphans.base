@@ -1,0 +1,12 @@
+filters:
+  and:
+    - 'file.inFolder("rules") || file.inFolder("questions") || file.inFolder("decisions")'
+    - 'file.backlinks.isEmpty()'
+views:
+  - type: table
+    name: Nothing links here
+    order:
+      - note.id
+      - file.name
+      - note.type
+      - note.updated

@@ -1,0 +1,21 @@
+filters:
+  and:
+    - file.hasTag("decision")
+views:
+  - type: table
+    name: All decisions
+    order:
+      - note.id
+      - file.name
+      - note.status
+      - note.decided
+      - note.summary
+  - type: table
+    name: Up for review
+    filters:
+      - 'note.status == "accepted"'
+    order:
+      - note.id
+      - file.name
+      - note.decided
+      - note.review-when

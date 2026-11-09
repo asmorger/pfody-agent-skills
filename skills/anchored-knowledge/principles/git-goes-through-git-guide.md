@@ -2,7 +2,7 @@
 
 **Rule.** When the record is git-managed, every git operation goes through the `git-guide` skill: get
 the latest before reading or editing, save after promoting, publish to open a review. Never run raw
-git against a knowledge base, and never commit the working area.
+git against a knowledge base, and never commit the workbench.
 
 **Why.** The record is shared, and the person who owns the knowledge is often not the person who is
 comfortable with git — that is why the knowledge was in scattered notes to begin with. Raw git in
@@ -19,7 +19,7 @@ set produces an audit that is wrong in both directions.
   ([`../practices/promote-to-the-record.md`](../practices/promote-to-the-record.md)).
 - Record `git_managed: true`, the host and the repository root in the config. Detect the root with
   `git rev-parse --show-toplevel`.
-- Add the working area to `.gitignore` when it sits inside the repository, and record that it was
+- Add the workbench to `.gitignore` when it sits inside the repository, and record that it was
   done ([`two-directories-promote-to-commit.md`](two-directories-promote-to-commit.md)).
 - Never auto-commit. Promotion is approved first, then saved.
 

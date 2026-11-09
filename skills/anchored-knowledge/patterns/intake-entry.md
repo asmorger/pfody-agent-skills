@@ -1,16 +1,20 @@
 # Intake entry
 
-**Use when** capturing a source before you have triaged it. Fast, in the working area, never in the
-record. Its job is to stop knowledge being lost between arriving and being understood.
+**Use when** capturing a source before you have triaged it. Fast, in the workbench, never in the
+vault. Its job is to stop knowledge being lost between arriving and being understood.
 
-**Skeleton.**
+**Skeleton.** `knowledge-working/intake/2026-11-08-operations-lead-on-split-orders.md`
 
 ```markdown
-## Intake - 2026-11-08 - Operations lead on split orders
+---
+type: intake
+status: untriaged        # untriaged | converted | archived
+captured-by: delivery lead
+captured: 2026-11-08
+source: Call with the operations lead
+---
 
-**Captured by:** <role or agent>
-**Source:** Call with the operations lead
-**Triage status:** Untriaged | Converted | Archived
+# Intake — operations lead on split orders
 
 Raw notes:
 - A confirmed order may be split across parcels.
@@ -18,23 +22,27 @@ Raw notes:
 - Unclear whether a split order can be despatched partially.
 
 Triage destination:
-- Reference Layer: ORDER-5 (new rule), LABEL-1 (refine — per parcel, not per order)
-- Open question: partial despatch of a split order
+- Record: new rule for splitting · [[LABEL-1]] refined to per-parcel
+- Question: partial despatch of a split order
 - Scope watch: splitting may exceed SOW §4.5
-- Knowledge change: CH-0003 — supersedes one-label-per-order
-- Source register: SRC-0009
+- Change: supersedes one-label-per-order
+- Source: register the call
 ```
 
 **Notes.**
-- Lives in `working_dir` and is archived once its durable content is promoted — never kept as a
-  parallel record ([`../principles/a-question-is-a-queue-not-a-store.md`](../principles/a-question-is-a-queue-not-a-store.md)).
+- **Lives in the workbench**, outside the vault or inside Obsidian's excluded files, and is archived
+  once its durable content is promoted — never kept as a parallel record
+  ([`the-two-trees.md`](the-two-trees.md)).
+- Plain markdown, no wikilinks to notes that do not exist yet. A dangling link from a draft looks
+  identical to a dangling citation in the record
+  ([`../anti-patterns/a-dangling-citation.md`](../anti-patterns/a-dangling-citation.md)).
 - Raw notes stay raw. Do not clean a stakeholder's words into a rule here; that happens at
   reconciliation, against the existing rules
   ([`../practices/reconcile-against-the-rules.md`](../practices/reconcile-against-the-rules.md)).
-- The triage destinations are the whole point of the shape: every bullet above routes somewhere, and
+- The triage destinations are the whole point of the shape: every bullet routes somewhere, and
   anything that routes nowhere was not durable knowledge.
-- Capture is not approval. Nothing here is in the Reference Layer until it is promoted
+- Capture is not approval. Nothing here is in the record until it is promoted
   ([`../principles/propose-then-apply.md`](../principles/propose-then-apply.md)).
 
-**Related.** [`source-register-row.md`](source-register-row.md),
+**Related.** [`source-note.md`](source-note.md),
 [`../practices/ingest-a-source.md`](../practices/ingest-a-source.md).

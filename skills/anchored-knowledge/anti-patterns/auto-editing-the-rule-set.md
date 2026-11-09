@@ -10,7 +10,7 @@ makes the base useful under pressure: that a rule says what someone decided it s
 unnamed ids are the practical harm. An approval covering "the new rules" is not an approval of the
 four existing rules the change also touched, and without the id list the user cannot see that it did.
 
-**Instead.** Draft in the working area; present an audit with the quoted current text beside the
+**Instead.** Draft in the workbench; present an audit with the quoted current text beside the
 recommendation; apply only what is approved; then report the exact ids added, changed and deprecated.
 Where a refinement is genuinely obvious, it is also obviously cheap to approve — the cost of asking is
 one message, and it is the difference between a record and a guess

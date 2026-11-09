@@ -1,45 +1,48 @@
-# Anchored entry
+# Fact note
 
-**Use when** a citable fact is not a business rule — a constraint, a requirement detail, a measured
-characteristic of the current system. Optional: most bases never need it, and a fact that could be a
-rule should be one.
+**Use when** a citable fact is not a business rule — a constraint, a measured characteristic of the
+current system, a requirement detail. One note per fact in `facts/`. Optional: most records never
+need one, and a fact that could be a rule should be one.
 
-**Skeleton.**
+**Skeleton.** `facts/carrier-truncates-address-line-1.md`
 
 ```markdown
-## K-0001 - The carrier truncates address line 1 at 35 characters
+---
+id: K-0001
+aliases: [K-0001]
+type: fact
+status: confirmed
+topic: labels
+applies-to: label creation
+confidence: high
+authority: 4-source-artifact
+sources: ["[[carrier-api-reference]]"]
+rules: ["[[LABEL-1]]"]
+created: 2026-11-08
+updated: 2026-11-08
+tags: [fact/labels]
+---
 
-**Status:** Draft | Confirmed | Needs Review | Superseded | Rejected | Scope Watch
-**Type:** Fact | Requirement Detail | Assumption | Constraint
-**Confidence:** Low | Medium | High
-**Owner:** <role>
-**Captured:** 2026-11-08
-**Last reviewed:** 2026-11-08
-**Applies to:** Label creation
-**Anchors:** SRC-0006 carrier API reference p.12
-**Related:** LABEL-1, order-data-mapping.md
+# K-0001 — The carrier truncates address line 1 at 35 characters
 
-**Statement**
-The carrier silently truncates `AddressLine1` at 35 characters; longer values are accepted and
+The carrier silently truncates `AddressLine1` at 35 characters. Longer values are accepted and
 shortened without an error.
 
-**Implications**
-- A label can be created with a wrong address and no failure, so truncation must be caught before the
-  request.
-
-**History**
-- <YYYY-MM-DD: CH-NNNN refined this because newer source X clarified Y. Prior anchor SRC-NNNN.>
+**So.** A label can be created with a wrong address and no failure, which is why [[LABEL-1]] must
+validate length before the request. Mechanics: [[order-data-mapping]].
 ```
 
 **Notes.**
 - Use it for facts about the world that rules depend on, where turning the fact into a rule would
   state a behaviour nobody decided.
-- `Confidence` is not a substitute for a status marker. A low-confidence fact is still `Draft` or
-  `Needs Review` ([`../principles/anchor-or-flag.md`](../principles/anchor-or-flag.md)).
-- *Implications* is what makes the entry worth keeping. A fact with no implications is a note.
-- `K-NNNN` entries are Reference Layer and citable; they carry a `Status:` field rather than inline
-  markers, because they are not table rows.
-- If two entries start overlapping, one of them wanted to be a rule
+- **The "So." line is what earns the note.** A fact with no consequence is a note nobody needs; the
+  consequence is why a rule links to it.
+- `confidence` is not a substitute for `status`. A low-confidence fact is still `draft` or
+  `needs-review` ([`../principles/anchor-or-flag.md`](../principles/anchor-or-flag.md)).
+- Facts are Reference Layer and citable by id, like rules
+  ([`../principles/only-the-reference-layer-is-citable.md`](../principles/only-the-reference-layer-is-citable.md)).
+- If two facts start overlapping, one of them wanted to be a rule
   ([`../principles/one-home-per-fact.md`](../principles/one-home-per-fact.md)).
 
-**Related.** [`business-rules-file.md`](business-rules-file.md), [`convention-doc.md`](convention-doc.md).
+**Related.** [`business-rule-note.md`](business-rule-note.md),
+[`reference-note.md`](reference-note.md).

@@ -1,45 +1,48 @@
 # The two trees
 
-**Use when** standing up a base, or working out where a file belongs. One committed record, one local
-working area.
+**Use when** standing up a base, or working out where a note belongs. One committed vault, one local
+workbench. The full folder map is in
+[`../references/vault-convention.md`](../references/vault-convention.md) §2.
 
-**Skeleton.** Without a repository — `knowledge_root` is `Knowledge/`, `docs_dir` is `Knowledge/Docs/`:
+**Skeleton.** In a git repository, `knowledge_root` and `docs_dir` are both `<repo>/docs/`, and that
+folder **is** the Obsidian vault:
 
-    Knowledge/                       = knowledge_root   (governance layer + config)
+    <repo>/docs/                     = the vault; open this in Obsidian
       anchored-knowledge.config.md
-      knowledge-index.md
-      source-register.md
-      open-questions.md
-      scope-watch.md
-      knowledge-change-log.md
-      Docs/                          = docs_dir   (Reference Layer; mirrors a repo's docs/)
-        business-rules.md
-        glossary.md
-        assumptions.md
-        <topic>-conventions.md       api / build / sql / test, as needed
-        <topic>.md                   auth, data mapping, environments, as needed
-        adr/
-          INDEX.md
-          0001-<kebab-title>.md
-        <supporting-folder>/         optional, supplemental only (meetings/, examples/)
+      moc/           knowledge.md (home) + one MOC per note type
+      rules/         one note per business rule
+      glossary/      one note per term
+      scope/         one note per in/out boundary
+      decisions/     ADRs
+      questions/  scope-watch/  changes/  sources/  facts/
+      reference/     convention and domain notes — the long-mechanics home
+      bases/         the .base definitions the MOCs embed
+      .obsidian/     vault settings; gitignore workspace.json
 
-In a git repository, `knowledge_root` and `docs_dir` are both `<repo>/docs/` and the same files sit
-together there, beside whatever else the repo keeps in `docs/`.
+    <repo>/knowledge-working/        = the workbench; never committed
+      intake/            fast capture before triage
+      reconciliations/   proposals awaiting approval
+      drafts/            proposed notes, mirroring the vault's folders
+      transcript-knowledge/   the index from transcript-knowledge-base, and its state
 
-    <working_dir>/                   local, uncommitted, gitignored if inside the repo
-      knowledge-intake.md            fast capture before triage
-      transcript-knowledge.md        the index from transcript-knowledge-base
-      drafts/                        proposed rules, ADRs and entries pending approval
+Without a repository, `knowledge_root` is `<project>/Knowledge/` and the vault is
+`Knowledge/Docs/`. The layout inside the vault is identical either way, so a project workspace
+mirrors a development repository.
 
 **Notes.**
-- The Docs folder has the same layout either way, so a project workspace's `Knowledge/Docs/` mirrors a
-  development repository's `docs/`.
-- Only *promoted* knowledge is written to the record, which is why sharing `docs/` with unrelated
-  files is harmless ([`../principles/two-directories-promote-to-commit.md`](../principles/two-directories-promote-to-commit.md)).
-- Without a repository the working area may be the same folder as the record; keep drafts in
-  `drafts/`.
-- All filenames kebab-case, and the config's file map wins wherever an existing base differs.
+- Folders are flat and topic lives in a property. A rule that changes topic is one frontmatter edit,
+  not a move that rewrites every link to it
+  ([`note-frontmatter.md`](note-frontmatter.md)).
+- **Keep the workbench out of the vault** — a sibling folder, or inside Obsidian's excluded files —
+  so drafts never surface in search, the graph or a Bases view. A draft that looks like a note is
+  worse than no draft ([`../principles/two-directories-promote-to-commit.md`](../principles/two-directories-promote-to-commit.md)).
+- Only *promoted* notes are written to the vault, which is why sharing `docs/` with the repo's other
+  files is harmless ([`../practices/promote-to-the-record.md`](../practices/promote-to-the-record.md)).
+- Commit the shared parts of `.obsidian/` — `app.json`, `core-plugins.json`, the Bases settings — so
+  the team opens the same vault. Gitignore `workspace.json` and `workspace-mobile.json`: they are
+  per-person window state and conflict on every pull.
+- All filenames kebab-case, and the config's file map wins wherever an existing vault differs
+  ([`../principles/match-the-projects-voice.md`](../principles/match-the-projects-voice.md)).
 
-**Related.** [`knowledge-config.md`](knowledge-config.md),
-[`../practices/bootstrap-a-base.md`](../practices/bootstrap-a-base.md),
-[`../practices/promote-to-the-record.md`](../practices/promote-to-the-record.md).
+**Related.** [`knowledge-config.md`](knowledge-config.md), [`home-note.md`](home-note.md),
+[`../practices/bootstrap-a-base.md`](../practices/bootstrap-a-base.md).

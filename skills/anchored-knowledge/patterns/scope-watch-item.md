@@ -1,41 +1,54 @@
-# Scope watch item
+# Scope watch note
 
 **Use when** knowledge is valid but may exceed the scope baseline. Not a conflict and not a question
-— a flag that something real may cost more than was agreed.
+— a flag that something real may cost more than was agreed. One note per item in `scope-watch/`.
 
-**Skeleton.**
+**Skeleton.** `scope-watch/order-splitting-across-parcels.md`
 
 ```markdown
-## SW-0002 - Order splitting across parcels
+---
+id: SW-0002
+aliases: [SW-0002]
+type: scope-watch
+status: clarify
+owner: delivery lead
+baseline: ["[[order-fulfilment-sow-v3]]"]
+requested: ["[[operations-lead-on-split-orders]]"]
+affects: ["[[ORDER-5]]", "[[LABEL-3]]"]
+questions: ["[[Q-0004]]"]
+disposition:
+created: 2026-11-08
+updated: 2026-11-08
+tags: [scope-watch]
+---
 
-**Status:** Watch | Clarify | In Scope | Deferred | Change Request | Closed
-**Owner:** <role>
-**Baseline anchor:** SRC-0001 Order Fulfilment SOW v3 §4.5 — one parcel per order
-**New/requested behavior anchor:** SRC-0009, operations lead call 2026-11-08
-**Related:** ORDER-5, Q-0004
+# SW-0002 — Order splitting across parcels
 
-**Why this may be added scope**
-The SOW scopes one parcel per order. Splitting changes label creation, the carrier request and the
-despatch flow.
+**Agreed.** [[order-fulfilment-sow-v3]] §4.5 scopes one parcel per order.
 
-**Recommendation**
-Clarify with the client before building. If confirmed, route to change control.
+**Asked for.** Splitting a confirmed order across parcels
+([[operations-lead-on-split-orders]], 2026-11-08).
 
-**Disposition**
-<outcome, date, source>
+**Why it may cost more.** Splitting changes label creation, the carrier request and the despatch
+flow — three surfaces the baseline priced as one.
+
+**Recommendation.** Clarify with the client before building. If confirmed, route to change control.
 ```
 
 **Notes.**
-- The two anchors are the whole item: what was agreed, and what is now being asked for. Without both,
-  it is an opinion about scope.
-- The recommendation is one of four — in scope, clarify, defer, change control — and it is a
-  recommendation. The disposition is a person's
+- **The two anchors are the item.** What was agreed, and what is now being asked for. Without both it
+  is an opinion about scope.
+- The recommendation is one of four — in scope, clarify, defer, change control — and it stays a
+  recommendation. `disposition` is filled by a person, with a date and a source
   ([`../principles/propose-then-apply.md`](../principles/propose-then-apply.md)).
-- A scope-watch item is *not* a contradiction. A contradiction is a change-log entry; added scope is
+- A scope-watch note is **not** a contradiction. A contradiction is a change note; added scope is
   this ([`knowledge-change-entry.md`](knowledge-change-entry.md)).
-- Deferred items keep their rule, deprecated in place, with the phase named
+- Deferred items keep their rule, deprecated in place with the phase named, and the rule's
+  `scope-watch` property points back here
   ([`../principles/deprecate-never-delete.md`](../principles/deprecate-never-delete.md)).
-- Possible added scope is kept separate from confirmed in-scope knowledge in the ledger. That
-  separation is what makes the ledger usable in a commercial conversation.
+- Possible added scope stays out of the scope boundaries, which hold what is *decided*. The
+  separation is what makes the boundaries usable in a commercial conversation
+  ([`scope-boundary-note.md`](scope-boundary-note.md)).
 
-**Related.** [`assumptions-ledger.md`](assumptions-ledger.md), [`authority-ladder.md`](authority-ladder.md).
+**Related.** [`authority-ladder.md`](authority-ladder.md),
+[`../practices/reconcile-against-the-rules.md`](../practices/reconcile-against-the-rules.md).

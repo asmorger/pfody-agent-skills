@@ -1,0 +1,14 @@
+filters:
+  and:
+    - file.hasTag("scope")
+views:
+  - type: table
+    name: Boundaries
+    order:
+      - file.name
+      - note.inclusion
+      - note.sources
+      - note.scope-watch
+    groupBy:
+      property: note.area
+      direction: ASC

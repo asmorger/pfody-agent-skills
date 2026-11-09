@@ -9,8 +9,10 @@ test and a tracker item.
 
 **Steps.**
 
-1. **Read `business-rules.md` end to end**, with the glossary and the scope ledger. Not a search —
-   the whole file. A contradiction you did not read is a contradiction you will not find.
+1. **Read every rule note**, with the glossary and the scope boundaries. Not a search — all of them.
+   A contradiction you did not read is a contradiction you will not find. The business-rules MOC's
+   generated snapshot is the fastest way to see them all at once, and the notes are what you read
+   ([`../patterns/moc-note.md`](../patterns/moc-note.md)).
 2. **Classify every incoming item** into exactly one of five: already covered · conflicts (name the
    rule id) · refines · new rule · a governance entry only. An item that lands nowhere was not durable
    knowledge.
@@ -24,9 +26,10 @@ test and a tracker item.
 5. **Draft `CH-NNNN` for a genuine shift** and `SW-NNNN` for anything that may exceed the baseline
    ([`../patterns/knowledge-change-entry.md`](../patterns/knowledge-change-entry.md),
    [`../patterns/scope-watch-item.md`](../patterns/scope-watch-item.md)).
-6. **Propose ids for new rules** — the next free number in the owning section, or a new section and
+6. **Propose ids for new rules** — the next free number for the owning topic, or a new topic and
    prefix per the config ([`write-a-business-rule.md`](write-a-business-rule.md)).
-7. **Draft everything in the working area.** Do not touch the Docs folder or the record yet
+7. **Draft everything in the workbench**, as plain markdown rather than vault notes. Do not write
+   into the vault yet, and do not create the wikilink targets a draft mentions
    ([`../principles/propose-then-apply.md`](../principles/propose-then-apply.md)).
 8. **Present the audit and stop.** Approval is the user's.
 

@@ -1,18 +1,29 @@
 ---
-prd_id: PRD-000
-title: <Project or feature name>
+id: PRD-000
+aliases: [PRD-000]
+type: prd
 status: Draft            # Draft | In Review | Accepted | Superseded
 size: Standard           # Small | Standard | Large
 owner: <TPO or TPM>
 approvers: [<business approver>, <architect>, <QA lead>]
 version: 0.1
+epics: []
+outcomes: []
+created: YYYY-MM-DD
 updated: YYYY-MM-DD
+tags: [prd]
 ---
 
-# <Project or feature name>
+# PRD-000 — <Project or feature name>
 
-> **Template use.** Copy this file into the repo at `docs/prd/PRD-000-<slug>.md`.
+> **Template use.** Copy this file into the vault at `docs/prd/<slug>.md`.
 > Delete the guidance blocks that start with "Guidance". Keep the section numbers and all ID formats.
+>
+> **This is the hub.** It keeps prose a reader needs end to end, and **embeds** the notes that are
+> cited individually: `![[OUT-1]]` for each outcome, `![[EPIC-01]]` in section 4, `![[X-002]]` in
+> section 5. Requirements, questions, metrics, decisions and work items are their own notes, in
+> `requirements/`, `questions/`, `metrics/`, `sources/` and `backlog/`. The full contract is in the
+> skill's `references/vault-convention.md`.
 
 ## How this document works
 
@@ -22,10 +33,10 @@ This PRD is the source of record for **why** and **what**. Azure DevOps (ADO) is
 
 | Level | ID | What it is | Size test | Where it lives |
 |---|---|---|---|---|
-| Epic | `EPIC-01` | A business outcome that needs one or more Features | It serves an outcome in Section 1, and it can take more than one sprint | This PRD, Section 4 |
-| Feature | `FEAT-01` | One capability: one job for one role | It delivers one job, and it needs one or more User Stories | This PRD, Section 4 |
+| Epic | `EPIC-01` | A business outcome that needs one or more Features | It serves an outcome in Section 1, and it can take more than one sprint | `backlog/`, embedded here |
+| Feature | `FEAT-01` | One capability: one job for one role | It delivers one job, and it needs one or more User Stories | `backlog/` |
 | User Story | `US-01` | A vertical slice of one Feature | One person can build, test, and demo it in one sprint | The backlog file |
-| Requirement | `R-001` | One testable behavior. It is not a tracker item. | It states one behavior, and it belongs to one Feature | This PRD, Section 4 |
+| Requirement | `R-001` | One testable behavior. It is not a tracker item. | It states one behavior, and it belongs to one Feature | `requirements/`, one note each |
 | Acceptance criterion | `AC-1` | One Given/When/Then test of a Requirement | Its number restarts in each User Story | The backlog file |
 
 **Select the size first. Use the smallest size that removes guesswork.**
@@ -269,7 +280,7 @@ Guidance: Use this module when the product itself contains a model or an agent. 
 | Audit | <What the system records for human review> |
 | Prohibited behavior | <What the agent must never do> |
 
-Write the behavior in these items as requirements in Section 4 with `Verify: Eval`.
+Write the behavior in these items as requirement notes with `verify: Eval`.
 
 ### M2. Data migration
 
@@ -313,7 +324,7 @@ Report findings as a list. Do not change the PRD. Find these items:
 
 **Preconditions.** The status is Accepted. No `PROPOSED` value remains.
 
-**Preview.** A person can ask for a preview before acceptance. Mark the file as PREVIEW. Skip each `PROPOSED` requirement and report it. Do not publish a preview.
+**Preview.** A person can ask for a preview before acceptance. Say PREVIEW in the first lines of every User Story note. Skip each `PROPOSED` requirement and report it. Do not publish a preview.
 
 1. Keep each Epic and Feature with its ID and name. Do not create, merge, or rename them in this mode.
 2. Slice each Feature into User Stories with the IDs US-01, US-02, and so on. An ID is unique in the backlog. Each User Story is a vertical slice that one person can build, test, and demo in one sprint. Slice by outcome. Do not slice by layer.
@@ -323,13 +334,13 @@ Report findings as a list. Do not change the PRD. Find these items:
 6. Convert each requirement to one or more acceptance criteria in this form: `AC-n [R-001] Given <precondition>, when <trigger>, then <result>.`
 7. Do not add behavior. Leave a new gap out of the User Story and report it. A person decides whether to use Mode: CHANGE.
 8. Do not add tasks or estimates.
-9. Write the result to `<prd-name>.backlog.md`, next to the PRD. Start the file with a work item summary. Use the heading levels `# Epic:`, `## Feature:`, and `### User Story:`. Each User Story has these labels in this order: the "As a" sentence, Expected Output, Details (with `Source grounding:`), Assumptions, Testing Strategy, Open Questions, Technical Notes, Acceptance Criteria, Tags.
-10. End the file with a coverage table. Each requirement has one row, with the status Covered, Blocked by Q-xx, Skipped: PROPOSED, or Skipped: P3. Report the counts of Epics, Features, and User Stories.
+9. Write one note per work item in `backlog/`. Each has `type` (epic, feature or user-story), an `id`, a matching `aliases`, and a `parent` wikilink: an Epic's parent is the PRD, a Feature's is an Epic, a User Story's is a Feature. Each User Story has these labels in this order: the "As a" sentence, Expected Output, Details (with `Source grounding:`), Assumptions, Testing Strategy, Open Questions, Technical Notes, Acceptance Criteria, Tags. Put each "All" requirement in a Definition of Done in `moc/backlog.md`.
+10. Set each requirement note's `coverage` to covered, blocked, skipped-proposed, skipped-p3 or retired, and its `stories` or `questions` to match. Do not write a coverage table: run `python3 scripts/prd.py moc <vault>` and it is generated from the notes. Report the counts of Epics, Features and User Stories.
 
 ### Mode: CHANGE
 
 1. Change the PRD first. Add the new source or decision. Increase the version.
-2. Do not reuse an ID. Keep the current EPIC, FEAT, US, and R IDs. Mark a removed requirement as `Retired` in the Requirement column.
+2. Do not reuse an ID. Keep the current EPIC, FEAT, US, and R IDs. Mark a removed requirement with `status: retired`, `coverage: retired` and a `superseded-by` link. Never delete a note: deleting it dangles every wikilink that cited it.
 3. List the Epics, Features, User Stories, and tests that the change affects.
 4. Regenerate only the User Stories that the change affects. Show the diff.
 5. Do not change acceptance criteria in ADO unless the PRD changed first.

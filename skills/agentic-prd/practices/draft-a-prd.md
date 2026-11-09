@@ -21,7 +21,7 @@ not get one afterwards, and a gap papered over here reaches a build as a confide
    removes guesswork.
 5. **Copy [`../assets/prd-template.md`](../assets/prd-template.md) and fill it.** Group the work into
    Epics and Features and list them in the work item map
-   ([`../patterns/prd-document.md`](../patterns/prd-document.md)). Delete the guidance blocks. Keep
+   ([`../patterns/prd-hub-note.md`](../patterns/prd-hub-note.md)). Delete the guidance blocks. Keep
    the agent protocol section.
 6. **Cite every requirement with a locator**, compared against the source as you write it
    ([`cite-a-source.md`](cite-a-source.md)).

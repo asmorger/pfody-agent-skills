@@ -1,7 +1,7 @@
 # anchored-knowledge — Project Knowledge Config
 
 ```
-config_version: 1
+config_version: 2
 ```
 
 Saved per project at `Knowledge/anchored-knowledge.config.md` (default) or
@@ -18,26 +18,30 @@ behavior (the skill asks, or drops a step), it does not make the skill guess sil
 ---
 
 ## 1. Knowledge base location
-Knowledge lives in **two directories**: a committed source of record (`knowledge_root`, with
-its Docs folder `docs_dir`) and a local working area (`working_dir`) for knowledge not yet
-ready for the repo.
+Knowledge lives in **two directories**: a committed source of record (`knowledge_root`, whose
+`docs_dir` is the Obsidian vault) and a local workbench (`working_dir`) for knowledge not yet
+ready for the repo. **The workbench lives outside the vault** — a sibling folder, or inside
+Obsidian's excluded files — because a draft inside the vault appears in search, the graph and
+every Bases view, indistinguishable from the record.
 
-- **`docs_dir` — the Docs folder (Reference Layer).** Business rules, glossary, assumptions,
-  ADRs, and convention and reference docs. No repo: `<project>/Knowledge/Docs/`, with the
-  governance files one level up in `knowledge_root`. In a git repo: `<repo>/docs/` (same folder
-  as `knowledge_root`). The layout inside the Docs folder is the same in both modes.
+- **`docs_dir` — the vault.** Open this folder in Obsidian. It holds every note: the Reference
+  Layer (`rules/`, `glossary/`, `scope/`, `decisions/`, `facts/`, `reference/`), the Governance
+  Layer (`sources/`, `questions/`, `scope-watch/`, `changes/`), the index notes (`moc/`) and the
+  Bases definitions (`bases/`). No repo: `<project>/Knowledge/Docs/`. In a git repo:
+  `<repo>/docs/`, the same folder as `knowledge_root`. The layout inside is identical either way.
 
 - **`knowledge_root` — committed source of record.** In a git repo, **`<repo>/docs/`**. Without a
   repo, `<project>/Knowledge/`. This is the only tree that gets committed. `docs/` may also hold
   unrelated files — that is fine, because only *promoted* (confirmed) knowledge is committed here,
   never half-finished notes (those stay in `working_dir`).
-- **`working_dir` — working area (never committed).** Local staging for intake, the transcript
-  index, and drafts that are not yet promoted. Default `<project>/Knowledge/` (or
-  `<repo>/knowledge-working/` if the project *is* the repo). If it sits inside the repo, it must
-  be **gitignored** so it is never pushed.
+- **`working_dir` — the workbench (never committed).** Local staging for intake, reconciliations,
+  the transcript index, and drafts that are not yet promoted. Default `<repo>/knowledge-working/`
+  (or `<project>/Knowledge/` without a repo). If it sits inside the repo it must be **gitignored**,
+  and either way it stays **outside the vault**.
 
-The skill detects whether you are in a git repo, proposes both defaults, and asks the user to
-confirm before writing anything.
+The skill detects whether you are in a git repo — and looks for an existing `.obsidian/` folder,
+which is the strongest signal there is — then proposes both defaults and asks the user to confirm
+before writing anything.
 
 ```
 knowledge_root:            # e.g. docs/ (repo, preferred)  |  Knowledge/ (no repo)
@@ -51,6 +55,7 @@ git_managed:  true | false # true => sync via the git-guide skill; never run raw
 git_host:                  # azure-devops | github | none  (from the repo remote)
 git_repo_root:             # absolute path from `git rev-parse --show-toplevel`
 working_dir_gitignored:  true | false   # true once working_dir is added to .gitignore (when it lives inside the repo)
+obsidian_settings_committed:  true | false  # commit .obsidian/app.json etc; always gitignore workspace.json
 ```
 
 **Promotion:** knowledge is drafted in `working_dir`, and once approved it is *promoted* into
@@ -58,33 +63,49 @@ working_dir_gitignored:  true | false   # true once working_dir is added to .git
 latest" before editing, "save" then "publish/share" after promoting. `working_dir` is never
 pushed.
 
-## 2. File map
-Canonical filenames the skill reads and writes. Reference Layer files live under `docs_dir`;
-governance files live under `knowledge_root`; working files live under `working_dir` (marked below). Defaults are kebab-case. **If an existing
-base already uses different names, record the real names here** — the skill uses these paths
-verbatim and does not rename existing files unless you ask it to.
+## 2. Vault layout
+Where notes live and how they are written. Folders are flat and topic lives in a property, so a
+rule that changes topic is one frontmatter edit rather than a move that rewrites every link to it.
+**If a vault already exists, record its real folders, property names and tags here** — the skill
+uses them verbatim and renames nothing unless you ask. Renaming a property silently empties every
+Bases view and template the team already had.
 
 ```
-# Reference Layer — committed under docs_dir (only these may be cited downstream)
-glossary:            glossary.md
-business_rules:      business-rules.md    # Docs format: "## N. Topic" sections, two-column "| ID | Rule |" tables, inline status markers
-assumptions:         assumptions.md
-adr_dir:             adr/                 # decision records folder (files NNNN-kebab-title.md)
-adr_index:           adr/INDEX.md
-conventions:         <topic>-conventions.md   # api / build / sql / test conventions, flat in docs_dir
-reference_docs:      <topic>.md           # domain reference docs (auth, data mapping, environments), flat in docs_dir
-supporting_dirs:                          # optional supplemental subfolders of docs_dir, e.g. meetings/, examples/ (not citable)
+vault:          true | false      # false => the skill asks before converting a document-shaped base
+link_style:     wikilink          # wikilink | markdown  (an existing vault's style wins)
+query_engine:   bases             # bases (Obsidian 1.9+) | dataview | none
+snapshot:       true | false      # generated tables beneath each embed; keep true for non-Obsidian readers
+home_note:      moc/knowledge.md
 
-# Governance Layer — committed under knowledge_root
-source_register:     source-register.md
-open_questions:      open-questions.md
-scope_watch:         scope-watch.md
-change_log:          knowledge-change-log.md
-index:               knowledge-index.md   # orientation / how-to-use doc
+# Folders under docs_dir — the Reference Layer (only these may be cited downstream)
+rules:          rules/            # one note per business rule
+glossary:       glossary/         # one note per term
+scope:          scope/            # one note per in/out boundary statement
+decisions:      decisions/        # ADRs, one note each
+facts:          facts/            # optional K-NNNN notes
+reference:      reference/        # convention and domain notes — the long-mechanics home
 
-# Working files — under working_dir, NEVER committed
-intake:              knowledge-intake.md  # (working_dir) fast capture before triage
-drafts_dir:          drafts/              # (working_dir) proposed entries pending approval
+# Folders under docs_dir — the Governance Layer (not citable as record)
+sources:        sources/          # one note per registered source, meetings included
+questions:      questions/
+scope_watch:    scope-watch/
+changes:        changes/
+
+# Index notes and queries
+moc:            moc/              # one MOC per note type, plus the home note
+bases:          bases/            # the .base definitions the MOCs embed
+
+# Property names — change only to match an existing vault
+prop_id:        id
+prop_status:    status
+prop_type:      type
+prop_sources:   sources
+prop_authority: authority
+
+# Working files — under working_dir, NEVER committed, OUTSIDE the vault
+intake_dir:     intake/
+reconciliations_dir:  reconciliations/
+drafts_dir:     drafts/
 # transcript_index (working_dir) is set in §5
 ```
 
@@ -107,12 +128,12 @@ detects the pattern and records it here; if it cannot reconcile the scheme, it a
 user to confirm it** before writing any new IDs.
 
 ```
-rule_id_prefixes:            # per-topic uppercase prefixes, e.g. AUTH, USER, ORDER — or "emerge" to derive per section; one unique prefix per section
-rule_status_style:  inline   # inline markers in the rule text (Docs format); no marker = Confirmed
+rule_id_prefixes:            # per-topic uppercase prefixes, e.g. AUTH, USER, ORDER — or "emerge" to derive per topic; one unique prefix per topic
+topics:                      # the topic values, matching the prefixes, e.g. auth, user, orders
+note_naming:   title-with-id-alias   # filename is the kebab title; the id lives in frontmatter with a matching alias
 adr_convention:  ADR-NNNN    # ID format for decision records
-adr_filename:    NNNN-kebab-title.md   # file naming inside adr_dir
-adr_format:      frontmatter # YAML frontmatter + Status/Context/Decision/Rationale/Consequences/Alternatives/Assumptions/Future Review/Related
-id_rule: "IDs are immutable, never reused, never deleted — deprecate in place. Any ID cited downstream must resolve to a real entry."
+adr_filename:    kebab-title.md      # or NNNN-kebab-title.md where a project already numbers its files
+id_rule: "IDs are immutable, never reused, never deleted — deprecate in place, never delete a note. A title may be reworded freely; the ID may not. Any ID cited downstream must resolve to a real note."
 ```
 
 ## 5. Transcript ingestion (delegated)
@@ -123,7 +144,8 @@ skill treats as a **supplemental source** and reconciles into the Reference Laye
 ```
 transcripts_present:   true | false
 transcripts_folder:                    # folder of raw transcripts handed to transcript-knowledge-base
-transcript_index:      transcript-knowledge.md   # (working_dir) output the transcript skill renders — MUST differ from `index` above; the transcript skill defaults to knowledge-index.md and would overwrite it
+transcript_index:      transcript-knowledge/transcript-knowledge.md   # (working_dir) output the transcript skill renders — MUST be in the workbench, never in the vault
+meeting_notes:         true      # write one source note per meeting in sources/, named YYYY-MM-DD-<kebab>
 ```
 
 ## 6. Authority ladder
@@ -150,13 +172,16 @@ review_cadence:              # e.g. weekly during discovery; on-change during im
 ---
 
 ### How the skill uses this file
-- No `docs_dir` set ⇒ the skill looks for a folder that holds `business-rules.md`, `glossary.md`, and `adr/`. If none exists, it proposes `<project>/Knowledge/Docs/` (no repo) or `<repo>/docs/` (repo).
-- `rule_status_style: inline` ⇒ `business-rules.md` keeps two columns; status and dates go in the rule text, and Source Register notes name the rule IDs each source updated.
+- No `docs_dir` set ⇒ the skill looks for an existing `.obsidian/` folder first, then for a folder holding knowledge files. If none exists, it proposes `<project>/Knowledge/Docs/` (no repo) or `<repo>/docs/` (repo).
+- `query_engine: none` ⇒ the MOCs carry the generated snapshot alone, with no embed. Still readable everywhere, and the snapshot is regenerated by `scripts/vault.py moc`.
+- `link_style: markdown` ⇒ relative markdown links instead of wikilinks, for a vault that already writes them. Backlinks and the graph still work; `[[ID]]` shorthand does not.
+- `vault: false` ⇒ an adopted base is still document-shaped. The skill proposes the conversion and its shape, and waits — a document-to-notes split is a large diff.
 - No `knowledge_root` found ⇒ the skill proposes `<repo>/docs/` in a git repo (or `<project>/Knowledge/` otherwise) and records the confirmed choice. `docs/` may hold other files; only promoted knowledge is committed there.
 - `working_dir` ⇒ intake, the transcript index, and drafts live here and are **never committed**; if it's inside the repo it must be gitignored.
 - **Promotion** ⇒ approved entries move from `working_dir` into `knowledge_root`; only `knowledge_root` is committed.
 - `git_managed: true` ⇒ the skill syncs through the **git-guide** skill (get-latest before editing; save/publish after promoting) and never runs raw git.
-- Existing filenames differ from the defaults in §2 ⇒ the recorded names win; nothing is renamed silently.
+- Existing folders, filenames or property names differ from the defaults in §2 ⇒ the recorded names win; nothing is renamed silently, because a renamed property empties every Bases view the team had.
 - `sow_present: false` ⇒ the skill never invokes "the SOW"; it uses `scope_baseline_note` as the top authority.
 - `rule_id_prefixes` unresolved ⇒ the skill asks the user to confirm the scheme before minting IDs.
-- `transcripts_present: true` ⇒ transcript intake is delegated to `transcript-knowledge-base`; its `transcript_index` is registered as a supplemental source, not the source of record.
+- `transcripts_present: true` ⇒ transcript intake is delegated to `transcript-knowledge-base`; its index stays in the workbench, and each **meeting** gets a source note in `sources/` so a rule can cite the meeting it came from.
+- Every run ends with `scripts/vault.py lint` and `scripts/vault.py moc`: the lint reports dangling wikilinks, orphans, vocabulary violations, unanchored confirmed notes, oversized notes and duplicate IDs; `moc` refreshes the generated snapshots.

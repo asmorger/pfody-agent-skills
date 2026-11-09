@@ -170,7 +170,7 @@ Otherwise, omit silently.
 - Do not use open questions to dodge story-quality issues that can be resolved from available context.
 
 # Output Format (tracker-agnostic)
-Return markdown only, no commentary before or after. Preserve all section labels even when empty (use `- None identified`). A publishing adapter maps these labels to tracker fields — do not embed tracker field names here.
+Return the note only, no commentary before or after: YAML front matter, then the `# <ID> — <Title>` heading, then the labels as the body. Preserve all section labels even when empty (use `- None identified`). A publishing adapter maps these labels to tracker fields — do not embed tracker field names here.
 
 ```
 ### User Story: US-01 <Short descriptive title>
@@ -211,7 +211,7 @@ Return markdown only, no commentary before or after. Preserve all section labels
 
 # Backlog File Layout
 
-Use this layout when you write more than one User Story to a file. Leave out `# Coverage` in Mode B and Mode C, because those modes have no requirement IDs to trace. Leave out a section or a heading that has no content, and never invent an Epic or a Feature to fill one.
+Write one note per story, Epic and Feature, with a MOC that indexes them — not one file holding many stories. Leave out a coverage table in Mode B and Mode C, because those modes have no requirement IDs to trace. Leave out a heading that has no content, and never invent an Epic or a Feature to fill one.
 
 ```
 # Backlog for <source and version>
@@ -249,7 +249,7 @@ Use this layout when you write more than one User Story to a file. Leave out `# 
 **Counts.** Requirements: 5. Covered: 2. Blocked: 1. Skipped PROPOSED: 1. Skipped P3: 1. Epics: 1. Features: 1. User Stories: 1.
 ```
 
-Keep the Feature and Epic names the same as the source. The Requirements count includes `X-` requirements. The coverage row of an `X-` requirement names the first User Story that has it.
+Keep the Feature and Epic names the same as the source, and copy their IDs into each story's `parent`. Where a PRD is the source, its own skill owns the coverage table and generates it from the requirement notes; do not keep a second one here.
 
 # Pre-Finalization Review Checklist
 Flag and correct any of the following before output (this is also the audit checklist when reviewing an existing story):

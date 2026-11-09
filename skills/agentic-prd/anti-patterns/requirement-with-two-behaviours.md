@@ -8,7 +8,7 @@ second behaviour is the bigger one.
 tracks one, a test is named for one, a change regenerates the stories carrying one. Two behaviours
 under one id break all four — the criterion tests half, the coverage row is half `Covered`, and a
 change to the email forces a rewrite of the labelling story. The half nobody wrote a criterion for is
-the half that does not get built, and the coverage table still reads complete.
+the half that does not get built, and the generated coverage table still reads complete.
 
 **Instead.** Split into one id per behaviour and let each take its own priority, source and verify
 method; they are usually different. Where the two are genuinely one behaviour with a compound

@@ -18,7 +18,7 @@ individually falsifiable.
 - A statement needing a subordinate clause to be true — "unless the order is on hold" — is usually one
   rule, not two. The test is whether each clause stands as a sentence a test could check.
 - Atomic items are what let one topic's rules be read as a list in the rendered table
-  ([`../patterns/rendered-index.md`](../patterns/rendered-index.md)).
+  ([`../patterns/vault-notes.md`](../patterns/vault-notes.md)).
 
 **Breaks when.** Two behaviours share an item →
 [`../anti-patterns/a-compound-statement.md`](../anti-patterns/a-compound-statement.md).

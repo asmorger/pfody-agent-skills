@@ -12,7 +12,7 @@ and decided it could not arise here. A blank line records nothing, and a deleted
 question was ever asked.
 
 **In the PRD.**
-- The block sits under each Feature, after its requirement table
+- The seven lines are a `checks` mapping in each Feature note's front matter
   ([`../patterns/coverage-check.md`](../patterns/coverage-check.md)).
 - `N/A` always comes with its reason: "N/A — the list cannot be empty; every order has one line."
 - `Gap: Q-xx` means the question exists in the ledger, with an owner and a date.

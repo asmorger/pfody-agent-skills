@@ -69,6 +69,20 @@ Tell the user what was auto-detected vs. what they chose, and that the map is sa
 
 Use **only** the reference names from `field_mappings`. Never hardcode `Custom.BlockedReason` or assume `Microsoft.VSTS.Common.AcceptanceCriteria` — read them from the config.
 
+### 2a0. Strip wikilink brackets (before anything else)
+The story notes use wikilinks — `[[LABEL-2]]`, `[[ORDER-1|the address freeze]]`, `![[R-001]]`. Azure
+DevOps has no idea what those are and renders the brackets literally, so a reader sees a link that
+goes nowhere. Before any other transformation:
+
+| In the note | Sent to the tracker |
+|---|---|
+| `[[LABEL-2]]` | `LABEL-2` |
+| `[[ORDER-1\|the address freeze]]` | `the address freeze` |
+| `![[R-001]]` | the embedded note's own text, inlined |
+
+Do this **first**, because an embed pulls in text that then needs the same ASCII normalization as
+everything else. A criterion's `[LABEL-2]` source tag is already a bare id and is sent verbatim.
+
 ### 2a. Normalize rich-text content to pure ASCII (mandatory)
 Everything bound for a rich-text field (description, acceptance criteria, or AC folded into description) **must be pure ASCII** — printable characters 0x20–0x7E plus newlines — before it is sent. This is not stylistic. On Windows the content crosses several encoding boundaries (UTF-8 file → Git Bash → cp1252 console → `az` CLI → ADO REST), and `az` silently **discards** characters it can't map to the console codepage instead of failing (`WARNING: Unable to encode the output with cp1252 encoding. Unsupported characters are discarded.`). Corruption is intermittent — a character can survive creation and then degrade on a later update — and non-ASCII content also makes read-back verification unreliable.
 
@@ -131,6 +145,20 @@ Because the sent content was pure ASCII (2a), read-back through the cp1252 conso
 - If an **existing** story was already markdown-backed and still reports `markdown` after a safe HTML update, continue and add a `Markdown` tag for later manual repair.
 
 Also confirm `title`, description body, acceptance criteria, tags, and the parent relation all saved.
+
+### 2e. Write the tracker ID back into the note (required)
+Once an item is verified, update its note:
+
+```yaml
+status: published
+tracker-id: 12345
+tracker-url: https://dev.azure.com/{organization}/{project}/_workitems/edit/12345
+```
+
+This is what makes the link bidirectional: the vault can answer "which work item is this story?" and
+a reviewer in ADO can get back to the sourced note. It is also how a later run knows what is already
+published — a story with a `tracker-id` is not created again, it is updated. Never write these by
+hand: an id that the tracker did not return is a claim that something was published when it was not.
 
 ## Batch discipline
 - Normalize to pure ASCII (2a) on **every** publish and every update — including edits to items created before this rule whose stored fields still contain em-dashes or other non-ASCII characters.

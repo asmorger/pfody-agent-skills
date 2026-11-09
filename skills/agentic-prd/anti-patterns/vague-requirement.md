@@ -14,4 +14,4 @@ label, the system shall return the label or an error within 3 seconds at the 95t
 nobody has given you the number, that is an open question and the requirement is `PROPOSED` until it
 is answered — never a word standing in for a number
 ([`../principles/one-behaviour-per-requirement.md`](../principles/one-behaviour-per-requirement.md),
-[`../patterns/requirement-row.md`](../patterns/requirement-row.md)).
+[`../patterns/requirement-note.md`](../patterns/requirement-note.md)).

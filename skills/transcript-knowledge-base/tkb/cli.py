@@ -5,11 +5,11 @@ The lifecycle the agent (or a human) drives:
     1. prepare  — scan the folder, detect new/changed transcripts, write briefs
     2. <extract> — the agent reads the briefs and produces items.json
     3. merge    — fold the extracted items into the index state (dedup + provenance)
-    4. render   — write the knowledge-index.md deliverable
+    4. render   — write the vault: one note per statement, one per meeting, one MOC
 
     python -m tkb.cli prepare  --folder ./Transcripts
     python -m tkb.cli merge    --items items.json
-    python -m tkb.cli render   --out knowledge-index.md
+    python -m tkb.cli render   --out ./transcript-knowledge
     python -m tkb.cli status
 
 All commands are thin wrappers over the library so they stay unit-testable.
@@ -23,6 +23,7 @@ import sys
 
 from .config import Config
 from .index import KnowledgeIndex, Source
+from .vault import render_vault
 from . import prepare as prepare_mod
 
 
@@ -57,8 +58,9 @@ def build_parser() -> argparse.ArgumentParser:
     sp = sub.add_parser("merge", help="Merge extracted items.json into the index", parents=[common])
     sp.add_argument("--items", required=True, help="JSON file with {processed_files, items}")
 
-    sp = sub.add_parser("render", help="Write the knowledge-index.md deliverable", parents=[common])
-    sp.add_argument("--out", default="knowledge-index.md")
+    sp = sub.add_parser("render", help="Write the vault of notes", parents=[common])
+    sp.add_argument("--out", default="transcript-knowledge",
+                    help="vault directory (created if absent); every note in it is generated")
 
     sub.add_parser("status", help="Show index status", parents=[common])
 
@@ -118,14 +120,9 @@ def cmd_merge(args, cfg: Config) -> None:
 
 def cmd_render(args, cfg: Config) -> None:
     idx = _load_index(cfg)
-    md = idx.render_markdown()
-    with open(args.out, "w", encoding="utf-8") as fh:
-        fh.write(md)
+    summary = render_vault(idx, args.out)
     idx.save(cfg.state_path)  # persist generated_at
-    _print({
-        "index": args.out, "items": len(idx.items),
-        "categories": len(idx.category_order), "sources_files": len(idx.ingested_files),
-    })
+    _print(summary)
 
 
 def cmd_status(args, cfg: Config) -> None:

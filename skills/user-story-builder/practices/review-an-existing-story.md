@@ -26,6 +26,11 @@ identically to a sourced one, so only a per-line pass finds it.
     notifications the source never requested? Remove them.
 15. **Wrong level or id** — a free `US-` id; every `EPIC-` and `FEAT-` id copied from the source, with
     no invented or renamed parent?
+16. **Front matter disagreeing with the body** — does `sources` hold the same ids as the
+    `Source grounding:` line? Does `source-mode` match what the citations actually are — a Mode A
+    `source-mode` over `[Request]` tags is the dishonest case worth catching? Is `tracker-id` empty
+    on anything the tracker has not confirmed?
+    ([`../references/vault-convention.md`](../references/vault-convention.md))
 
 **Then.** Propose the corrected version. **Do not rewrite scope in** — only remove what is not sourced
 and surface the gaps. Do not raise these as Open Questions unless they genuinely need a stakeholder

@@ -4,7 +4,7 @@
     "should_trigger": true
   },
   {
-    "query": "we have a Docs folder with business-rules.md — audit it, is everything actually sourced?",
+    "query": "we have a Docs folder with business-rules.md \u2014 audit it, is everything actually sourced?",
     "should_trigger": true
   },
   {
@@ -32,7 +32,19 @@
     "should_trigger": true
   },
   {
-    "query": "our rule ids are a mess and some are cited from stories that don't exist any more — sort out the knowledge base",
+    "query": "our rule ids are a mess and some are cited from stories that don't exist any more \u2014 sort out the knowledge base",
+    "should_trigger": true
+  },
+  {
+    "query": "turn our project knowledge into an Obsidian vault of linked atomic notes with sources",
+    "should_trigger": true
+  },
+  {
+    "query": "every business rule is a row in one giant markdown table \u2014 split it into proper notes I can link to",
+    "should_trigger": true
+  },
+  {
+    "query": "the MOC table doesn't match the notes any more. regenerate it",
     "should_trigger": true
   },
   {
@@ -53,6 +65,14 @@
   },
   {
     "query": "summarise what this repo's code does and write a README",
+    "should_trigger": false
+  },
+  {
+    "query": "set up my Obsidian vault's theme, hotkeys and community plugins",
+    "should_trigger": false
+  },
+  {
+    "query": "write a dataview query that lists my unfinished book notes by rating",
     "should_trigger": false
   }
 ]

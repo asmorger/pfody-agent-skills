@@ -17,7 +17,7 @@ for.
    tests the change reaches.
 4. **Regenerate only the affected stories**, and show the diff of each one. A story the change does
    not reach is not rewritten, even if you would write it differently today.
-5. **Run `check_prd.py --backlog`** ([`run-the-checks.md`](run-the-checks.md)).
+5. **Run `prd.py check`** ([`run-the-checks.md`](run-the-checks.md)).
 6. **Leave the tracker alone** until the person asks. Criteria already published change only after
    the PRD has, and only through `PUBLISH`
    ([`publish-a-backlog.md`](publish-a-backlog.md)).

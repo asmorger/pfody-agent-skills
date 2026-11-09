@@ -1,7 +1,7 @@
 # Authority is explicit
 
 **Rule.** Every source gets an authority level when it is registered, from the project's ladder. The
-level is recorded on the Source Register row, not inferred at the moment it matters.
+level is recorded on the source note at registration, not inferred at the moment it matters.
 
 **Why.** A conflict is settled by authority, and authority is a fact about where a statement came
 from — a contract clause, an approved requirement, a named stakeholder's answer, an export, somebody's
@@ -19,7 +19,9 @@ seeing.
   serves as its scope baseline instead.
 - Find the scope baseline during bootstrap. If you cannot, ask what it is and where it lives, and
   record the answer ([`../practices/bootstrap-a-base.md`](../practices/bootstrap-a-base.md)).
-- Seed the Source Register highest authority first, so the base is built from its baseline outward.
+- Write source notes highest authority first, so the base is built from its baseline outward. The
+  `sources` MOC groups by `authority`, which is how a record resting on levels 5 and 6 becomes
+  visible ([`../references/bases.md`](../references/bases.md)).
 
 **Breaks when.** Two sources are weighed without their levels →
 [`../anti-patterns/resolving-a-conflict-silently.md`](../anti-patterns/resolving-a-conflict-silently.md).

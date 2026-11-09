@@ -1,44 +1,48 @@
 # Knowledge ledger
 
-**Use when** recording where anything in the PRD came from. Section 7's three registers: sources,
-decisions, and assumptions. Open questions are the fourth and have their own shape.
+**Use when** recording where anything in the PRD came from. Sources, decisions and assumptions are
+**notes in `sources/`**; open questions have their own shape. Section 7 of the hub links them rather
+than tabulating them.
 
-**Skeleton.**
+**Skeleton.** A source, `sources/warehouse-discovery-call.md`:
 
 ```markdown
-**Sources.**
+---
+id: SRC-01
+aliases: [SRC-01]
+type: source
+source-type: transcript        # transcript | sow | requirements | stakeholder-answer | vendor-doc
+authority: 3-client-clarification
+provider: Operations lead
+source-date: 2026-10-02
+location: <link to the system of record>
+citable: false
+tags: [source/transcript]
+---
 
-| ID | Source | Type | Link | Date |
-|---|---|---|---|---|
-| SRC-01 | Warehouse discovery call | Verified | <link to the recording> | 2026-10-02 |
-| SRC-02 | Statement of work, rev C | Verified | <link to the contract system> | 2026-09-11 |
-| SRC-03 | Operations lead, notes on label voiding | Stakeholder | <link> | 2026-10-21 |
+# Warehouse discovery call
 
-**Decisions.**
-
-| ID | Decision | Owner | Date | Reason | Rejected options | Revisit when |
-|---|---|---|---|---|---|---|
-| DEC-02 | An order on credit hold cannot be labelled. | Operations lead | 2026-10-21 | A labelled parcel is treated as committed stock; holds exist to stop that. | Label but suppress printing — the parcel still leaves the pick face. | Credit holds move into the order system. |
-
-**Assumptions and inferences.**
-
-| ID | Statement | Type | Basis | What makes it false | Affects |
-|---|---|---|---|---|---|
-| A-01 | Bulk printing is wanted but not required for the first release. | Inference | SRC-01 @41:20 raises it; no source commits to it. | A clerk shows that single printing cannot keep up with a peak day. | R-004 |
+**Does not cover** who may void a label, or bulk printing. A statement about either does not come
+from here.
 ```
 
-**Notes.**
-- Type on a source is `Verified` (a document or recording that exists) or `Stakeholder` (what a person
-  said). The distinction is what a reviewer needs to weigh a conflict.
-- A decision row carries its own source in *Reason*, which is why a requirement citing `DEC-xx` needs
-  no locator.
-- *Rejected options* is the row's most valuable field: it is what stops the option being re-proposed
-  next quarter. Each one names how it fails, not that it lost.
-- *What makes it false* turns an assumption into something testable. An assumption nothing could
-  falsify is a guess
-  ([`../principles/implied-is-not-stated.md`](../principles/implied-is-not-stated.md)).
-- Link to the system of record; copy nothing out of it
-  ([`../principles/link-the-source-never-copy-it.md`](../principles/link-the-source-never-copy-it.md)).
+A decision, `sources/credit-hold-blocks-labelling.md`, is `type: decision` with `summary`,
+`decided`, `deciders`, `requirements`, and an `## Alternatives` section naming **how each rejected
+option fails**. An assumption is `type: source` with `source-type: inference`, `authority:
+5-internal-interpretation`, and a body saying **what would make it false**.
 
-**Related.** [`open-question.md`](open-question.md), [`requirement-row.md`](requirement-row.md),
-[`../practices/cite-a-source.md`](../practices/cite-a-source.md).
+**Notes.**
+- **A source note never lists what it supports.** Each requirement names its source, so the source
+  note's backlinks are that list, always current.
+- `authority` replaces the old Verified/Stakeholder column and carries more: it is what a reviewer
+  weighs a conflict with ([`../practices/cite-a-source.md`](../practices/cite-a-source.md)).
+- A requirement citing `DEC-nn` needs no locator, because the decision note carries its own reasoning.
+- **Rejected options are the most valuable part of a decision note.** Each names how it fails, not
+  that it lost — which is what stops it being re-proposed next quarter.
+- "What makes it false" turns an assumption into something testable. An assumption nothing could
+  falsify is a guess ([`../principles/implied-is-not-stated.md`](../principles/implied-is-not-stated.md)).
+- Link the system of record; copy nothing out of it
+  ([`../principles/link-the-source-never-copy-it.md`](../principles/link-the-source-never-copy-it.md)).
+- When `anchored-knowledge` is installed these are its notes too, in its folder, with its ids.
+
+**Related.** [`open-question.md`](open-question.md), [`requirement-note.md`](requirement-note.md).

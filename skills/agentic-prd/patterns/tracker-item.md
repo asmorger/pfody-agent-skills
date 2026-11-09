@@ -29,6 +29,6 @@ Tags.
 - Nothing is created without an explicit yes in the current conversation
   ([`../principles/only-a-person-crosses-a-gate.md`](../principles/only-a-person-crosses-a-gate.md)).
 
-**Related.** [`backlog-file.md`](backlog-file.md),
+**Related.** [`backlog-notes.md`](backlog-notes.md),
 [`../practices/publish-a-backlog.md`](../practices/publish-a-backlog.md),
 [`../anti-patterns/publishing-without-a-yes.md`](../anti-patterns/publishing-without-a-yes.md).

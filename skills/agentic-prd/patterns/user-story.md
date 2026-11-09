@@ -1,60 +1,60 @@
-# User story
+# User story note
 
-**Use when** writing a story in the backlog. Every label appears, in this order, even when a section
-is empty — an empty section reads `None identified`.
+**Use when** writing any story. One note per story in `backlog/`. Every label appears, in this
+order, even when a section is empty — `- None identified`. The check reports a missing label.
 
-**Skeleton.**
+**Skeleton.** `backlog/void-a-printed-label.md`
 
 ```markdown
-### User Story: US-03 Void a printed label
+---
+id: US-03
+aliases: [US-03]
+type: user-story
+status: accepted
+prd: "[[PRD-001]]"
+parent: "[[FEAT-02]]"
+requirements: ["[[R-012]]", "[[X-002]]"]
+testing-complexity: Medium
+tags: [backlog/user-story]
+---
 
-As a shipping clerk, I want to void a label I have already printed, so that the parcel is not
-collected against a cancelled order.
+# US-03 — Void a printed label
+
+As a shipping clerk, I want to void a label I have already printed, so that a cancelled order is not
+collected by the carrier.
 
 **Expected Output**
 - A clerk can void a printed label from the order screen.
-- A voided label is refused by the carrier at collection.
 - The order returns to the unlabelled state and can be labelled again.
 
 **Details**
-- Source grounding: PRD-001 R-012, R-013, X-002.
+- Source grounding: [[R-012]], [[X-002]]. A label may be voided only until collection.
 
-**Assumptions**
-- A-01 Bulk printing is not required for the first release.
-
-**Testing Strategy**
-- **Testing Complexity**: Medium
-- **UAT Approach**: Print a label, void it, confirm the order is unlabelled and the carrier portal
-  shows the label cancelled.
-
-**Open Questions**
-- Q-03 Who may void a printed label — any clerk, or a supervisor?
-
-**Technical Notes**
-- **Permission**: Void label
-- **Feature flag**: labels.void
-- **Design assets**: None
+**Assumptions** · **Testing Strategy** · **Open Questions** · **Technical Notes**
+- `- None identified.` where a section is empty; Testing Complexity and a UAT approach; [[Q-03]]
+  under Open Questions; permission, feature flag and design assets under Technical Notes.
 
 **Acceptance Criteria**
-1. AC-1 [R-012] Given a printed label on a confirmed order, when a clerk voids it, then the order
-   returns to the unlabelled state.
-2. AC-2 [R-013] Given a voided label, when the carrier scans it at collection, then the carrier
-   rejects the parcel.
+1. AC-1 [R-012] Given a printed label on an uncollected parcel, when an authorised user voids it,
+   then the order returns to the unlabelled state.
+2. AC-2 [X-002] Given any label action, when it completes, then the order records the acting user
+   and a timestamp.
 
 **Tags**
-- PRD-001, EPIC-01, FEAT-02, P0
+- EPIC-01, FEAT-02
 ```
 
-**Notes.**
-- *Source grounding* lists exactly the requirement ids the criteria cite; the check script compares
-  the two sets. Up to four Expected Output bullets, each nameable to a source; Open Questions lists
-  every question that could change the story, including one blocking a related requirement.
-- A specific role, a need and a business reason; the *so that* clause does not restate the need
-  ([`../principles/slice-by-outcome-not-by-layer.md`](../principles/slice-by-outcome-not-by-layer.md)).
-- Testing Complexity: `High` for money, security, multi-system integration, migration or
-  concurrency · `Medium` for business rules or one integration · `Low` for display or configuration.
-- Permission is a capability name, or `None`. Feature flag is the name from section 8, `None`, or
-  `To be determined by engineering`. Design assets is a real link or `None` — never a placeholder.
+Each label is its own `**Label**` line in a real note; four are run together above only to keep this
+skeleton short.
 
-**Related.** [`acceptance-criterion.md`](acceptance-criterion.md), [`backlog-file.md`](backlog-file.md),
-[`../practices/slice-a-feature.md`](../practices/slice-a-feature.md), [`../references/backlog-format.md`](../references/backlog-format.md).
+**Notes.**
+- **`parent` and `requirements` are the traceability**, not the heading level. Every requirement a
+  story covers must belong to its parent Feature or be cross-cutting; the check enforces it
+  ([`backlog-notes.md`](backlog-notes.md)).
+- A criterion's `[R-012]` tag is read by the check and must name a real requirement note. One tag per
+  criterion; nothing else ([`acceptance-criterion.md`](acceptance-criterion.md)).
+- A publishing adapter maps these labels to tracker fields; do not embed tracker field names here
+  ([`tracker-item.md`](tracker-item.md)). While the PRD is not `Accepted`, the note says `PREVIEW` in
+  its first lines ([`../principles/only-a-person-crosses-a-gate.md`](../principles/only-a-person-crosses-a-gate.md)).
+
+**Related.** [`requirement-note.md`](requirement-note.md), [`coverage-moc.md`](coverage-moc.md).

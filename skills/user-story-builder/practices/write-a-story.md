@@ -17,7 +17,8 @@ every shape has one failure mode — a quota filled with inference.
    one bullet is a legitimate story
    ([`../patterns/expected-output.md`](../patterns/expected-output.md)).
 4. **Put the rules in `Details`**, with one consolidated `Source grounding` bullet as the developer's
-   reading list ([`../principles/cite-once-per-story.md`](../principles/cite-once-per-story.md)).
+   reading list, and the same ids as wikilinks in the `sources` property
+   ([`../principles/cite-once-per-story.md`](../principles/cite-once-per-story.md)).
 5. **Write the criteria** — `AC-n [tag] Given … when … then …` — ordered from the primary output
    outward to the edges, with the behaviour embedded so each reads with the source closed
    ([`../patterns/acceptance-criterion.md`](../patterns/acceptance-criterion.md)).
@@ -30,9 +31,12 @@ every shape has one failure mode — a quota filled with inference.
    ([`../principles/per-bullet-traceability.md`](../principles/per-bullet-traceability.md)).
 9. **Work the review checklist** before you hand it over
    ([`review-an-existing-story.md`](review-an-existing-story.md)).
-10. **Return markdown only** — no commentary before or after — unless the user asked for an audit.
+10. **Write the note**: frontmatter with `id`, a matching `aliases`, `parent`, `source-mode`,
+    `sources`, `testing-complexity` and an empty `tracker-id`; the labels as the body; the filename a
+    kebab slug of the title ([`../patterns/user-story.md`](../patterns/user-story.md)).
+11. **Return the note only** — no commentary before or after — unless the user asked for an audit.
     Keep every section label, using `- None identified` where a section is empty.
 
 **Done when** every Expected Output bullet and every criterion traces to a named source, every gap is
-an Assumption or an Open Question, every label is present, the story produces something demonstrable,
-and the output is markdown with nothing wrapped around it.
+an Assumption or an Open Question, every label is present, `sources` and the `Source grounding:` line
+agree, the story produces something demonstrable, and nothing is wrapped around the note.

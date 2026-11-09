@@ -15,12 +15,13 @@ plausible, uncited, and never checked against the rules it contradicts.
    ([`ingest-transcripts.md`](ingest-transcripts.md)).
 3. **Read the full source.** Not the summary, not the first screen; a source worth registering is
    worth reading to the end.
-4. **Capture it in intake**, in the working area: the source, raw bullets, and a triage destination
+4. **Capture it in intake**, in the workbench: the source, raw bullets, and a triage destination
    for each one ([`../patterns/intake-entry.md`](../patterns/intake-entry.md)). Keep the bullets raw.
-5. **Register the source** with its authority level and location
-   ([`../patterns/source-register-row.md`](../patterns/source-register-row.md),
+5. **Write the source note** with its authority level, its location, and what it does **not** cover
+   ([`../patterns/source-note.md`](../patterns/source-note.md),
    [`../patterns/authority-ladder.md`](../patterns/authority-ladder.md)). Register the original, not
-   an extraction of it.
+   an extraction of it. Do not list what it updated — the rules link to it, and its backlinks are
+   that list.
 6. **Invent nothing.** A behaviour the source implies but does not state is a question, not a rule
    ([`../principles/anchor-or-flag.md`](../principles/anchor-or-flag.md)).
 7. **Reconcile** against the existing rules
@@ -29,6 +30,6 @@ plausible, uncited, and never checked against the rules it contradicts.
 8. **Archive the intake entry** once its durable content is promoted. It is a capture buffer, not a
    parallel record.
 
-**Done when** the source has a register row with its authority level, every durable item from it is
+**Done when** the source has a source note with its authority level, every durable item from it is
 either promoted, proposed in an audit, or sitting as a question or scope-watch item, and nothing was
 written to the record without approval.

@@ -1,8 +1,9 @@
 # Ids are immutable
 
-**Rule.** A rule id, once issued, belongs to that rule forever: never reused, never renumbered, never
-deleted. A new rule takes the next free number in its section even when it belongs in a different row
-position. Gaps in the numbering are normal and stay.
+**Rule.** An id, once issued, belongs to that note forever: never reused, never renumbered, never
+deleted. A new rule takes the next free number for its topic. Gaps in the numbering are normal and
+stay. The id lives in frontmatter, with an alias so `[[ORDER-1]]` resolves — which is what frees the
+**title and filename** to be reworded whenever a better wording is found.
 
 **Why.** The id is the whole value of the base to everything downstream — a story's source grounding,
 an acceptance criterion, a test name, a pull request, a tracker tag, another rule's cross-link.
@@ -12,14 +13,20 @@ aggressively. A rule's text can be rewritten freely, because the id is what was 
 wording.
 
 **In the base.**
-- `PREFIX-N` per topic section, one unique prefix per section; `PREFIX-0` only for a basic rule that
-  must precede rule 1 ([`../patterns/business-rules-file.md`](../patterns/business-rules-file.md)).
+- `PREFIX-N` per topic, one unique prefix per topic, declared in the config. The topic is a property,
+  so moving a rule between topics never changes its id
+  ([`../patterns/business-rule-note.md`](../patterns/business-rule-note.md)).
+- **Rename a title freely; never touch an `id`.** Obsidian rewrites every wikilink to a renamed note,
+  and `aliases` keeps `[[ORDER-1]]` resolving either way
+  ([`../patterns/note-frontmatter.md`](../patterns/note-frontmatter.md)).
 - Refine a rule in place. Split it when it has grown two ideas — the original keeps its id and one
-  idea, the second idea takes a new number
+  idea, the second takes a new number
   ([`../practices/write-a-business-rule.md`](../practices/write-a-business-rule.md)).
 - `ADR-NNNN` is sequential and never renumbered; reversal is supersession, not an overwrite
   ([`../patterns/decision-record.md`](../patterns/decision-record.md)).
-- Every id cited anywhere must resolve to a real entry. That is what the audit checks
+- **A note is never deleted**, because deleting it dangles every wikilink that cited it
+  ([`deprecate-never-delete.md`](deprecate-never-delete.md)).
+- Every id cited anywhere resolves to a real note. That is what the audit checks
   ([`../practices/audit-the-base.md`](../practices/audit-the-base.md)).
 
 **Breaks when.** Numbering is tidied after a removal →

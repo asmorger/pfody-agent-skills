@@ -1,34 +1,37 @@
 # Coverage check
 
 **Use when** closing out a Feature. The fixed list of behaviours nobody writes a requirement for and
-every agent invents. It sits under the Feature's requirement table.
+every agent invents. It lives in the Feature note's frontmatter, as a nested mapping, which is what
+makes it checkable.
 
-**Skeleton.**
+**Skeleton.** In `backlog/create-and-print-a-label.md`:
 
-```markdown
-**Coverage check.**
-
-| Check | Requirement IDs, or N/A and reason |
-|---|---|
-| Empty state | N/A — a confirmed order always has at least one line. |
-| Loading state | R-007 |
-| Error state | R-002, R-008 |
-| Permissions | Gap: Q-03 |
-| Bad input and boundaries | R-009 |
-| Concurrency | R-010 |
-| Current records and data migration | N/A — labels did not exist before this release. |
+```yaml
+checks:
+  empty-state: "N/A — a confirmed order always has at least one line."
+  loading-state: "[[R-007]]"
+  error-state: "[[R-002]], [[R-008]]"
+  permissions: "Gap: [[Q-03]]"
+  bad-input-and-boundaries: "[[R-009]]"
+  concurrency: "[[R-010]]"
+  current-records-and-data-migration: "N/A — labels did not exist before this release."
 ```
 
 **Notes.**
-- Three legal values per line: requirement ids, `N/A` plus a reason, or `Gap: Q-xx`. Never blank,
-  never removed
+- **All seven keys, every time, in this order**, whatever the Feature does. The check reports a
+  missing key and a blank value as errors
   ([`../principles/every-coverage-line-is-answered.md`](../principles/every-coverage-line-is-answered.md)).
-- `N/A` with no reason is a blank line wearing a label. The reason is the record that someone thought
-  about it.
-- `Gap: Q-xx` requires the question to exist in the ledger with an owner and a date
-  ([`open-question.md`](open-question.md)).
-- The same seven lines appear under every Feature, in this order, whatever the Feature does.
-- Filling a line from inference means an `A-xx` row, not a citation.
+- Three legal values: requirement wikilinks, `N/A` **plus a reason**, or `Gap:` naming a question
+  note. Never blank, never removed.
+- `N/A` with no reason is a blank line wearing a label, and the check says so. The reason is the
+  record that somebody thought about it
+  ([`../anti-patterns/a-blank-coverage-line.md`](../anti-patterns/a-blank-coverage-line.md)).
+- `Gap: [[Q-03]]` requires the question note to exist with an owner and a needed-by. A dangling gap
+  is caught as a dangling wikilink ([`open-question.md`](open-question.md)).
+- Filling a line from inference means an `A-xx` source on a new requirement, not a citation
+  ([`../principles/implied-is-not-stated.md`](../principles/implied-is-not-stated.md)).
+- Two gaps on one Feature is a Feature that is not decomposable yet. Say so rather than slicing
+  around it ([`../practices/decompose-a-prd.md`](../practices/decompose-a-prd.md)).
 
-**Related.** [`requirement-row.md`](requirement-row.md), [`open-question.md`](open-question.md),
-[`../anti-patterns/a-blank-coverage-line.md`](../anti-patterns/a-blank-coverage-line.md).
+**Related.** [`requirement-note.md`](requirement-note.md), [`coverage-moc.md`](coverage-moc.md),
+[`backlog-notes.md`](backlog-notes.md).

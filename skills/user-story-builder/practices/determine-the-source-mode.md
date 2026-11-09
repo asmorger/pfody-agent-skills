@@ -26,7 +26,7 @@ somebody built.
 5. **Say which mode you are in**, and say it when the mode is lower than the config expected
    ([`../principles/mode-honesty.md`](../principles/mode-honesty.md)).
 6. **Omit the coverage table** in B and C — there are no requirement ids to trace
-   ([`../patterns/backlog-file.md`](../patterns/backlog-file.md)).
+   ([`../patterns/backlog-notes.md`](../patterns/backlog-notes.md)).
 
 **Done when** the mode is named, the citation form that goes with it is clear, and a downgrade from
 the config's expectation has been reported rather than absorbed.

@@ -13,7 +13,7 @@ part of citation discipline that does not depend on anyone's diligence.
 **In the PRD.**
 - A time in a transcript: `SRC-07 @1:13:06`. A page in a document: `SRC-02 p.4`. A line in plain
   notes: `SRC-03 L12`.
-- Every `SRC-xx` has a row in the knowledge ledger with its type, link and date
+- Every `SRC-xx` has a source note with its authority, location and date
   ([`../patterns/knowledge-ledger.md`](../patterns/knowledge-ledger.md)).
 - `DEC-xx` needs no locator: the decision row cites its own source.
 - `A-xx` names an assumption or inference the approver accepts the risk on.

@@ -1,0 +1,40 @@
+filters:
+  and:
+    - file.hasTag("question")
+properties:
+  note.needed-by:
+    displayName: Needed by
+views:
+  - type: table
+    name: Live
+    filters:
+      or:
+        - 'note.status == "open"'
+        - 'note.status == "partial"'
+        - 'note.status == "blocked"'
+    order:
+      - note.id
+      - file.name
+      - note.owner
+      - note.needed-by
+      - note.blocks
+  - type: table
+    name: Overdue
+    filters:
+      and:
+        - 'note.status != "answered"'
+        - 'note.status != "dropped"'
+        - 'note.needed-by < today()'
+    order:
+      - note.id
+      - file.name
+      - note.owner
+      - note.needed-by
+  - type: table
+    name: Answered
+    filters:
+      - 'note.status == "answered"'
+    order:
+      - note.id
+      - file.name
+      - note.answered-by

@@ -22,7 +22,11 @@ carries a hierarchy nobody agreed to.
 **In the story.**
 - Take the next free `US-` number from the current backlog. Never reuse one. If you cannot find the
   current numbers, start at `US-01` and add an Assumption that a person must confirm they are free.
-- A tracker number is a separate value and does not replace these ids
+- A tracker number is a separate value and does not replace these ids. It lives in the note's
+  `tracker-id`, written back after a verified publish
+  ([`../practices/publish-to-a-tracker.md`](../practices/publish-to-a-tracker.md))
+- The id lives in front matter with a matching `aliases` entry, so `[[US-03]]` resolves however the
+  title is later reworded; `parent` is a wikilink copied from the source, never invented
   ([`../patterns/tracker-field-map.md`](../patterns/tracker-field-map.md)).
 - The level id opens the tracker title, so an item traces back in one lookup
   ([`../practices/publish-to-a-tracker.md`](../practices/publish-to-a-tracker.md)).

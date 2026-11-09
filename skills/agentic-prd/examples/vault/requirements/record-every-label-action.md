@@ -1,0 +1,21 @@
+---
+id: X-002
+aliases: [X-002]
+type: requirement
+status: accepted
+prd: "[[PRD-001]]"
+applies-to: [All]
+priority: P0
+verify: Manual
+source: DEC-02
+coverage: covered
+stories: ["[[US-01]]"]
+created: 2026-10-21
+updated: 2026-11-05
+tags: [requirement/cross-cutting]
+---
+
+# X-002 — The system shall record every label action against the order with the acting user and a timestamp.
+
+Cross-cutting: it applies to every Feature, and it is stated once in the definition of done rather
+than repeated in every story.

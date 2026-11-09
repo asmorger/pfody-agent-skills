@@ -1,0 +1,26 @@
+filters:
+  and:
+    - file.hasTag("requirement")
+    - 'note.coverage != "retired"'
+views:
+  - type: table
+    name: By coverage
+    order:
+      - note.id
+      - file.name
+      - note.priority
+      - note.stories
+    groupBy:
+      property: note.coverage
+      direction: ASC
+  - type: table
+    name: Not covered
+    filters:
+      and:
+        - 'note.coverage != "covered"'
+    order:
+      - note.id
+      - file.name
+      - note.priority
+      - note.coverage
+      - note.questions

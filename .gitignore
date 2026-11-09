@@ -1,0 +1,11 @@
+# Python bytecode. These were tracked before and churn on every test run.
+__pycache__/
+*.py[cod]
+
+# transcript-knowledge-base runtime artifacts, if a run is pointed at the repo
+.knowledge-index.work/
+.tkb-manifest.json
+
+# Obsidian per-person window state, if a vault is opened in place
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json

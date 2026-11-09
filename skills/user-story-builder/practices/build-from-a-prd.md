@@ -9,14 +9,15 @@ proves nothing was dropped.
 
 **Steps.**
 
-1. **Check the status first.** Not `Accepted` → write `PREVIEW` at the top of the output and **do not
-   publish it** ([`../principles/drafting-and-publishing-are-separate.md`](../principles/drafting-and-publishing-are-separate.md)).
+1. **Check the status first.** Not `Accepted` → write `PREVIEW` in each story note's first lines and
+   a `[!warning] PREVIEW` callout on the MOC, and **do not publish it**
+   ([`../principles/drafting-and-publishing-are-separate.md`](../principles/drafting-and-publishing-are-separate.md)).
 2. **Assign each in-scope `R-` requirement to exactly one story** in its own Feature.
 3. **Slice by the buildable-output standard, not by the hour bands.** A PRD carries no hours
    ([`slice-a-feature-into-stories.md`](slice-a-feature-into-stories.md)).
 4. **Place the `X-` requirements.** One naming a Feature goes into each story of that Feature whose
    behaviour it changes. One applying to `All` goes in the Definition of Done, once
-   ([`../patterns/backlog-file.md`](../patterns/backlog-file.md)).
+   ([`../patterns/backlog-notes.md`](../patterns/backlog-notes.md)).
 5. **Skip and report** anything an open question blocks, anything marked `PROPOSED`, and anything
    `P3`. Each skip is a reported result, not an omission.
 6. **Tag each story with the highest priority of its requirements.** A story holding only `P2`

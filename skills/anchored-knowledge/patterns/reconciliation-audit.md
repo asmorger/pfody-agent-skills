@@ -4,7 +4,8 @@
 between a new source and the Reference Layer — three groups, each row carrying the current text and
 the recommended text.
 
-**Skeleton.**
+**Skeleton.** In the workbench, as plain markdown — not vault notes, and no wikilinks to notes that
+do not exist yet.
 
 ```markdown
 # Reconciliation — SRC-0009, operations lead call 2026-11-08
@@ -42,7 +43,8 @@ the recommended text.
   than appended to.
 - Nothing is applied from this document until it is approved, and then the exact ids are reported
   ([`../principles/propose-then-apply.md`](../principles/propose-then-apply.md)).
-- Draft the changed entries in the working area alongside the audit, so approval is one step from
-  promotion ([`../practices/promote-to-the-record.md`](../practices/promote-to-the-record.md)).
+- Draft the changed notes in the workbench alongside the audit, so approval is one step from
+  promotion. Tables are right here and wrong in the record: this document is read once, by a person,
+  as a diff ([`../practices/promote-to-the-record.md`](../practices/promote-to-the-record.md)).
 
 **Related.** [`knowledge-change-entry.md`](knowledge-change-entry.md), [`intake-entry.md`](intake-entry.md).

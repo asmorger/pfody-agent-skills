@@ -33,4 +33,4 @@ its requirement's id.
 - A criterion may not test behaviour its requirement does not state. If it needs to, the requirement
   changes first ([`../principles/the-prd-changes-before-the-backlog.md`](../principles/the-prd-changes-before-the-backlog.md)).
 
-**Related.** [`user-story.md`](user-story.md), [`requirement-row.md`](requirement-row.md).
+**Related.** [`user-story.md`](user-story.md), [`requirement-note.md`](requirement-note.md).

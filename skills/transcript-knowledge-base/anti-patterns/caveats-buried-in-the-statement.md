@@ -16,4 +16,4 @@ filterable, countable and mergeable, and the render folds it inline on the rule 
 sees it without the statement having carried it. Where the statement is only true because of the
 caveat, you have two items: the behaviour, and the question about it
 ([`../principles/status-is-a-field-not-a-sentence.md`](../principles/status-is-a-field-not-a-sentence.md),
-[`../patterns/rendered-index.md`](../patterns/rendered-index.md)).
+[`../patterns/vault-notes.md`](../patterns/vault-notes.md)).

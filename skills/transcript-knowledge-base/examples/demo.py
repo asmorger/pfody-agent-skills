@@ -4,7 +4,7 @@ Shows the full lifecycle on small sample transcripts:
 
 1. prepare  — scan a folder, write citation-tagged briefs for new transcripts
 2. merge    — fold (simulated) extracted items into the index (dedup + provenance)
-3. render   — write the knowledge-index.md deliverable
+3. render   — write the vault: a note per statement, a note per meeting, a MOC
 4. incremental — add a transcript, re-run; only the new file is prepared, and a
    restated rule folds into the existing item as a second source (no duplicate)
 
@@ -26,6 +26,7 @@ if ROOT not in sys.path:
 from tkb.config import Config            # noqa: E402
 from tkb.index import KnowledgeIndex, Source  # noqa: E402
 from tkb import prepare as P             # noqa: E402
+from tkb.vault import render_vault       # noqa: E402
 
 KICKOFF = (
     "Title: Project Kickoff\nDate: 2026-01-05\n\n"
@@ -48,7 +49,7 @@ def main():
     folder = os.path.join(work, "transcripts")
     os.makedirs(folder)
     state = os.path.join(work, "index.state.json")
-    out = os.path.join(work, "knowledge-index.md")
+    out = os.path.join(work, "transcript-knowledge")
     cfg = Config()
 
     def save(idx):
@@ -74,10 +75,11 @@ def main():
     save(idx)
     print("items:", len(idx.items))
 
-    banner("STEP 3 - render the deliverable")
-    open(out, "w", encoding="utf-8").write(idx.render_markdown())
+    banner("STEP 3 - render the vault")
+    summary = render_vault(idx, out)
     save(idx)
-    print("wrote", out)
+    print(f"wrote {summary['files_written']} files: "
+          f"{summary['items']} statements, {summary['meetings']} meeting(s), 1 MOC")
 
     banner("STEP 4 - incremental: add a transcript, re-run")
     open(os.path.join(folder, "review.txt"), "w", encoding="utf-8").write(REVIEW)
@@ -101,10 +103,25 @@ def main():
     print(f"AUTH-1 sources: {before} -> {len(idx.items['AUTH-1'].sources)} (merged, not duplicated)")
     print("total items:", len(idx.items))
 
-    open(out, "w", encoding="utf-8").write(idx.render_markdown())
-    print("\nFinal index:", out)
-    print("\n--- first 20 lines ---")
-    print("\n".join(open(out, encoding="utf-8").read().splitlines()[:20]))
+    summary = render_vault(idx, out)
+    print(f"re-rendered: {summary['files_written']} files written, "
+          f"{summary['files_removed']} removed")
+
+    banner("The vault")
+    for root, dirs, files in os.walk(out):
+        dirs.sort()
+        rel = os.path.relpath(root, out)
+        for name in sorted(f for f in files if not f.startswith(".")):
+            print(os.path.join("" if rel == "." else rel, name))
+
+    banner("One statement note, in full")
+    note = os.path.join(out, "items", "users-authenticate-via-sso-through-the-in-portal.md")
+    print(open(note, encoding="utf-8").read())
+
+    banner("The MOC's generated table")
+    moc = open(os.path.join(out, summary["moc"]), encoding="utf-8").read()
+    print(moc[moc.index("<!-- generated"):])
+    print("Vault:", out)
 
 
 if __name__ == "__main__":

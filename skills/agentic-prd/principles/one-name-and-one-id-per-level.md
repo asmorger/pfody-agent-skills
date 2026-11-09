@@ -5,10 +5,10 @@ test decides what it is; nothing else does.
 
 | Level | Id | What it is | Size test | Lives in |
 |---|---|---|---|---|
-| Epic | `EPIC-01` | A business outcome needing one or more Features | Serves a PRD outcome; takes more than one sprint | PRD section 4 |
-| Feature | `FEAT-01` | One capability: one job for one role | Delivers one job; needs one or more User Stories | PRD section 4 |
+| Epic | `EPIC-01` | A business outcome needing one or more Features | Serves a PRD outcome; takes more than one sprint | `backlog/`, embedded in the hub |
+| Feature | `FEAT-01` | One capability: one job for one role | Delivers one job; needs one or more User Stories | `backlog/` |
 | User Story | `US-01` | A vertical slice of one Feature | One person builds, tests and demos it in one sprint | Backlog file |
-| Requirement | `R-001` | One testable behaviour | States one behaviour; belongs to one Feature | PRD section 4 |
+| Requirement | `R-001` | One testable behaviour | States one behaviour; belongs to one Feature | `requirements/`, one note each |
 | Acceptance criterion | `AC-1` | One Given/When/Then test of a requirement | Numbering restarts in each User Story | Backlog file |
 
 **Why.** "Epic", "feature", "initiative" and "story" mean different things at every company, and a

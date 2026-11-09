@@ -20,5 +20,5 @@ nobody can query is a target nobody will check.
 - An outcome needing an event that does not exist yet gets a telemetry row in section 8.
 - An outcome no requirement serves, and a requirement serving no outcome, are both review findings.
 
-**Breaks when.** A plausible baseline or target is supplied to fill the table →
+**Breaks when.** A plausible baseline or target is supplied to fill the field →
 [`../anti-patterns/a-number-without-a-denominator.md`](../anti-patterns/a-number-without-a-denominator.md).

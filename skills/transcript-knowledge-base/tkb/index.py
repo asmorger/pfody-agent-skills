@@ -2,22 +2,13 @@
 provenance, persisted as a markdown document plus a small JSON state sidecar.
 
 This replaces the old SQLite/heuristic pipeline. The deliverable is the markdown
-file (``knowledge-index.md``); the JSON (``knowledge-index.state.json``) is a
+vault (``transcript-knowledge/``); the JSON (``knowledge-index.state.json``) is a
 lightweight, regenerable cache that lets incremental runs merge new transcripts
 into existing rules without re-reading old ones. It is intentionally *not* a
 database — just a file you can read, diff, or delete.
 
-The shape mirrors a hand-curated business-rules document:
-
-    ## <Category>
-    | ID | Rule | Sources |
-    | CAT-1 | <canonical statement, status folded inline> | <meeting (date)…> |
-
-    ## Evidence
-    ### CAT-1
-    > "<verbatim quote>" — <speaker>, *<meeting>* (<date>) @ <timestamp>
-
-The mechanical concerns live here (id assignment, dedup/merge, rendering). The
+The mechanical concerns live here (id assignment, dedup/merge). Rendering lives in
+``vault.py``, which turns this model into a vault of small linked notes. The
 *synthesis* — turning raw dialogue into clean canonical rules — is done by the
 agent running the skill (see SKILL.md); this module just stores and renders what
 the agent produces, and guarantees every item keeps its provenance.
@@ -276,84 +267,6 @@ class KnowledgeIndex:
     def mark_ingested(self, file_path: str, content_hash: str, name: str, date: Optional[str]) -> None:
         self.ingested_files[file_path] = {"hash": content_hash, "name": name, "date": date}
 
-    # ------------------------------------------------------------------ #
-    # Render
-    # ------------------------------------------------------------------ #
-    def render_markdown(self) -> str:
-        self.generated_at = now_iso()
-        out: list[str] = [f"# {self.title}", ""]
-        if self.intro:
-            out += [self.intro, ""]
-        out += [
-            f"_Generated {self.generated_at[:10]} from "
-            f"{len(self.ingested_files)} transcript(s); "
-            f"{len(self.items)} knowledge items across {len(self.category_order)} categories._",
-            "",
-            "Each item cites the meeting(s), date, and speaker(s) it came from. The full "
-            "verbatim quotes and timestamps are retained in the state file (queryable, "
-            "kept out of this document so it stays compact as the corpus grows).",
-            "",
-            "---",
-            "",
-        ]
-
-        for category in self.category_order:
-            items = [it for it in self.items.values() if it.category == category]
-            if not items:
-                continue
-            items.sort(key=_id_sort_key)
-            out += [f"## {category}", "", "| ID | Rule | Sources |", "|----|------|---------|"]
-            for it in items:
-                out.append(f"| {it.id} | {self._rule_cell(it)} | {self._sources_cell(it)} |")
-            out.append("")
-
-        return "\n".join(out).rstrip() + "\n"
-
-    def _rule_cell(self, it: KnowledgeItem) -> str:
-        text = _md_cell(it.statement)
-        annot = []
-        if it.status and it.status != "confirmed":
-            label = it.status.capitalize()
-            annot.append(f"{label}{(' — ' + it.note) if it.note else ''}")
-        elif it.note:
-            annot.append(it.note)
-        if it.supersedes:
-            annot.append("supersedes " + ", ".join(it.supersedes))
-        if it.related:
-            annot.append("see " + ", ".join(it.related))
-        if annot:
-            text += " _(" + "; ".join(_md_cell(a) for a in annot) + ")_"
-        return text
-
-    @staticmethod
-    def _sources_cell(it: KnowledgeItem) -> str:
-        """Compact provenance: meeting (date; speakers), one entry per meeting.
-
-        The verbatim quote/timestamp live in the state file; the rendered cell
-        stays short so the document scales with the corpus.
-        """
-        groups: dict[tuple, list[str]] = {}
-        order: list[tuple] = []
-        for s in it.sources:
-            key = (s.meeting, s.date)
-            if key not in groups:
-                groups[key] = []
-                order.append(key)
-            if s.speaker and s.speaker not in groups[key]:
-                groups[key].append(s.speaker)
-
-        parts = []
-        for meeting, date in order:
-            inner = []
-            if date:
-                inner.append(date)
-            if groups[(meeting, date)]:
-                inner.append(", ".join(groups[(meeting, date)]))
-            label = meeting + (f" ({'; '.join(inner)})" if inner else "")
-            parts.append(_md_cell(label))
-        return "; ".join(parts)
-
-
 def _dedup_keywords(statement: str) -> set[str]:
     """Keyword set for duplicate detection, with light plural normalization so
     'bids'/'bid' and 'amounts'/'amount' don't count as different rules."""
@@ -363,14 +276,3 @@ def _dedup_keywords(statement: str) -> set[str]:
             w = w[:-1]
         out.add(w)
     return out
-
-
-def _md_cell(text: str) -> str:
-    """Escape a value for inline use inside a markdown table cell."""
-    text = " ".join((text or "").split())
-    return text.replace("\\", "\\\\").replace("|", "\\|")
-
-
-def _id_sort_key(it: KnowledgeItem):
-    m = re.match(r"^([A-Za-z]+)-?(\d+)$", it.id)
-    return (m.group(1), int(m.group(2))) if m else (it.id, 0)

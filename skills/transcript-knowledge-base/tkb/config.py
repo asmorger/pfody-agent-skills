@@ -21,7 +21,7 @@ class Config:
     """Runtime configuration for the knowledge index."""
 
     folder_path: Optional[str] = None          # transcript folder to scan
-    index_path: str = "knowledge-index.md"     # the markdown deliverable
+    vault_path: str = "transcript-knowledge"   # the vault directory this renders
     state_path: str = "knowledge-index.state.json"  # lightweight merge cache
     workdir: str = ".knowledge-index.work"     # where transcript briefs are written
 

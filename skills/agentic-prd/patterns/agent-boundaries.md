@@ -46,5 +46,5 @@ requirement or with a constraint; or when a check has failed <n> times.
   ([`../anti-patterns/plausible-scope.md`](../anti-patterns/plausible-scope.md)).
 - The checks block is commands, not descriptions. An agent runs it verbatim.
 
-**Related.** [`prd-document.md`](prd-document.md),
+**Related.** [`prd-hub-note.md`](prd-hub-note.md),
 [`../principles/a-gap-is-a-question-not-a-guess.md`](../principles/a-gap-is-a-question-not-a-guess.md).

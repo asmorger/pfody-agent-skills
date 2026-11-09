@@ -20,16 +20,19 @@ decision or a drift.
    interpretation and the action taken
    ([`../patterns/knowledge-change-entry.md`](../patterns/knowledge-change-entry.md)). Both anchor
    sets are mandatory.
-4. **Add a dated History or amendment note** to every affected entry — rule, ADR, question,
-   scope-watch item.
-5. **Preserve the superseded understanding** with its anchors. A superseded assumption stays in the
-   ledger; a superseded rule is deprecated in place
+4. **Add a dated callout to every note in `affects`** — rule, decision, question, scope-watch item —
+   and list them in the change note's `affects` so the links run both ways
+   ([`../patterns/status-callouts.md`](../patterns/status-callouts.md)).
+5. **Preserve the superseded understanding** with its anchors. A superseded boundary keeps its own
+   note; a superseded rule keeps its note, its id, `status: superseded` and a `superseded-by`
    ([`../principles/deprecate-never-delete.md`](../principles/deprecate-never-delete.md)).
 6. **Open what the shift implies**: a question where authority does not settle it, a scope-watch item
    where the new understanding costs more than the baseline allows.
 7. **Propose, do not apply.** The shift reaches the record through approval and promotion
    ([`promote-to-the-record.md`](promote-to-the-record.md)).
-8. **Add the entry to the index's recently-changed list**, so a reader sees it without searching.
+8. **Add it to the home note's Recently changed list**, so a reader sees it without searching. That
+   list is judgement, not a query, which is why it is written by hand
+   ([`../patterns/home-note.md`](../patterns/home-note.md)).
 
 **Done when** `CH-NNNN` names both anchors and the interpretation, every affected entry carries a
 dated note, the previous understanding is preserved with its anchor, and anything the shift opened has

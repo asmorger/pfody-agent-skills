@@ -1,0 +1,13 @@
+filters:
+  and:
+    - file.hasTag("term")
+views:
+  - type: table
+    name: Terms
+    order:
+      - note.term
+      - note.governed-by
+      - note.aliases
+    groupBy:
+      property: note.category
+      direction: ASC

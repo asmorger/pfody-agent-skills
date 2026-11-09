@@ -1,7 +1,7 @@
 # A number without a denominator
 
 **Smell.** "Reduce address errors by 50%." "Labels printed in under a minute." "Improve clerk
-throughput by a third." An Outcomes table with Metric and Target filled and Baseline, Population,
+throughput by a third." A metric note with `target` filled and `baseline`, `population`,
 Denominator, Source system or Window left blank or filled with something plausible.
 
 **Why it is wrong.** None of those can be passed or failed, so none of them will be — the measurement

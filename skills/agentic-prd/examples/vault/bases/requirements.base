@@ -1,0 +1,40 @@
+filters:
+  and:
+    - file.hasTag("requirement")
+properties:
+  note.id:
+    displayName: ID
+  note.priority:
+    displayName: Pri
+views:
+  - type: table
+    name: All requirements
+    order:
+      - note.id
+      - file.name
+      - note.priority
+      - note.verify
+      - note.source
+      - note.coverage
+    groupBy:
+      property: note.feature
+      direction: ASC
+  - type: table
+    name: Blocked and proposed
+    filters:
+      or:
+        - 'note.coverage == "blocked"'
+        - 'note.source == "PROPOSED"'
+    order:
+      - note.id
+      - file.name
+      - note.priority
+      - note.questions
+  - type: table
+    name: Retired
+    filters:
+      - 'note.coverage == "retired"'
+    order:
+      - note.id
+      - file.name
+      - note.superseded-by

@@ -1,6 +1,6 @@
 # Propose, then apply
 
-**Rule.** Never edit the Reference Layer without approval. Draft in the working area, present the
+**Rule.** Never edit the Reference Layer without approval. Draft in the workbench, present the
 proposal — rule id, the current text, the incoming item, the recommended new text — and apply only
 what the user approves. Then report exactly which ids changed.
 
@@ -17,7 +17,7 @@ touched, and naming the ids is what lets the user see that it did.
   ([`../patterns/reconciliation-audit.md`](../patterns/reconciliation-audit.md)).
 - On approval, promote and report the exact ids — added, changed, deprecated
   ([`../practices/promote-to-the-record.md`](../practices/promote-to-the-record.md)).
-- Update the Source Register row for each source to name the rule ids it updated. The provenance is
+- Point each promoted note's `sources` at its source note, so provenance arrives with the change. It is
   part of the change, not a follow-up.
 - Say which kind of output you produced: an audit, a template set, or an applied migration.
 

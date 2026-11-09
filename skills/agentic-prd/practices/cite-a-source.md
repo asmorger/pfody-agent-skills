@@ -21,7 +21,7 @@ is indistinguishable from an invented one.
    An `A-xx` for an inference, with its basis and what would falsify it. `PROPOSED` when there is no
    source at all.
 5. **Record a date as the source gives it.** "Next quarter" does not become a date.
-6. **Verify the locators mechanically** where you can: `check_prd.py --source SRC-07=<text copy>`
+6. **Verify the locators mechanically** where you can: `prd.py --source SRC-07=<text copy>`
    confirms the time or line exists in the text ([`run-the-checks.md`](run-the-checks.md)).
 7. **Flag internal-only sources** in the report, before the PRD leaves the team
    ([`../principles/link-the-source-never-copy-it.md`](../principles/link-the-source-never-copy-it.md)).

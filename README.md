@@ -10,12 +10,32 @@ substance and restructures each one to the layout contract below — a thin rout
 patterns, practices and anti-patterns — so a model reads the one or two files its task needs instead
 of a whole instruction document.
 
+It also changes what they **write**. The originals produce documents; this fork produces an
+**Obsidian vault of small, linked, atomic notes** — one note per rule, term, requirement, story,
+decision, question and source, each with an immutable id in frontmatter, wikilinks between them, and
+index notes that hold a live query over a generated table rather than knowledge of their own. All
+four skills are converted.
+
+Each skill carries its own `references/vault-convention.md` describing what it writes, so it stays
+independently installable;
+[`anchored-knowledge`'s](skills/anchored-knowledge/references/vault-convention.md) is the canonical
+one for the parts they share — frontmatter as the query surface, wikilinks as the structure, the
+callout vocabulary, the `<!-- generated -->` markers. Where two skills write the same kind of note —
+an open question, a source, a decision, a story — they write **the same note**, in the same folder,
+with the same type. Two registers for one fact is the failure the one-home rule exists to prevent.
+
+Every skill ships a worked example you can open in Obsidian: a
+[knowledge vault](skills/anchored-knowledge/examples), a
+[PRD vault](skills/agentic-prd/examples), a
+[transcript index](skills/transcript-knowledge-base/examples), and
+[two story notes](skills/user-story-builder/examples).
+
 | Skill | What it does | Needs |
 |---|---|---|
-| [`transcript-knowledge-base`](skills/transcript-knowledge-base) | Builds a sourced knowledge index from meeting transcripts | Python 3 |
-| [`anchored-knowledge`](skills/anchored-knowledge) | Creates and audits a citable project knowledge system | Nothing extra |
-| [`agentic-prd`](skills/agentic-prd) | Creates and reviews agent-ready PRDs, then generates Epics, Features and User Stories | Python 3 for its scripts |
-| [`user-story-builder`](skills/user-story-builder) | Writes sourced User Stories and can publish them to Azure DevOps | `az` CLI to publish |
+| [`transcript-knowledge-base`](skills/transcript-knowledge-base) | Turns meeting transcripts into a sourced vault: one note per statement, one per meeting | Python 3 |
+| [`anchored-knowledge`](skills/anchored-knowledge) | Creates and audits a citable project knowledge vault | Python 3 for its lint and index generator |
+| [`agentic-prd`](skills/agentic-prd) | Creates and reviews agent-ready PRDs as a hub note over atomic requirement notes, then generates Epics, Features and Stories | Python 3 for its scripts |
+| [`user-story-builder`](skills/user-story-builder) | Writes sourced User Story notes and can publish them to Azure DevOps | `az` CLI to publish |
 
 `agentic-prd` drafts from a knowledge base where one exists rather than from raw files, which is what
 `anchored-knowledge` builds; `anchored-knowledge` delegates every transcript to
@@ -87,6 +107,31 @@ being a skeleton. Worked examples say in their first lines that their content is
     python3 scripts/measure-skill-triggers.py run 2 "" 5     # 5 samples per eval query
 
 `check-skill-layout.py` enforces the contract above and is cheap to run on every change.
+
+A skill that writes a vault also ships a checker for its **output**:
+
+    cd skills/anchored-knowledge/examples/vault
+    python3 ../../scripts/vault.py lint .   # dangling links, orphans, vocabulary, sizes, ids
+    python3 ../../scripts/vault.py moc  .   # refresh the generated index tables
+
+    cd skills/agentic-prd/examples/vault
+    python3 ../../scripts/prd.py check .    # ids, patterns, sources, coverage, parents, criteria
+    python3 ../../scripts/prd.py moc   .    # rebuild the coverage table from the requirement notes
+
+    cd skills/transcript-knowledge-base/tests && python3 -m unittest discover -s . -t .
+
+These are what make the convention enforceable rather than aspirational: a dangling wikilink, an
+orphan note, a `status` outside the vocabulary, a confirmed rule with no source, a requirement whose
+coverage claims a story that does not exist, a note over its size budget — all mechanical to detect
+and all invisible by eye. Reading front matter rather than parsing markdown tables is what made the
+list that long.
+
+    python3 scripts/check-vault-tools.py                     # the checkers, checked
+
+That one runs each checker against its worked example (which must pass) and then against a copy with
+defects injected on purpose (which must produce a specific finding for each). A checker that reports
+nothing on a clean vault *and* nothing on a broken one is worse than no checker, and breaking
+something deliberately is the only way to tell the two apart.
 
 Each skill keeps `evals/trigger-queries.json`: prompts that should and should not load it. The
 measurement runs each one as a single-turn `claude -p` inside a fixture holding the skills and

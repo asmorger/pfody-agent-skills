@@ -1,0 +1,58 @@
+[
+  {
+    "query": "build a knowledge index from the transcripts in ./Transcripts with citations back to the meeting",
+    "should_trigger": true
+  },
+  {
+    "query": "extract the business rules and decisions from these twelve meeting recordings, with sources",
+    "should_trigger": true
+  },
+  {
+    "query": "four new transcripts landed — fold them into the existing index without redoing the old ones",
+    "should_trigger": true
+  },
+  {
+    "query": "what did we decide about label voiding, and which call did that come from?",
+    "should_trigger": true
+  },
+  {
+    "query": "summarise what we agreed across these discovery calls, with sources",
+    "should_trigger": true
+  },
+  {
+    "query": "turn this folder of Copilot meeting exports into a spec-style requirements doc",
+    "should_trigger": true
+  },
+  {
+    "query": "two rules in the index say the same thing in different words — why didn't they merge?",
+    "should_trigger": true
+  },
+  {
+    "query": "the same transcript gets reprocessed every single run even though nothing changed",
+    "should_trigger": true
+  },
+  {
+    "query": "set up stable category prefixes so the rule ids don't move between runs",
+    "should_trigger": true
+  },
+  {
+    "query": "reconcile these new rules against our business-rules.md and tell me what conflicts",
+    "should_trigger": false
+  },
+  {
+    "query": "write user stories with acceptance criteria for the label voiding feature",
+    "should_trigger": false
+  },
+  {
+    "query": "transcribe this audio recording of yesterday's call",
+    "should_trigger": false
+  },
+  {
+    "query": "draft a PRD from the SOW and these notes",
+    "should_trigger": false
+  },
+  {
+    "query": "parse this CSV of order data and give me the totals by region",
+    "should_trigger": false
+  }
+]

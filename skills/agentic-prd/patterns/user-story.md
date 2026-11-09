@@ -14,8 +14,11 @@ status: ready              # draft | ready | published | retired
 topic: labels
 prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 parent: "[[void-a-label|FEAT-02]]"
-requirements: ["[[void-a-printed-label|R-012]]", "[[record-every-label-action|X-002]]"]
+source-mode: A
+review-required: true
+sources: ["[[void-a-printed-label|R-012]]", "[[record-every-label-action|X-002]]"]
 testing-complexity: Medium
+tracker-id:                    # filled by the publish step, never by hand
 ---
 
 # US-03 — Void a printed label
@@ -42,18 +45,16 @@ collected by the carrier.
 
 ```
 
-Each label is its own `**Label**` line in a real note; four are run together above only to keep
-this skeleton short. There is no `**Tags**` label: it restated `parent`
-([`../anti-patterns/a-tags-label-restating-the-parent.md`](../anti-patterns/a-tags-label-restating-the-parent.md)).
+Each label is its own `**Label**` line in a real note; four are run together above only to keep this
+skeleton short. No `**Tags**` label: it restated `parent` ([`../anti-patterns/a-tags-label-restating-the-parent.md`](../anti-patterns/a-tags-label-restating-the-parent.md)).
 
 **Notes.**
-- **`parent` and `requirements` are the traceability**, not the heading level. Every requirement a
-  story covers must belong to its parent Feature or be cross-cutting; the check enforces it
-  ([`backlog-notes.md`](backlog-notes.md)).
-- A criterion's `[R-012]` tag is read by the check and must name a real requirement note. One tag per
-  criterion; nothing else ([`acceptance-criterion.md`](acceptance-criterion.md)).
-- A publishing adapter maps these labels to tracker fields; do not embed tracker field names here
-  ([`tracker-item.md`](tracker-item.md)). While the PRD is not `accepted`, the note says `PREVIEW` in
-  its first lines ([`../principles/only-a-person-crosses-a-gate.md`](../principles/only-a-person-crosses-a-gate.md)).
+- **`parent` and `sources` are the traceability**, not the heading level. Every requirement a story
+  covers must belong to its parent Feature or be cross-cutting ([`backlog-notes.md`](backlog-notes.md)).
+- A criterion's `[R-012]` tag names a real requirement note. One tag per criterion; nothing else
+  ([`acceptance-criterion.md`](acceptance-criterion.md)).
+- An adapter maps these labels to tracker fields; do not embed tracker field names here
+  ([`tracker-item.md`](tracker-item.md)). While the PRD is not `accepted`, the note says `PREVIEW`
+  in its first lines ([`../principles/only-a-person-crosses-a-gate.md`](../principles/only-a-person-crosses-a-gate.md)).
 
 **Related.** [`requirement-note.md`](requirement-note.md), [`coverage-moc.md`](coverage-moc.md).

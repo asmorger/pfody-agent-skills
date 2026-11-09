@@ -208,7 +208,7 @@ CASES = [
         "name": "combined vault / both checkers",
         "vault": ["skills/agentic-prd/examples/vault",
                   "skills/anchored-knowledge/examples/vault"],
-        "copy": [("skills/user-story-builder/examples/void-a-printed-label.md",
+        "copy": [("skills/user-story-builder/examples/vault/backlog/void-a-printed-label-story.md",
                   "backlog/void-a-printed-label-story.md")],
         "runs": [
             {"script": "skills/anchored-knowledge/scripts/vault.py", "argv": ["lint", "."],
@@ -221,6 +221,12 @@ CASES = [
                         "status 'accepted' is not valid",
                         "id 'SRC-9' does not match the source pattern",
                         "no 'topic' — a requirement is grouped by it"]},
+            # The story checker, run where a Mode A story's citations actually resolve. On the
+            # standalone backlog above the same citations are warnings; here they must be silent,
+            # which is the half that proves the two vaults really do form one.
+            {"script": "skills/user-story-builder/scripts/story.py", "argv": ["check", "."],
+             "expect": ["duplicate file name void-a-printed-label.md",
+                        "status 'accepted' is not valid"]},
         ],
         "mutate": [
             # The story's status reverts to the PRD's word. One ladder per type, or the two skills
@@ -238,6 +244,61 @@ CASES = [
         "mutate_rename": [("backlog/void-a-printed-label-story.md",
                            "backlog/void-a-printed-label.md")],
         "expect": [],
+    },
+    {
+        # The backlog this skill writes. Until it shipped a checker, its notes were held to nothing
+        # of their own and its `moc/backlog.md` was the only generated block in the repo with no
+        # generator behind it — so it carried no provenance and "is this index current?" had no
+        # mechanical answer.
+        #
+        # The clean run is the standalone backlog, which reports warnings and no errors: a backlog
+        # on its own genuinely cannot resolve a Mode A story's citations into a record vault it was
+        # not given. The composed case below runs the same check where they do resolve.
+        "name": "user-story-builder / story.py check",
+        "script": "skills/user-story-builder/scripts/story.py",
+        "vault": "skills/user-story-builder/examples/vault",
+        "clean": ["check", "."],
+        "mutate": [
+            ("backlog/void-a-printed-label-story.md",
+             [# Published with nothing to update against: the next run creates a duplicate.
+              ("status: draft", "status: published"),
+              # The one duplication the shape allows, now disagreeing with itself.
+              ("- Source grounding: [[a-printed-label-may-be-voided|LABEL-2]]",
+               "- Source grounding: [[a-printed-label-may-be-voided|LABEL-9]]"),
+              # A criterion renumbered, so AC-2 in the tracker is AC-3 in the note.
+              ("2. AC-2 [LABEL-3] Given a collected parcel", "3. AC-3 [LABEL-3] Given a collected parcel"),
+              # A label dropped. An adapter maps them positionally.
+              ("**Open Questions**\n- Does voiding require supervisor approval, or may any clerk do it?\n\n", ""),
+              ("review-required: true", ""),
+              ("source-mode: A", "source-mode: D")]),
+            ("backlog/export-the-days-labels.md",
+             [# Mode C means nothing but what the user asked for. This claims a source anyway.
+              ("sources: []", 'sources: ["[[a-printed-label-may-be-voided|LABEL-2]]"]'),
+              # A source tag sent to a tracker verbatim cannot be a wikilink.
+              ("1. AC-1 [Request]", "1. AC-1 [[[a-printed-label-may-be-voided|LABEL-2]]]")]),
+        ],
+        "expect": [
+            "status is published but `tracker-id` is empty",
+            "but Source grounding names",
+            "numbered 3/AC-3 but is criterion 2",
+            "missing story labels: **Open Questions**",
+            "no `review-required`",
+            "source-mode C means nothing but what the user asked for",
+            "the source tag is a wikilink",
+            "source-mode 'D' is not one of A | B | C",
+        ],
+    },
+    {
+        "name": "user-story-builder / story.py moc --check",
+        "script": "skills/user-story-builder/scripts/story.py",
+        "vault": "skills/user-story-builder/examples/vault",
+        "clean": ["moc", ".", "--check"],
+        "mutate": [
+            # A story's title changed, so the index that lists it is describing an older backlog.
+            ("backlog/export-the-days-labels.md",
+             [("# US-07 — Export the day's labels", "# US-07 — Export a day's labels")]),
+        ],
+        "expect": ["moc/backlog.md: the generated block is stale"],
     },
     {
         "name": "agentic-prd / prd.py moc --check",
@@ -320,6 +381,22 @@ def main() -> int:
                 for needle in spec["expect"]:
                     if needle not in out:
                         findings.append(f"{case['name']}: no finding matched {needle!r}")
+
+    # `moc/backlog.md` has two possible owners: `user-story-builder` writes stories, and
+    # `agentic-prd` writes them too when a whole backlog is decomposed at once. A project with both
+    # installed must not get a different index depending on which tool ran last, so each generator
+    # has to report the other's block as current. The two `_cell` implementations are separate code
+    # and nothing but this would notice them drifting apart.
+    pairs = [("skills/user-story-builder/examples/vault",
+              "skills/agentic-prd/scripts/prd.py", "story.py"),
+             ("skills/agentic-prd/examples/vault",
+              "skills/user-story-builder/scripts/story.py", "prd.py")]
+    for vault, foreign, native in pairs:
+        code, out = run(REPO / foreign, REPO / vault, ["moc", ".", "--check"])
+        if code != 0:
+            findings.append(f"cross-generator: {pathlib.Path(foreign).name} reports "
+                            f"{native}'s block in {vault} as stale, so the two disagree about a "
+                            f"file they can both own\n{_indent(out)}")
 
     # The regression this file was written for.
     for rel in ("skills/anchored-knowledge/scripts/vault.py", "skills/agentic-prd/scripts/prd.py"):

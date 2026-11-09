@@ -88,14 +88,14 @@ Every skill ships a worked example you can open in Obsidian: a
 [PRD vault](skills/agentic-prd/examples) with its
 [rendered document](skills/agentic-prd/examples/vault/render), a
 [transcript index](skills/transcript-knowledge-base/examples), and
-[two story notes](skills/user-story-builder/examples).
+and a [story backlog](skills/user-story-builder/examples) with its generated index.
 
 | Skill | What it does | Needs |
 |---|---|---|
 | [`transcript-knowledge-base`](skills/transcript-knowledge-base) | Turns meeting transcripts into a sourced vault: one note per statement, one per meeting, every quote verified against the transcript | Python 3 |
 | [`anchored-knowledge`](skills/anchored-knowledge) | Creates and audits a citable project knowledge vault | Python 3 for its lint and index generator |
 | [`agentic-prd`](skills/agentic-prd) | Creates and reviews agent-ready PRDs as a hub note over atomic requirement notes, then generates Epics, Features and Stories | Python 3 for its scripts |
-| [`user-story-builder`](skills/user-story-builder) | Writes sourced User Story notes and can publish them to Azure DevOps | `az` CLI to publish |
+| [`user-story-builder`](skills/user-story-builder) | Writes sourced User Story notes and can publish them to Azure DevOps | Python 3 for its checker; `az` CLI to publish |
 
 `agentic-prd` drafts from a knowledge base where one exists rather than from raw files, which is what
 `anchored-knowledge` builds; `anchored-knowledge` delegates every transcript to
@@ -184,10 +184,23 @@ being a skeleton. Worked examples say in their first lines that their content is
     python3 scripts/check-skill-layout.py                    # front matter, links, labels, sizes
     python3 scripts/check-taxonomy.py                        # one registry, and nothing contradicting it
     python3 scripts/check-taxonomy.py --fix                  # push the registry to the skill copies
+    python3 scripts/check-allowed-tools.py                   # declared tools vs instructed commands
     python3 scripts/measure-skill-triggers.py fixture        # build the trigger fixture
     python3 scripts/measure-skill-triggers.py run 2 "" 5     # 5 samples per eval query
 
 `check-skill-layout.py` enforces the contract above and is cheap to run on every change.
+`check-allowed-tools.py` exists because `allowed-tools` is the one piece of front matter that
+**fails closed**: declare too little and step 1 of a run is denied, with nothing in the skill's own
+files to explain why. So it reads the prose mechanically — every fenced `bash` block, every indented
+command block, and every inline backticked command in `SKILL.md`, `practices/` and `references/` —
+and asks whether some `Bash(...)` entry covers each one. It found two gaps the first time it ran:
+`anchored-knowledge` instructs `git rev-parse --show-toplevel` in step 3 of **every** run while
+declaring no git permission at all, and `agentic-prd` instructed `python …/extract_text.py` where
+its own router says Python 3 and every other command says `python3`. It reports over-grants too, as
+warnings. `anti-patterns/` and `principles/` are deliberately not scanned for inline commands: a
+command named there is usually the one the skill is telling you *not* to run, and demanding a
+permission for the forbidden thing is the exact inversion the check exists to prevent.
+
 `check-taxonomy.py` enforces the one in `shared/vault-taxonomy.json`: the per-skill copies are
 identical, every front matter block in every skill — the worked examples **and the skeletons inside
 fenced blocks**, because a skeleton is what a model copies — has a known type, a status in that
@@ -195,13 +208,7 @@ type's vocabulary, an id matching its pattern and its grouping key filled in, ev
 `# draft | accepted | retired` comment still agrees with the registry, every note in a worked
 example sits in its type's folder, and two skills' examples agree about any note they both write.
 
-Three of the four skills that write a vault also ship a checker for its **output**.
-`user-story-builder` does not: its notes are checked by `check-taxonomy.py`, and its stories by the
-composed case below, which runs both other linters over a vault holding one. Its `moc/backlog.md` is
-therefore the one generated block in the repo with no generator behind it, so it carries no
-`generator` / `input-manifest-sha256` provenance and nothing can answer "is this current?" for it.
-Either it grows a `story.py moc`, or `agentic-prd`'s `prd.py moc` owns that file whenever both are
-installed — which is already true when a backlog comes from a PRD.
+Every skill that writes a vault ships a checker for its **output**:
 
     cd skills/anchored-knowledge/examples/vault
     python3 ../../scripts/vault.py lint      .            # links, anchors, vocabulary, sizes, ids
@@ -215,6 +222,10 @@ installed — which is already true when a backlog comes from a PRD.
     python3 ../../scripts/prd.py moc    . [--check]   # rebuild the coverage table from the notes
     python3 ../../scripts/prd.py render . --out render/prd-001.md [--check]   # embeds resolved
 
+    cd skills/user-story-builder/examples/vault
+    python3 ../../scripts/story.py check . --knowledge <record-vault>  # labels, modes, tags, publish state
+    python3 ../../scripts/story.py moc   . [--check]  # rebuild the backlog index, or fail if stale
+
     cd skills/transcript-knowledge-base
     python3 -m tkb.cli verify --vault <vault> --folder <transcripts>   # every quote, re-read
     cd tests && python3 -m unittest discover -s . -t .
@@ -223,11 +234,12 @@ These are what make the convention enforceable rather than aspirational: a dangl
 id that opens an empty note, a `#heading` that does not exist, two notes sharing a file name, an
 orphan note, a `status` outside the vocabulary, a confirmed rule with no source, a requirement whose
 coverage claims a story that does not exist, a note over its size budget, an index that no longer
-matches the notes under it, a narrative claim with no link — all mechanical to detect and all
-invisible by eye. Reading front matter rather than parsing markdown tables is what made the list
-that long.
+matches the notes under it, a narrative claim with no link, a story whose eight labels are out of
+order, a criterion whose source tag is not in its own `sources`, a `tracker-id` on a note that does
+not say `published` — all mechanical to detect and all invisible by eye. Reading front matter rather
+than parsing markdown tables is what made the list that long.
 
-Three of them are worth calling out, because they check things the rest cannot:
+Four of them are worth calling out, because they check things the rest cannot:
 
 - **`tkb verify` is the only check that reads meaning.** It parses the transcripts again and confirms
   that each cited cue exists, that the speaker at that cue is the one the note names, and that every
@@ -243,6 +255,14 @@ Three of them are worth calling out, because they check things the rest cannot:
   `input-manifest-sha256`, so "is this current?" has a mechanical answer.
 - **`--baseline` judges a change by what it broke.** Without it the first run on an adopted vault
   reports everything at once, and a list nobody has time to read is a checker nobody runs.
+- **`story.py check` is the only one that can be given a second vault.** A Mode A story cites rule
+  and decision ids that live in the record vault, so a backlog on its own cannot tell a missing note
+  from a knowledge base it was not handed: `--knowledge <dir>` resolves across both, and without it
+  an unreachable citation is a **warning** rather than an error. A **bare id** stays an error either
+  way, because that is a fact about the link's form — `[[LABEL-2]]` opens a new empty note whatever
+  else is installed. `moc/backlog.md` has two possible owners, since `agentic-prd` writes stories
+  too when a whole backlog is decomposed at once, so both generators produce that block byte for
+  byte and the suite asserts each reports the other's as current.
 - **`--git` catches the date nobody bumps.** `updated` is a claim about the file rather than a fact
   about the world, so it rots — and the MOC tables and Bases views that sort on it then sort on
   fiction. Git already knows when each note last changed, so the check compares the two, reading the
@@ -255,7 +275,7 @@ Three of them are worth calling out, because they check things the rest cannot:
 That one runs each checker against its worked example (which must pass) and then against a copy with
 defects injected on purpose (which must produce a specific finding for each). A checker that reports
 nothing on a clean vault *and* nothing on a broken one is worse than no checker, and breaking
-something deliberately is the only way to tell the two apart. Eight cases, covering the bare-id
+something deliberately is the only way to tell the two apart. Ten cases, covering the bare-id
 link, the mismatched display id, the dead anchor, the hand-edited generated block, the missing
 provenance, the index gone stale, the narrative claim with no link, and the rendition left behind by
 its notes. `tkb verify` is covered the same way by its own unit tests — `tests/test_verify.py`

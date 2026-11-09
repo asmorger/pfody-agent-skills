@@ -14,7 +14,7 @@ status: accepted
 topic: labels
 prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 parent: "[[carrier-labels-on-the-order-screen|EPIC-01]]"
-requirements: ["[[create-a-label-on-order-confirmation|R-001]]", "[[show-the-carrier-rejection-reason|R-002]]", "[[refuse-a-label-on-credit-hold|R-003]]"]
+sources: ["[[create-a-label-on-order-confirmation|R-001]]", "[[show-the-carrier-rejection-reason|R-002]]", "[[refuse-a-label-on-credit-hold|R-003]]"]
 checks:                    # the seven coverage lines — features only
   empty-state: "N/A — a confirmed order always has at least one line."
   …

@@ -36,6 +36,21 @@ Every path is declared in the config and the config wins. A project with no vaul
 notes; it just gets them wherever its config says
 ([`../patterns/knowledge-config.md`](../patterns/knowledge-config.md)).
 
+**The index's table is generated, and it says so.** `story.py moc` rewrites the block between the
+`<!-- generated -->` markers from the story notes' front matter and stamps `generator`,
+`generated`, `input-paths`, `input-manifest-sha256` and `managed-block-sha256`, so "is this index
+current?" has a mechanical answer and a hand edit between the markers is reported rather than
+thrown away. `moc/backlog.md` used to be the one generated block in the repo with no generator
+behind it: this skill wrote the table by hand while the repo's own rule said a generated note
+carries its provenance.
+
+**`agentic-prd` can own that same file**, because it writes story notes too when a whole backlog is
+decomposed at once. Both generators read the `snapshot` spec from the note and produce the same
+block byte for byte, so a project with both installed does not get a different index depending on
+which tool ran last — the repo's `check-vault-tools.py` asserts each one reports the other's block
+as current. Outside a `user-story` snapshot each keeps its own: `story.py moc` leaves the coverage
+table and the grouped requirement views alone and says which generator owns them.
+
 ## 2. The story note
 
 ```markdown

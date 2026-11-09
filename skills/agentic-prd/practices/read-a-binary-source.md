@@ -10,7 +10,7 @@ rather than asserted.
 
 1. **Extract to a directory**, not to the terminal:
 
-       python <skill-folder>/scripts/extract_text.py <file> --out <dir>
+       python3 <skill-folder>/scripts/extract_text.py <file> --out <dir>
 
 2. **Use the full path to the script.** The PRD and its sources are usually in other folders.
 3. **Install the PDF dependency if it is missing.** PDF extraction needs `pypdf` or `pymupdf`;

@@ -6,8 +6,12 @@ status: ready
 topic: labels
 prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 parent: "[[create-and-print-a-label|FEAT-01]]"
+source-mode: A
+review-required: true
 sources: ["[[create-a-label-on-order-confirmation|R-001]]", "[[show-the-carrier-rejection-reason|R-002]]", "[[refuse-a-label-on-credit-hold|R-003]]", "[[record-every-label-action|X-002]]"]
 testing-complexity: Medium
+tracker-id:
+tracker-url:
 created: 2026-10-02
 updated: 2026-11-05
 ---

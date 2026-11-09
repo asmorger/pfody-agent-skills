@@ -31,8 +31,7 @@ reconcile them against the carrier's collection manifest.
 **Details**
 - Source grounding: None — Mode C. The request named the export and the reconciliation purpose, and
   nothing else.
-- No parent Feature exists for this; one is **not** invented
-  ([[an-invented-parent-id]]).
+- No parent Feature exists for this; one is **not** invented, so `parent` is left empty.
 
 **Assumptions**
 - "Today" means the warehouse's local calendar day. The request did not say.

@@ -5,6 +5,11 @@ agent-ready PRDs, and traceable work items. Nothing in them names a real project
 where one assumes a conventional path, it says so in its own *Conventions this skill assumes*
 section.
 
+The four skills are [Paul Foty's](https://github.com/pfoty/agent-skills). This fork keeps their
+substance and restructures each one to the layout contract below — a thin router over principles,
+patterns, practices and anti-patterns — so a model reads the one or two files its task needs instead
+of a whole instruction document.
+
 | Skill | What it does | Needs |
 |---|---|---|
 | [`transcript-knowledge-base`](skills/transcript-knowledge-base) | Builds a sourced knowledge index from meeting transcripts | Python 3 |
@@ -23,9 +28,13 @@ acceptance criteria are the same discipline at two altitudes, so `user-story-bui
 Copy a skill folder to your Claude Code skills folder, then start a new session:
 
 ```bash
-git clone https://github.com/pfoty/agent-skills.git
-cp -r agent-skills/skills/agentic-prd ~/.claude/skills/
+git clone https://github.com/asmorger/pfody-agent-skills.git
+cp -r pfody-agent-skills/skills/agentic-prd ~/.claude/skills/
 ```
+
+The skills are independent; copy only the ones you want. `anchored-knowledge` expects a `git-guide`
+skill for its git steps and names it where it would be used, so install that separately or expect
+those steps to be reported rather than run.
 
 ## Use
 

@@ -21,15 +21,15 @@ verdict: not-ready
 supports its requirement, whether a slice is sound, or whether a criterion is faithful.
 
 ## Conflicts
-- **[[refuse-a-label-on-credit-hold|R-003]] against [[credit-hold-blocks-labelling|DEC-02]].** R-003 refuses a label on credit hold; DEC-02 says the hold is
+- **[[refuse-a-label-on-credit-hold|R-003]] against [[enforce-credit-hold-at-label-creation|ADR-0004]].** R-003 refuses a label on credit hold; ADR-0004 says the hold is
   advisory. Neither source settles precedence. → Raise as an open question; do not pick a side.
-- **Scope against the SOW.** [[void-a-label|FEAT-02]] is not in [[order-fulfilment-sow-v3|SRC-02]] rev C. → Confirm: in scope, or a
+- **Scope against the SOW.** [[void-a-label|FEAT-02]] is not in [[order-fulfilment-sow-v3|SRC-0002]] rev C. → Confirm: in scope, or a
   change request?
 
 ## Requirement quality
 
 - **[[retry-a-carrier-timeout|R-006]]** states two behaviours. → Split; R-006 keeps printing.
-- **[[notify-on-carrier-outage|R-011]]** is `PROPOSED`. An Accepted PRD cannot hold one. → Source it, or retire it in place.
+- **[[notify-on-carrier-outage|R-011]]** is `PROPOSED`. An `accepted` PRD cannot hold one. → Source it, or retire it in place.
 
 ## Coverage
 

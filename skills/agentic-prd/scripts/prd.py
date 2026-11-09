@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import collections
+import json
 import hashlib
 import json
 import os
@@ -27,7 +28,41 @@ import pathlib
 import re
 import sys
 
-STATUSES = ("Draft", "In Review", "Accepted", "Superseded")
+UNLIMITED = 10 ** 6
+
+
+def _taxonomy():
+    """The note taxonomy, read from this skill's copy of the shared registry.
+
+    It used to be the constants below — a Title Case status set for the hub, a `SRC-\\d+` of any
+    width, `DEC-nn` for a decision — while `anchored-knowledge` held a second set that said
+    lowercase, `SRC-0001` and `ADR-0004`, for notes this skill writes into the same `docs/` tree.
+    Worse, this script's source check rejected every rule id in that vault although this skill's
+    own SKILL.md says to cite them. Two blocks of constants cannot be compared, so nothing caught
+    any of it.
+
+    The copy is byte-identical to `shared/vault-taxonomy.json` and `scripts/check-taxonomy.py`
+    fails when it is not. Carrying it inside the skill is what keeps the skill installable on its
+    own; checking the copies is what stops one registry becoming four again.
+    """
+    here = pathlib.Path(__file__).resolve()
+    for path in (here.parent.parent / "references" / "vault-taxonomy.json",
+                 here.parents[3] / "shared" / "vault-taxonomy.json"):
+        if path.is_file():
+            return json.loads(path.read_text(encoding="utf-8"))
+
+    sys.exit("prd.py: references/vault-taxonomy.json is missing — copy it from the skill folder")
+
+
+TAXONOMY = _taxonomy()
+TYPES = TAXONOMY["types"]
+STATUS = {name: tuple(spec["status"]) for name, spec in TYPES.items()}
+ID_PATTERN = {name: spec["id"] for name, spec in TYPES.items()}
+GROUP_BY = {name: spec["group-by"] for name, spec in TYPES.items()}
+BODY_LIMIT = {name: (UNLIMITED if spec["body-budget"] is None else spec["body-budget"])
+              for name, spec in TYPES.items()}
+CITABLE_ID = tuple(spec["id"] for spec in TYPES.values() if spec["citable"] and spec["id"])
+STATUSES = STATUS["prd"]
 SECTIONS_BY_SIZE = {"Small": (1, 2, 4, 6, 7), "Standard": tuple(range(1, 9)),
                     "Large": tuple(range(1, 9))}
 PRIORITIES = ("P0", "P1", "P2", "P3")
@@ -37,13 +72,29 @@ CHECKS = ("empty-state", "loading-state", "error-state", "permissions",
           "bad-input-and-boundaries", "concurrency", "current-records-and-data-migration")
 METRIC_FIELDS = ("baseline", "target", "owner", "source-system", "population",
                  "denominator", "window")
-LOCATOR = r"(?:@[\d:]+|p\.\d+|L\d+|[A-Z]{2}-\d+|[A-Z][a-z]+)"
-SOURCE_VALUE = re.compile(r"^(SRC-\d+(\s+" + LOCATOR + r")?|DEC-\d+|A-\d+|PROPOSED)$")
+LOCATOR = TAXONOMY["locator"]
+# What a requirement's `source:` may be. `SRC-0001 @12:04` with a locator, a bare `A-nn`
+# assumption, `PROPOSED` — and **any id belonging to a citable type**, which is the whole point:
+# this skill's SKILL.md says to draft from `anchored-knowledge` and cite its rule ids, and the old
+# hard-coded alternation rejected every one of them (`LABEL-2`, `K-0001`, `ADR-0004`). A check that
+# forbids the documented workflow teaches people to stop running the check.
+_SOURCE_FORMS = ([r"SRC-\d+(\s+" + LOCATOR + r")?"]
+                 + [p.strip("^$") for p in CITABLE_ID]
+                 + [p.strip("^$") for p in TAXONOMY["requirement-source"]["patterns"]]
+                 + [re.escape(lit) for lit in TAXONOMY["requirement-source"]["literals"]])
+SOURCE_VALUE = re.compile(r"^(" + "|".join(_SOURCE_FORMS) + r")$")
+SOURCE_HELP = ("SRC-nnnn with a locator, a citable record id (a rule, fact or ADR id), A-nn or "
+               "PROPOSED")
 PATTERN_START = re.compile(r"^(The system shall|When |While |If |Where )")
 VAGUE = re.compile(r"\b(fast|quick|simple|easy|appropriate|intuitive|user-friendly|robust|"
                    r"seamless)\b", re.I)
 STORY_LABELS = ("**Expected Output**", "**Details**", "**Assumptions**", "**Testing Strategy**",
-                "**Open Questions**", "**Technical Notes**", "**Acceptance Criteria**", "**Tags**")
+                "**Open Questions**", "**Technical Notes**", "**Acceptance Criteria**")
+# A label that restated `parent`. Every value it held -- the PRD, Epic and Feature ids, the
+# priority, the config's required tags -- is already in front matter, so it was a hand-kept copy
+# of two fields, which is the same reason there is no `tags` property. Forbidden, not optional:
+# the old shape had it in the required list, so a story written to that shape still has one.
+FORBIDDEN_LABELS = ("**Tags**",)
 WIKILINK = re.compile(r"(!?)\[\[([^\]|#]+)(#[^\]|]*)?(?:\|([^\]]*))?\]\]")
 GEN = re.compile(r"(<!-- generated:[^\n]*-->\n)(.*?)(<!-- /generated -->)", re.S)
 HEADING = re.compile(r"^#{1,6}\s+(.+?)\s*#*\s*$", re.M)
@@ -51,7 +102,8 @@ BLOCK_ID = re.compile(r"(?:^|\s)\^([A-Za-z0-9-]+)\s*$", re.M)
 FENCED = re.compile(r"```.*?```", re.S)
 IDLIKE = re.compile(r"^[A-Z][A-Za-z]*-\d+$")
 PROV = ("generator", "generated", "input-paths", "input-manifest-sha256", "managed-block-sha256")
-LEVELS = {"epic": "EPIC", "feature": "FEAT", "user-story": "US"}
+LEVELS = {name: ID_PATTERN[name].strip("^$").split("-")[0]
+          for name, spec in TYPES.items() if spec["layer"] == "backlog"}
 
 
 def refs(text: str) -> list[dict]:
@@ -229,7 +281,8 @@ def check(vault: pathlib.Path, report: Report, want_prd: str | None, sources: di
         status, size = str(prd.prop("status")), str(prd.prop("size"))
         report.require(status in STATUSES, f"{prd.rel}: invalid status {status!r}")
         report.require(size in SECTIONS_BY_SIZE, f"{prd.rel}: invalid size {size!r}")
-        report.require(bool(re.fullmatch(r"PRD-\d+", prd.id)), f"{prd.rel}: invalid id {prd.id!r}")
+        report.require(bool(re.fullmatch(ID_PATTERN["prd"], prd.id)),
+                       f"{prd.rel}: invalid id {prd.id!r}")
         hub = prd.body.split("## Agent protocol")[0]
         report.require(not re.search(r"\bCAP-\d+", hub),
                        f"{prd.rel}: uses an old CAP id. Use EPIC-01 and FEAT-01.")
@@ -239,7 +292,7 @@ def check(vault: pathlib.Path, report: Report, want_prd: str | None, sources: di
         owner = str(prd.prop("owner", "")).strip()
         if owner.lower() in ("", "unknown") or owner.startswith("<"):
             report.warn(f"{prd.rel}: the PRD has no named owner")
-    lenient = status != "Accepted"
+    lenient = status != "accepted"
 
     # ---- duplicate ids, dangling links
     seen = collections.defaultdict(list)
@@ -283,6 +336,7 @@ def check(vault: pathlib.Path, report: Report, want_prd: str | None, sources: di
             missing = [k for k in PROV if not str(n.prop(k, ""))]
             report.require(not missing,
                            f"{n.rel}: generated note is missing {', '.join(missing)}")
+        check_shape(n, report)
 
     reqs = check_requirements(by_type["requirement"], report, status, lenient)
     questions = check_questions(by_type["open-question"], report, lenient)
@@ -292,8 +346,13 @@ def check(vault: pathlib.Path, report: Report, want_prd: str | None, sources: di
 
     for q, blocks in questions.items():
         for rid in blocks:
-            if rid not in reqs and not rid.startswith(("FEAT", "EPIC", "US", "OUT")):
-                report.require(False, f"{q} blocks unknown requirement {rid}")
+            # Anything in the vault, not only a requirement. A PRD vault and a knowledge vault share
+            # one `questions/` folder by design, so one question legitimately blocks a business rule
+            # (`ORDER-5`) and a requirement at once. The old prefix list knew only this skill's ids
+            # and reported the knowledge base's as unknown — which is the two-registers failure
+            # arriving as a false positive instead of a missing note.
+            if rid not in reqs and rid not in by_id:
+                report.require(False, f"{q} blocks {rid}, which has no note in this vault")
             if reqs.get(rid, {}).get("priority") == "P0":
                 report.warn(f"{rid} is P0 and {q} blocks it")
 
@@ -302,9 +361,9 @@ def check(vault: pathlib.Path, report: Report, want_prd: str | None, sources: di
         print(f"Locators checked: {check_locators(notes, sources, report)}")
 
     proposed = sorted(r for r, v in reqs.items() if str(v["source"]) == "PROPOSED")
-    if status == "Accepted":
+    if status == "accepted":
         for rid in proposed:
-            report.require(False, f"{rid} is PROPOSED in an Accepted PRD")
+            report.require(False, f"{rid} is PROPOSED in an accepted PRD")
     elif proposed:
         report.warn(f"PROPOSED requirements need a decision: {', '.join(proposed)}")
     active = [v["priority"] for v in reqs.values() if v["coverage"] != "retired"]
@@ -317,12 +376,60 @@ def check(vault: pathlib.Path, report: Report, want_prd: str | None, sources: di
             f"User Stories: {stories}", f"Covered: {covered}"]
 
 
+def _a(word: str) -> str:
+    """`a` or `an`, so a finding about `an outcome-metric` reads like English."""
+    return ("an " if word[:1] in "aeiou" else "a ") + word
+
+
+def check_shape(n, report) -> None:
+    """What the shared taxonomy promises about any note, whichever skill wrote it.
+
+    A vault holds a PRD's notes beside the knowledge base's, so this script meets `business-rule`
+    and `source` notes it does not own and the knowledge base's linter meets `requirement` and
+    `user-story`. Both now read the same registry, so a note is held to one contract rather than to
+    whichever script happened to walk over it.
+    """
+    if not n.type:
+        report.require(False, f"{n.rel}: no type")
+        return
+    if n.type not in TYPES:
+        report.require(False, f"{n.rel}: unknown type '{n.type}'")
+        return
+    if n.status:
+        report.require(n.status in STATUS[n.type],
+                       f"{n.rel}: status '{n.status}' is not valid for type '{n.type}' "
+                       f"({' | '.join(STATUS[n.type])})")
+    pattern = ID_PATTERN[n.type]
+    if pattern and n.id:
+        report.require(bool(re.fullmatch(pattern, n.id)),
+                       f"{n.rel}: id '{n.id}' does not match the {n.type} pattern {pattern}")
+    elif pattern:
+        report.require(False, f"{n.rel}: {_a(n.type)} carries an id matching {pattern}")
+    if not pattern and n.id:
+        report.require(False, f"{n.rel}: {_a(n.type)} is cited by file name and carries no id, "
+                              f"but this one has id '{n.id}'")
+    # The id belongs in `aliases` too, for search and autocomplete. Nothing resolves through it,
+    # so its absence is invisible until someone types the id and finds nothing.
+    if n.id:
+        report.require(n.id in n.aliases, f"{n.rel}: id '{n.id}' is not in aliases")
+    # The grouping key. There is no `tags` property — `type` and this are what a Bases view and a
+    # MOC group by, so a type without one has no retrieval dimension at all.
+    key = GROUP_BY[n.type]
+    if key:
+        report.require(bool(str(n.prop(key, "")).strip()),
+                       f"{n.rel}: no '{key}' — {_a(n.type)} is grouped by it")
+    limit = BODY_LIMIT[n.type]
+    lines = len([l for l in n.body.splitlines() if l.strip()])
+    report.require(lines <= limit, f"{n.rel}: body is {lines} lines, budget {limit}")
+
+
 def check_requirements(notes, report, status, lenient) -> dict:
     out = {}
     for n in notes:
         rel = n.rel
-        report.require(bool(re.fullmatch(r"(R|X)-\d+", n.id)),
-                       f"{rel}: requirement id {n.id!r} is not R-NNN or X-NNN")
+        report.require(bool(re.fullmatch(ID_PATTERN["requirement"], n.id)),
+                       f"{rel}: requirement id {n.id!r} does not match "
+                       f"{ID_PATTERN['requirement']}")
         statement = n.title
         coverage = str(n.prop("coverage", ""))
         retired = coverage == "retired" or statement.lower().startswith("retired")
@@ -335,8 +442,7 @@ def check_requirements(notes, report, status, lenient) -> dict:
                 report.warn(f"{n.id}: vague word {vague.group(0)!r} in the statement")
         source = str(n.prop("source", ""))
         report.require(SOURCE_VALUE.match(source) is not None,
-                       f"{n.id}: source {source!r} is not SRC-nn with a locator, DEC-nn, A-nn or "
-                       f"PROPOSED")
+                       f"{n.id}: source {source!r} is not {SOURCE_HELP}")
         report.require(str(n.prop("priority", "")) in PRIORITIES,
                        f"{n.id}: priority {n.prop('priority')!r} is not one of {PRIORITIES}")
         report.require(str(n.prop("verify", "")) in VERIFY,
@@ -362,8 +468,9 @@ def check_requirements(notes, report, status, lenient) -> dict:
 def check_questions(notes, report, lenient) -> dict:
     out = {}
     for n in notes:
-        report.require(bool(re.fullmatch(r"Q-\d+", n.id)), f"{n.rel}: question id {n.id!r} is not "
-                                                           f"Q-NN")
+        report.require(bool(re.fullmatch(ID_PATTERN["open-question"], n.id)),
+                       f"{n.rel}: question id {n.id!r} does not match "
+                       f"{ID_PATTERN['open-question']}")
         owner = str(n.prop("owner", "")).strip()
         report.require(bool(owner) and not owner.startswith("<"),
                        f"{n.id}: a question with no owner cannot close")
@@ -376,8 +483,9 @@ def check_questions(notes, report, lenient) -> dict:
 
 def check_metrics(notes, report) -> None:
     for n in notes:
-        report.require(bool(re.fullmatch(r"OUT-\d+", n.id)),
-                       f"{n.rel}: metric id {n.id!r} is not OUT-N")
+        report.require(bool(re.fullmatch(ID_PATTERN["outcome-metric"], n.id)),
+                       f"{n.rel}: metric id {n.id!r} does not match "
+                       f"{ID_PATTERN['outcome-metric']}")
         for field in METRIC_FIELDS:
             value = str(n.prop(field, "")).strip()
             report.require(bool(value) and not value.startswith("<"),
@@ -415,8 +523,9 @@ def check_backlog(by_type, reqs, report, status, by_id):
     stories = by_type["user-story"]
     for level, prefix in LEVELS.items():
         for n in by_type[level]:
-            report.require(bool(re.fullmatch(prefix + r"-\d{2,}", n.id)),
-                           f"{n.rel}: {level} id {n.id!r} is not {prefix}-NN")
+            report.require(bool(re.fullmatch(ID_PATTERN[level], n.id)),
+                           f"{n.rel}: {level} id {n.id!r} does not match "
+                           f"{ID_PATTERN[level]}")
             parent = ids_in(n.prop("parent"))
             if level == "epic":
                 report.require(bool(parent) and parent[0].startswith("PRD-"),
@@ -430,14 +539,19 @@ def check_backlog(by_type, reqs, report, status, by_id):
     for n in stories:
         missing = [lbl for lbl in STORY_LABELS if lbl not in n.body]
         report.require(not missing, f"{n.id}: missing story labels: {', '.join(missing)}")
+        for lbl in FORBIDDEN_LABELS:
+            report.require(lbl not in n.body,
+                           f"{n.id}: {lbl} restates `parent` and `priority`, which the publish\n"
+                           f"step reads from front matter — drop the label")
         tagged = re.findall(r"^\s*\d+\.\s*AC-\d+\s*\[([^\]]+)\]", n.body, flags=re.M)
         report.require(bool(tagged), f"{n.id}: no acceptance criterion carries a source tag")
         for tag in tagged:
             for rid in re.findall(r"(?:R|X)-\d+", tag):
                 report.require(rid in reqs, f"{n.id}: a criterion cites unknown requirement {rid}")
-        if status != "Accepted":
+        if status != "accepted":
             report.require("PREVIEW" in n.body[:400] or "preview" in str(n.prop("status", "")),
-                           f"{n.id}: the PRD is not Accepted, so the story must be marked PREVIEW")
+                           f"{n.id}: the PRD is not accepted, so the story must be marked "
+                           f"PREVIEW")
     covered = sum(1 for v in reqs.values() if v["coverage"] == "covered")
     for v in reqs.values():
         for sid in v["stories"]:
@@ -447,7 +561,7 @@ def check_backlog(by_type, reqs, report, status, by_id):
     # invisible once the backlog is published.
     for n in stories:
         parent = (ids_in(n.prop("parent")) or [""])[0]
-        for rid in ids_in(n.prop("requirements")):
+        for rid in ids_in(n.prop("sources")):
             if rid.startswith("X-") or rid not in reqs:
                 continue
             owner = (ids_in(reqs[rid]["note"].prop("feature")) or [""])[0]

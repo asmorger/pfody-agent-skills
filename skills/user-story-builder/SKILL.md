@@ -8,10 +8,14 @@ description: >
   become stories with acceptance criteria grounded in named sources; whenever an existing story needs
   auditing for unsourced or pattern-matched scope; whenever stories must be pushed to a tracker with
   their parents and tags intact; and whenever someone asks "are these acceptance criteria actually
-  sourced?" Works on any project: a per-project config declares where the sources live, what id
+  sourced?" Works on any project: a per-project config says where the sources live, what id
   conventions exist and where to publish, and the skill degrades honestly to sparse-source or
-  conversational mode. Not for writing the PRD itself, which `agentic-prd` does, nor for building the
-  knowledge base, which `anchored-knowledge` does.
+  conversational mode. Not for the PRD itself, which `agentic-prd` does, nor for the knowledge base,
+  which `anchored-knowledge` does.
+allowed-tools: Read, Write, Edit, Glob, Grep, Skill, Bash(az *)
+metadata:
+  requires: []
+  related: [anchored-knowledge, agentic-prd]
 ---
 
 # user-story-builder

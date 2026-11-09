@@ -11,7 +11,7 @@ passes review, it gets built, and the losing stakeholder finds out at the demo. 
 trail — nothing records that a choice was made, so the argument restarts from scratch.
 
 **Instead.** Apply the one resolution that is allowed: a newer *decision* supersedes an older
-statement, cited as `DEC-xx`. Everything else is recorded — name both sources with their locators and
+statement, cited as `ADR-xxxx`. Everything else is recorded — name both sources with their locators and
 open a question with an owner and a date. One question now, instead of a release later
 ([`../principles/a-conflict-is-recorded-not-resolved.md`](../principles/a-conflict-is-recorded-not-resolved.md),
 [`../patterns/open-question.md`](../patterns/open-question.md)).

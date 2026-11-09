@@ -1,7 +1,7 @@
 # Implied is not stated
 
 **Rule.** A behaviour a source implies but does not state is marked `PROPOSED`, or raised as an open
-question. It is never given a `SRC-xx`. The test is mechanical: if you cannot quote the sentence that
+question. It is never given a `SRC-xxxx`. The test is mechanical: if you cannot quote the sentence that
 says it, the source does not say it.
 
 **Why.** Inference is the step where a spec stops being a record and becomes an argument. Each

@@ -10,7 +10,7 @@ so the coverage table, not the stories, is the deliverable that proves the run.
 **Steps.**
 
 1. **Read [`../references/vault-convention.md`](../references/vault-convention.md).**
-2. **Check the status.** Not `Accepted` → stop and ask whether the person wants a preview. A preview
+2. **Check the status.** Not `accepted` → stop and ask whether the person wants a preview. A preview
    says `PREVIEW` in each story note's first lines, skips `PROPOSED` requirements and reports them,
    and is never published; the check enforces the marker
    ([`../principles/only-a-person-crosses-a-gate.md`](../principles/only-a-person-crosses-a-gate.md)).

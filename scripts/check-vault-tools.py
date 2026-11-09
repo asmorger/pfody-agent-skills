@@ -126,7 +126,7 @@ CASES = [
                "for the order's shipping address.",
                "# R-001 — Labels should be created quickly.")]),
             ("requirements/show-the-carrier-rejection-reason.md",
-             [("source: SRC-01 @18:30", "source: the discovery call"),
+             [("source: SRC-0002 @18:30", "source: the discovery call"),
               ("priority: P0", "priority: High"), ("verify: Auto", "verify: Someone checks")]),
             ("requirements/refuse-a-label-on-credit-hold.md",
              [('stories: ["[[create-a-label-for-a-confirmed-order|US-01]]"]', "stories: []")]),
@@ -144,17 +144,20 @@ CASES = [
              [('parent: "[[create-and-print-a-label|FEAT-01]]"',
                'parent: "[[void-a-label|FEAT-02]]"'),
               ("**Assumptions**\n- None identified.\n\n", ""),
+              # The label that restated `parent`. It was in the required set until it was dropped,
+              # so a story written to the old shape still carries one and nothing else would say so.
+              ("**Acceptance Criteria**", "**Tags**\n- EPIC-01, FEAT-01\n\n**Acceptance Criteria**"),
               ("4. AC-4 [X-002]", "4. AC-4 [R-777]")]),
             ("prd/shipping-labels-at-order-processing.md",
              [("## 8. Rollout and measurement", "## Rollout and measurement")]),
             ("requirements/void-a-printed-label.md",
-             [("[[who-may-void-a-printed-label|Q-03]]", "[[Q-03]]")]),        # bare id
+             [("[[who-may-void-a-printed-label|Q-0003]]", "[[Q-0003]]")]),    # bare id
             ("moc/requirements.md",
              [("input-manifest-sha256: ", "input-manifest-sha256-was: ")]),   # no provenance
         ],
         "expect": [
             "does not open with one of the five patterns",
-            "is not SRC-nn with a locator",
+            "is not SRC-nnnn with a locator",
             "priority 'High' is not one of",
             "verify 'Someone checks' is not one of",
             "coverage is covered but no story is named",
@@ -166,9 +169,10 @@ CASES = [
             "is N/A with no reason",
             "missing story labels",
             "a criterion cites unknown requirement R-777",
+            "**Tags** restates `parent` and `priority`",
             "not to its parent FEAT-02",
             "section 8 is not present",
-            "[[Q-03]] is a bare id, which Obsidian does not resolve",
+            "[[Q-0003]] is a bare id, which Obsidian does not resolve",
             "moc/requirements.md: generated note is missing input-manifest-sha256",
         ],
     },
@@ -186,6 +190,54 @@ CASES = [
         "expect": [
             "is stale — the notes have changed since it was rendered",
         ],
+    },
+    {
+        # The one case that is not about a single skill. A project installs these together and they
+        # write into one `docs/` tree by design — `questions/`, `sources/`, `decisions/`, `moc/` and
+        # `backlog/` are shared folders, and the PRD cites the knowledge base's rule ids. Until this
+        # case existed every checker ran on its own skill's example and passed, which is how the
+        # same three note types came to carry two id widths, two decision prefixes and two status
+        # casings, and how six of the PRD's types stayed `unknown type` to the knowledge linter.
+        #
+        # The clean half asserts both checkers pass one vault holding all three skills' notes. The
+        # broken half injects the four defects that only show up when the vaults meet.
+        #
+        # The record layer is overlaid last: where a note exists in both examples — the open
+        # question, the credit-hold decision — the knowledge base's copy is the one kept, because
+        # it is the system of record and the PRD cites it rather than the reverse.
+        "name": "combined vault / both checkers",
+        "vault": ["skills/agentic-prd/examples/vault",
+                  "skills/anchored-knowledge/examples/vault"],
+        "copy": [("skills/user-story-builder/examples/void-a-printed-label.md",
+                  "backlog/void-a-printed-label-story.md")],
+        "runs": [
+            {"script": "skills/anchored-knowledge/scripts/vault.py", "argv": ["lint", "."],
+             "expect": ["duplicate file name void-a-printed-label.md",
+                        "status 'accepted' is not valid",
+                        "id 'SRC-9' does not match the source pattern",
+                        "no 'topic' — a requirement is grouped by it"]},
+            {"script": "skills/agentic-prd/scripts/prd.py", "argv": ["check", "."],
+             "expect": ["duplicate file name void-a-printed-label.md",
+                        "status 'accepted' is not valid",
+                        "id 'SRC-9' does not match the source pattern",
+                        "no 'topic' — a requirement is grouped by it"]},
+        ],
+        "mutate": [
+            # The story's status reverts to the PRD's word. One ladder per type, or the two skills
+            # write the same `type: user-story` with two vocabularies again.
+            ("backlog/void-a-printed-label-story.md", [("status: draft", "status: accepted")]),
+            # A source id reverts to the narrow width the PRD example used to carry.
+            ("sources/2026-11-08-operations-review.md",
+             [("id: SRC-0010", "id: SRC-9"), ("aliases: [SRC-0010]", "aliases: [SRC-9]")]),
+            # The grouping key removed. There is no `tags` property to fall back on.
+            ("requirements/create-a-label-on-order-confirmation.md", [("topic: orders\n", "")]),
+        ],
+        # A story named for the behaviour its requirement is also named for. Obsidian resolves a
+        # wikilink by file name, so every `[[void-a-printed-label|R-012]]` in the vault would start
+        # opening whichever of the two is nearer — a hollow citation layer with no visible symptom.
+        "mutate_rename": [("backlog/void-a-printed-label-story.md",
+                           "backlog/void-a-printed-label.md")],
+        "expect": [],
     },
     {
         "name": "agentic-prd / prd.py moc --check",
@@ -209,18 +261,44 @@ def run(script: pathlib.Path, cwd: pathlib.Path, argv: list[str]):
     return proc.returncode, proc.stdout + proc.stderr
 
 
+def compose(case, dest: pathlib.Path) -> None:
+    """Build the case's vault at `dest`: one example, or several overlaid in order.
+
+    A composed case is the integration test the repo did not have. Each skill's worked example
+    passed its own checker in isolation, which is exactly why the id widths, the status casings and
+    the type lists could disagree for as long as they did.
+    """
+    sources = case["vault"] if isinstance(case["vault"], list) else [case["vault"]]
+    dest.mkdir(parents=True, exist_ok=True)
+    for rel in sources:
+        shutil.copytree(REPO / rel, dest, dirs_exist_ok=True)
+    for src, into in case.get("copy", []):
+        target = dest / into
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(REPO / src, target)
+
+
+def runs_of(case):
+    """A case runs one script, or several over the same vault."""
+    return case.get("runs") or [{"script": case["script"], "argv": case["clean"],
+                                 "expect": case["expect"]}]
+
+
 def main() -> int:
     findings = []
     for case in CASES:
-        script = REPO / case["script"]
-        vault = REPO / case["vault"]
-        code, out = run(script, vault, case["clean"])
-        if code != 0:
-            findings.append(f"{case['name']}: the clean example does not pass\n{_indent(out)}")
+        with tempfile.TemporaryDirectory() as tmp:
+            clean = pathlib.Path(tmp) / "clean"
+            compose(case, clean)
+            for spec in runs_of(case):
+                code, out = run(REPO / spec["script"], clean, spec["argv"])
+                if code != 0:
+                    findings.append(f"{case['name']}: the clean example does not pass "
+                                    f"{' '.join(spec['argv'])}\n{_indent(out)}")
 
         with tempfile.TemporaryDirectory() as tmp:
             copy = pathlib.Path(tmp) / "vault"
-            shutil.copytree(vault, copy)
+            compose(case, copy)
             for rel, pairs in case["mutate"]:
                 path = copy / rel
                 text = path.read_text(encoding="utf-8")
@@ -231,13 +309,17 @@ def main() -> int:
                         continue
                     text = text.replace(old, new, 1)
                 path.write_text(text, encoding="utf-8")
-            code, out = run(script, copy, case["clean"])
-            if code == 0:
-                findings.append(f"{case['name']}: the BROKEN copy passed — the checker is not "
-                                f"catching its own rules\n{_indent(out)}")
-            for needle in case["expect"]:
-                if needle not in out:
-                    findings.append(f"{case['name']}: no finding matched {needle!r}")
+            for rel in case.get("mutate_rename", []):
+                (copy / rel[0]).rename(copy / rel[1])
+            for spec in runs_of(case):
+                code, out = run(REPO / spec["script"], copy, spec["argv"])
+                if code == 0:
+                    findings.append(f"{case['name']}: the BROKEN copy passed "
+                                    f"{' '.join(spec['argv'])} — the checker is not catching its "
+                                    f"own rules\n{_indent(out)}")
+                for needle in spec["expect"]:
+                    if needle not in out:
+                        findings.append(f"{case['name']}: no finding matched {needle!r}")
 
     # The regression this file was written for.
     for rel in ("skills/anchored-knowledge/scripts/vault.py", "skills/agentic-prd/scripts/prd.py"):

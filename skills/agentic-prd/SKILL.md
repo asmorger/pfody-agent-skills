@@ -12,6 +12,10 @@ description: >
   publishing a backlog to a tracker. Also for "spec-driven development", "AI-ready spec" and
   "convert this PRD to stories". Not for a single bug, one small story, a sprint status report,
   design documents, task breakdowns or estimates.
+allowed-tools: Read, Write, Edit, Glob, Grep, Skill, Bash(python3 *), Bash(az *)
+metadata:
+  requires: []
+  related: [anchored-knowledge, transcript-knowledge-base, user-story-builder]
 ---
 
 # agentic-prd

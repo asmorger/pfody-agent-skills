@@ -1,6 +1,6 @@
 # An invented parent id
 
-**Smell.** `Tags: EPIC-02, FEAT-05` on a story whose source names no Epic or Feature. A Feature
+**Smell.** `parent: "[[void-a-label|FEAT-05]]"` on a story whose source names no Epic or Feature. A Feature
 renamed because its source title was clumsy. Two source Features merged into one because they
 overlapped. A parent's tracker id guessed at publish time because the lookup was inconvenient.
 

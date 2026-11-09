@@ -9,6 +9,22 @@ callout vocabulary, the MOC's `<!-- generated -->` markers. If you have `agentic
 these are **the same story notes it writes** — same folder, same type, same properties. The two
 skills differ in what they take as input, not in what they emit.
 
+**Every type, id pattern, status vocabulary and grouping key in this file is declared once in**
+[`vault-taxonomy.json`](vault-taxonomy.json), which this skill's scripts read and which the repo's
+`check-taxonomy.py` compares against this file, against every skeleton in `patterns/`, and against
+the worked example. The copy here is byte-identical to the repo's canonical one, so the skill still
+installs on its own. Before it existed the same three shared types carried two id widths and two
+status casings across two skills, each documented in prose, each checker seeing only its own.
+
+That is also what makes the sentence above checkable rather than hopeful: a story is
+`type: user-story`, `status: draft | ready | published | retired`, `id: US-NN` and a `topic`
+whichever skill wrote it, and `check-taxonomy.py` fails if the two skills' worked examples disagree.
+**Where a story and the requirement it covers want the same title, the story takes the `-story`
+suffix** — `backlog/void-a-printed-label-story.md` beside `requirements/void-a-printed-label.md` —
+because the file name is the link target and the record layer keeps the plain one (section 3 of
+`anchored-knowledge`'s convention).
+
+
 ## 1. Folder map
 
     <stories_dir>/                     default `docs/backlog/`
@@ -27,7 +43,8 @@ notes; it just gets them wherever its config says
 id: US-03
 aliases: [US-03]
 type: user-story
-status: draft                  # draft | ready | published
+status: draft                  # draft | ready | published | retired
+topic: labels
 parent: "[[void-a-label|FEAT-02]]"          # the Feature; copied, never invented
 source-mode: A                 # A | B | C — and the note says so when it is not A
 sources: ["[[a-printed-label-may-be-voided|LABEL-2]]", "[[bulk-printing-across-orders|LABEL-3]]", "[[enforce-credit-hold-at-label-creation|ADR-0004]]"]
@@ -46,7 +63,7 @@ As a shipping clerk, I want to void a label I have already printed, so that a ca
 collected by the carrier.
 
 **Expected Output** · **Details** · **Assumptions** · **Testing Strategy** · **Open Questions** ·
-**Technical Notes** · **Acceptance Criteria** · **Tags**
+**Technical Notes** · **Acceptance Criteria**
 ```
 
 Every label appears, in that order, each as its own `**Label**` line, even when empty —

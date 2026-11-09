@@ -6,7 +6,7 @@ examined.
 
 **Why it is wrong.** The script proves structure and traceability: ids resolve, no duplicates, no
 blank coverage line, each criterion cites a requirement that exists, locators appear in the text it
-was given. It cannot read. Whether `SRC-07 @1:13:06` says what `R-001` claims, whether a slice is a
+was given. It cannot read. Whether `SRC-0007 @1:13:06` says what `R-001` claims, whether a slice is a
 sound slice, whether a criterion faithfully tests its requirement — those three decide whether the
 build succeeds, and all three are a person's judgement. Reporting the pass without the boundary
 transfers confidence the script never earned, and it is the exact moment the human review gets

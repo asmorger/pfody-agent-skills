@@ -11,6 +11,7 @@ id: CH-0003
 aliases: [CH-0003]
 type: knowledge-change
 status: accepted
+topic: labels
 change-type: scope-refinement
 identified: 2026-11-08
 older: ["[[order-fulfilment-sow-v3]]", "[[one-label-per-parcel|LABEL-1]]"]

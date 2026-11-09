@@ -29,31 +29,45 @@ nobody remembers to bump it — so the MOC tables and Bases views that sort on i
 It is opt-in because a vault's dates may legitimately be fictional, as this skill's own worked
 example's are. Standard library only, Python 3.10+.
 """
-import hashlib, os, re, subprocess, sys, pathlib, collections
+import hashlib, json, os, re, subprocess, sys, pathlib, collections
 
-STATUS = {
-    "business-rule": {"draft", "confirmed", "needs-review", "superseded", "out-of-scope", "rejected"},
-    "fact": {"draft", "confirmed", "needs-review", "superseded", "out-of-scope", "rejected"},
-    "scope-boundary": {"draft", "confirmed", "needs-review", "superseded", "out-of-scope", "rejected"},
-    "glossary-term": {"draft", "confirmed", "needs-review", "superseded", "rejected"},
-    "decision": {"proposed", "accepted", "superseded", "deprecated", "rejected"},
-    "open-question": {"open", "partial", "answered", "blocked", "dropped"},
-    "scope-watch": {"watch", "clarify", "in-scope", "deferred", "change-request", "closed"},
-    "knowledge-change": {"proposed", "accepted", "needs-review", "closed"},
-    "source": {"registered", "stale", "superseded"},
-    "reference": {"draft", "confirmed", "needs-review", "superseded"},
-    "moc": set(),
-    "narrative": {"draft", "current", "stale"},
-}
-AUTHORITY = {"1-contractual", "2-approved-requirements", "3-client-clarification",
-             "4-source-artifact", "5-internal-interpretation", "6-unreviewed-intake"}
-BODY_LIMIT = {"decision": 120, "reference": 10**6, "moc": 10**6, "narrative": 10**6}
+UNLIMITED = 10 ** 6
+
+
+def _taxonomy():
+    """The note taxonomy, read from this skill's copy of the shared registry.
+
+    It used to be the literal dict below this line, and `agentic-prd`'s checker held a second one
+    that disagreed with it — two id widths for `source`, two prefixes for a decision, and six note
+    types this skill wrote off as `unknown type` although the sibling skill writes them into the
+    same `docs/` tree. Constants in two scripts cannot be compared, so nothing noticed.
+
+    The copy is byte-identical to `shared/vault-taxonomy.json` and `scripts/check-taxonomy.py`
+    fails when it is not. Carrying it inside the skill is what keeps the skill installable on its
+    own; checking the copies is what stops one registry becoming four again.
+    """
+    here = pathlib.Path(__file__).resolve()
+    for path in (here.parent.parent / "references" / "vault-taxonomy.json",
+                 here.parents[3] / "shared" / "vault-taxonomy.json"):
+        if path.is_file():
+            return json.loads(path.read_text(encoding="utf-8"))
+    sys.exit("vault.py: references/vault-taxonomy.json is missing — copy it from the skill folder")
+
+
+TAXONOMY = _taxonomy()
+TYPES = TAXONOMY["types"]
+STATUS = {name: set(spec["status"]) for name, spec in TYPES.items()}
+ID_PATTERN = {name: spec["id"] for name, spec in TYPES.items()}
+GROUP_BY = {name: spec["group-by"] for name, spec in TYPES.items()}
+AUTHORITY = set(TAXONOMY["authority"])
+BODY_LIMIT = {name: (UNLIMITED if spec["body-budget"] is None else spec["body-budget"])
+              for name, spec in TYPES.items()}
 GAPS_HEADING = "gaps found while deriving"
 # A date written into a narrative's prose. `covers-through` is the only date it may carry: a
 # hand-written one is a claim about freshness that nothing checks and nobody updates.
 PROSE_DATE = re.compile(r"(?:last updated|as of|updated)\s*:?\s*\d{4}-\d\d-\d\d", re.I)
 DEFAULT_BODY_LIMIT = 25
-CITABLE = {"business-rule", "fact", "scope-boundary", "glossary-term", "decision", "reference"}
+CITABLE = {name for name, spec in TYPES.items() if spec["citable"]}
 WIKILINK = re.compile(r"(!?)\[\[([^\]|#]+)(#[^\]|]*)?(?:\|([^\]]*))?\]\]")
 GEN = re.compile(r"(<!-- generated:[^\n]*-->\n)(.*?)(<!-- /generated -->)", re.S)
 GEN_BLOCK = re.compile(r"<!-- generated:.*?<!-- /generated -->", re.S)
@@ -102,6 +116,11 @@ def _refs(text):
                     "display": (display or "").replace("\\|", "|").strip(),
                     "raw": m.group(0)})
     return out
+
+
+def _a(word):
+    """`a` or `an`, so a finding about `an open-question` reads like English."""
+    return ("an " if word[:1] in "aeiou" else "a ") + word
 
 
 def _norm(text):
@@ -269,6 +288,27 @@ def lint(vault, baseline=None, use_git=False):
             findings.append(f"{n.rel}: status '{n.status}' is not valid for type '{n.type}'")
         if not n.type:
             findings.append(f"{n.rel}: no type")
+        if n.type in TYPES:
+            pattern = ID_PATTERN[n.type]
+            # An id scheme nothing checks is an id scheme that drifts. `SRC-01` and `SRC-0001` were
+            # the same type in two skills for as long as the width lived only in prose.
+            if pattern and n.id and not re.fullmatch(pattern, n.id):
+                findings.append(f"{n.rel}: id '{n.id}' does not match the {n.type} pattern "
+                                f"{pattern}")
+            elif pattern and not n.id:
+                findings.append(f"{n.rel}: {_a(n.type)} carries an id matching {pattern}")
+            if not pattern and n.id:
+                findings.append(f"{n.rel}: {_a(n.type)} is cited by file name and carries no id, "
+                                f"but this one has id '{n.id}'")
+            # The id belongs in `aliases` too, for search and autocomplete. Nothing resolves
+            # through it, so its absence is invisible until someone types the id and finds nothing.
+            if n.id and n.id not in n.aliases:
+                findings.append(f"{n.rel}: id '{n.id}' is not in aliases")
+            # The grouping key. There is no `tags` property — `type` and this are what a Bases view
+            # and a MOC group by, so a type without one has no retrieval dimension at all.
+            key = GROUP_BY[n.type]
+            if key and not str(n.meta.get(key, "")).strip():
+                findings.append(f"{n.rel}: no '{key}' — {_a(n.type)} is grouped by it")
         auth = n.meta.get("authority")
         if auth and str(auth) not in AUTHORITY:
             findings.append(f"{n.rel}: unknown authority '{auth}'")

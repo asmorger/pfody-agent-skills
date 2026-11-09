@@ -1,10 +1,11 @@
 ---
 type: narrative
 status: current
+topic: labels
 audience: internal
 derived-from: [rules, scope, decisions, questions]
 covers-through: 2026-11-08
-input-manifest-sha256: 7939d8220de9f86c142fb096387ef041693c988d5ea7c722f90c68deae01fcc5
+input-manifest-sha256: 7ee743c913b971da1853887a6368cb026dab8b97b59e56cbf00d5e00c4430f1c
 aliases: [How labelling works]
 ---
 

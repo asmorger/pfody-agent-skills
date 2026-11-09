@@ -13,6 +13,7 @@ id: ORDER-1                 # immutable; omit on MOC and reference notes
 aliases: [ORDER-1]          # autocomplete and search only; links resolve by filename
 type: business-rule         # closed vocabulary
 status: confirmed           # closed vocabulary, per type
+topic: labels
 created: 2026-10-02
 updated: 2026-11-08
 ---

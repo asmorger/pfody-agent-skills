@@ -3,6 +3,7 @@ id: US-07
 aliases: [US-07]
 type: user-story
 status: draft
+topic: labels
 parent:
 source-mode: C
 sources: []
@@ -54,6 +55,3 @@ reconcile them against the carrier's collection manifest.
 **Acceptance Criteria**
 1. AC-1 [Request] Given labels created on a chosen day, when a supervisor exports that day, then a
    CSV downloads containing one row per label.
-
-**Tags**
-- Review Required

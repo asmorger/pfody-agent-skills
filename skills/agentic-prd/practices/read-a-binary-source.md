@@ -19,7 +19,7 @@ rather than asserted.
 4. **Read the extracted text whole**, especially a transcript. The reversal of an earlier decision is
    the thing a skim misses, and it is usually the most consequential sentence in the file
    ([`../principles/a-conflict-is-recorded-not-resolved.md`](../principles/a-conflict-is-recorded-not-resolved.md)).
-5. **Keep the text copy** and pass it to the check as `--source SRC-xx=<path>`, so the locators are
+5. **Keep the text copy** and pass it to the check as `--source SRC-xxxx=<path>`, so the locators are
    verified against real text ([`run-the-checks.md`](run-the-checks.md)).
 6. **Register the original**, not the extraction, in the ledger: the link points at the source of
    record ([`cite-a-source.md`](cite-a-source.md)).

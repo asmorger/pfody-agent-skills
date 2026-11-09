@@ -2,7 +2,7 @@
 
 **Rule.** Three gates belong to people: Gate 1 approves intent and scope, Gate 2 approves the Epics,
 Features and requirements, Gate 3 approves the backlog. An agent drafts up to a gate, says it is at
-one, and stops. It never writes `status: Accepted` unless the approver said so in words, and it never
+one, and stops. It never writes `status: accepted` unless the approver said so in words, and it never
 publishes or pushes without being asked in the current conversation.
 
 **Why.** The gates are where the project's cost is actually set, and the agent is the one participant
@@ -12,7 +12,7 @@ build off its own guesses. Keeping the gate human costs one message and removes 
 failure.
 
 **In the PRD.**
-- Status moves `Draft` → `In Review` → `Accepted`, by a person, each time.
+- Status moves `draft` → `in-review` → `accepted`, by a person, each time.
 - Before acceptance, a decomposition is a preview: marked `PREVIEW` at the top, `PROPOSED`
   requirements skipped and reported, never published
   ([`../practices/decompose-a-prd.md`](../practices/decompose-a-prd.md)).

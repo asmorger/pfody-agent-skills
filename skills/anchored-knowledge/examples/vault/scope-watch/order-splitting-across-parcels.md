@@ -3,6 +3,7 @@ id: SW-0002
 aliases: [SW-0002]
 type: scope-watch
 status: clarify
+topic: orders
 owner: delivery lead
 baseline: ["[[order-fulfilment-sow-v3]]"]
 requested: ["[[operations-lead-on-split-orders]]"]

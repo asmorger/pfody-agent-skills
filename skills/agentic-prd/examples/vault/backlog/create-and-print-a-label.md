@@ -3,6 +3,7 @@ id: FEAT-01
 aliases: [FEAT-01]
 type: feature
 status: accepted
+topic: labels
 prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 parent: "[[carrier-labels-on-the-order-screen|EPIC-01]]"
 outcomes: ["[[address-error-rate-on-parcels|OUT-1]]"]

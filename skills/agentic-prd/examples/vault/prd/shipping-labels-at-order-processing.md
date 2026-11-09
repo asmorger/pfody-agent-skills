@@ -2,7 +2,8 @@
 id: PRD-001
 aliases: [PRD-001]
 type: prd
-status: Accepted
+status: accepted
+topic: labels
 size: Standard
 owner: Example TPO
 approvers: [Example Operations Lead, Example Architect, Example QA Lead]
@@ -32,7 +33,7 @@ behaviour, not a tracker item; `AC-1` numbers restart in each story.
 address again. Parcels leave faster and with fewer address errors.
 
 **Problem.** Clerks copy each address from the order system to the carrier website. The step is slow
-and causes address errors. Evidence: [[discovery-call-with-the-operations-lead|SRC-01]] @12:04.
+and causes address errors. Evidence: [[discovery-call-with-the-operations-lead|SRC-0002]] @12:04.
 
 **Users.** Warehouse clerk — creates and prints a label during order processing, primary user.
 Warehouse supervisor — voids a label when an order changes.
@@ -51,7 +52,7 @@ source addresses them.
 
 Labels are created by hand on the carrier's website today. Constraint: the carrier truncates address
 line 1 at 35 characters. Dependency: the finance system's credit-hold flag must be readable
-synchronously ([[credit-hold-blocks-labelling|DEC-02]]).
+synchronously ([[enforce-credit-hold-at-label-creation|ADR-0004]]).
 
 ## 4. Epics, Features and requirements
 
@@ -81,7 +82,7 @@ gate crossed.
 ## 7. Knowledge ledger
 
 Sources are notes in `sources/`, each cited by id and locator from the requirement that rests on it.
-Open questions are notes in `questions/` — [[who-may-void-a-printed-label|Q-03]] is the one still open. Decisions are `DEC-nn`.
+Open questions are notes in `questions/` — [[who-may-void-a-printed-label|Q-0003]] is the one still open. Decisions are `ADR-nnnn`.
 
 ## 8. Rollout and measurement
 

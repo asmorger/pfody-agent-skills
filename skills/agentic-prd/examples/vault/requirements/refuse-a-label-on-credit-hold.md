@@ -3,11 +3,12 @@ id: R-003
 aliases: [R-003]
 type: requirement
 status: accepted
+topic: orders
 prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 feature: "[[create-and-print-a-label|FEAT-01]]"
 priority: P1
 verify: Auto
-source: DEC-02
+source: ADR-0004
 coverage: covered
 stories: ["[[create-a-label-for-a-confirmed-order|US-01]]"]
 created: 2026-10-21

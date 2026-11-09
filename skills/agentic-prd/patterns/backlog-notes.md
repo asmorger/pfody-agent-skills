@@ -11,6 +11,7 @@ id: FEAT-01
 aliases: [FEAT-01]
 type: feature              # epic | feature | user-story
 status: accepted
+topic: labels
 prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 parent: "[[carrier-labels-on-the-order-screen|EPIC-01]]"
 requirements: ["[[create-a-label-on-order-confirmation|R-001]]", "[[show-the-carrier-rejection-reason|R-002]]", "[[refuse-a-label-on-credit-hold|R-003]]"]
@@ -52,7 +53,7 @@ One job for one role: a clerk turns a confirmed order into a printed carrier lab
 - An `X-` requirement naming specific Features goes into each story of those Features whose
   behaviour it changes, and no others. Nothing here carries a task or an estimate
   ([`../anti-patterns/tasks-and-estimates-in-the-backlog.md`](../anti-patterns/tasks-and-estimates-in-the-backlog.md)).
-- While the PRD is not `Accepted`, every story note says `PREVIEW` in its first lines, and the check
+- While the PRD is not `accepted`, every story note says `PREVIEW` in its first lines, and the check
   enforces it ([`../practices/decompose-a-prd.md`](../practices/decompose-a-prd.md)).
 
 **Related.** [`user-story.md`](user-story.md), [`coverage-moc.md`](coverage-moc.md),

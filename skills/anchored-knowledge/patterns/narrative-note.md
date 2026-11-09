@@ -9,6 +9,7 @@ is it like this". A narrative is **derived**: readable prose that holds no facts
 ---
 type: narrative
 status: current                 # draft | current | stale
+topic: labels
 derived-from: [rules, scope, decisions, questions]
 covers-through: 2026-11-08      # written by the script; the ONLY date in the note
 input-manifest-sha256: ""       # written by the script

@@ -11,6 +11,7 @@ id: OUT-1
 aliases: [OUT-1]
 type: outcome-metric
 status: accepted
+topic: labels
 prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 baseline: 4.1%
 target: 1.5%

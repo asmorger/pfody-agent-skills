@@ -1,0 +1,307 @@
+{
+  "taxonomy-version": 1,
+  "_": [
+    "The one registry of the note taxonomy the four skills share. Every statement here used to live",
+    "in four prose files plus two blocks of Python constants, which is how the id widths, the status",
+    "vocabularies and the type list drifted apart without a single check going red.",
+    "",
+    "Each skill carries a byte-identical copy at <skill>/references/vault-taxonomy.json so it stays",
+    "independently installable, and its scripts load that copy, never this path. Edit THIS file and",
+    "run `python3 scripts/check-taxonomy.py --fix` to push the copies; the check fails when a copy",
+    "has drifted, when a skill's references/vault-convention.md documents a vocabulary this file does",
+    "not, or when a worked example breaks its own type's contract.",
+    "",
+    "Fields, per type:",
+    "  owner        the skill that writes notes of this type. The others read and cite them.",
+    "  layer        reference (citable record) | governance | prd | backlog | index | derived",
+    "               | evidence (a transcript vault, never record) | workbench (never committed)",
+    "  folder       where the note goes, relative to the vault root. A project may move it in its",
+    "               config; nothing else about the shape changes.",
+    "  id           the id pattern, or null where the type is cited by file name instead. A type",
+    "               with an id also carries `aliases: [<id>]`, for search and autocomplete only --",
+    "               Obsidian never resolves a wikilink through an alias.",
+    "  status       the closed set. A value outside it is a finding, not a style choice.",
+    "  group-by     the one property a Bases view or a MOC groups this type by. There is no `tags`",
+    "               property; this is what the tag used to encode. Null where the type is derived",
+    "               or lives in the workbench and has nothing to group.",
+    "  citable      whether a story, spec or test may cite this note as source of record.",
+    "  body-budget  non-blank body lines, or null for the types whose job is to be long: a PRD hub,",
+    "               a MOC, a narrative, a reference sheet."
+  ],
+
+  "authority": [
+    "1-contractual",
+    "2-approved-requirements",
+    "3-client-clarification",
+    "4-source-artifact",
+    "5-internal-interpretation",
+    "6-unreviewed-intake"
+  ],
+
+  "locator": "(?:@[\\d:]+|p\\.\\d+|L\\d+|[A-Z]{2}-\\d+|[A-Z][a-z]+)",
+
+  "requirement-source": {
+    "_": [
+      "What a requirement's `source:` may be. The last entry is the fix for the contradiction this",
+      "registry was built to end: agentic-prd's SKILL.md tells you to cite anchored-knowledge's rule",
+      "ids, and its own check used to reject every one of them.",
+      "Any id belonging to a type with `citable: true` is accepted, which is the same sentence",
+      "`only-the-reference-layer-is-citable.md` already makes."
+    ],
+    "literals": ["PROPOSED"],
+    "patterns": ["^A-\\d+$"],
+    "accepts-citable-ids": true
+  },
+
+  "types": {
+    "business-rule": {
+      "owner": "anchored-knowledge",
+      "layer": "reference",
+      "folder": "rules",
+      "id": "^[A-Z][A-Z0-9]*-\\d+$",
+      "status": ["draft", "confirmed", "needs-review", "superseded", "out-of-scope", "rejected"],
+      "group-by": "topic",
+      "citable": true,
+      "body-budget": 25
+    },
+    "fact": {
+      "owner": "anchored-knowledge",
+      "layer": "reference",
+      "folder": "facts",
+      "id": "^K-\\d{4}$",
+      "status": ["draft", "confirmed", "needs-review", "superseded", "out-of-scope", "rejected"],
+      "group-by": "topic",
+      "citable": true,
+      "body-budget": 25
+    },
+    "scope-boundary": {
+      "owner": "anchored-knowledge",
+      "layer": "reference",
+      "folder": "scope",
+      "id": null,
+      "status": ["draft", "confirmed", "needs-review", "superseded", "out-of-scope", "rejected"],
+      "group-by": "area",
+      "citable": true,
+      "body-budget": 25
+    },
+    "glossary-term": {
+      "owner": "anchored-knowledge",
+      "layer": "reference",
+      "folder": "glossary",
+      "id": null,
+      "status": ["draft", "confirmed", "needs-review", "superseded", "rejected"],
+      "group-by": "category",
+      "citable": true,
+      "body-budget": 25
+    },
+    "decision": {
+      "owner": "anchored-knowledge",
+      "layer": "reference",
+      "folder": "decisions",
+      "id": "^ADR-\\d{4}$",
+      "status": ["proposed", "accepted", "superseded", "deprecated", "rejected"],
+      "group-by": "topic",
+      "citable": true,
+      "body-budget": 120
+    },
+    "reference": {
+      "owner": "anchored-knowledge",
+      "layer": "reference",
+      "folder": "reference",
+      "id": null,
+      "status": ["draft", "confirmed", "needs-review", "superseded"],
+      "group-by": "topic",
+      "citable": true,
+      "body-budget": null
+    },
+
+    "source": {
+      "owner": "anchored-knowledge",
+      "layer": "governance",
+      "folder": "sources",
+      "id": "^SRC-\\d{4}$",
+      "status": ["registered", "stale", "superseded"],
+      "group-by": "source-type",
+      "citable": false,
+      "body-budget": 25
+    },
+    "open-question": {
+      "owner": "anchored-knowledge",
+      "layer": "governance",
+      "folder": "questions",
+      "id": "^Q-\\d{4}$",
+      "status": ["open", "partial", "answered", "blocked", "dropped"],
+      "group-by": "topic",
+      "citable": false,
+      "body-budget": 25
+    },
+    "scope-watch": {
+      "owner": "anchored-knowledge",
+      "layer": "governance",
+      "folder": "scope-watch",
+      "id": "^SW-\\d{4}$",
+      "status": ["watch", "clarify", "in-scope", "deferred", "change-request", "closed"],
+      "group-by": "topic",
+      "citable": false,
+      "body-budget": 25
+    },
+    "knowledge-change": {
+      "owner": "anchored-knowledge",
+      "layer": "governance",
+      "folder": "changes",
+      "id": "^CH-\\d{4}$",
+      "status": ["proposed", "accepted", "needs-review", "closed"],
+      "group-by": "topic",
+      "citable": false,
+      "body-budget": 25
+    },
+
+    "prd": {
+      "owner": "agentic-prd",
+      "layer": "prd",
+      "folder": "prd",
+      "id": "^PRD-\\d{3}$",
+      "status": ["draft", "in-review", "accepted", "superseded"],
+      "group-by": "topic",
+      "citable": false,
+      "body-budget": null
+    },
+    "requirement": {
+      "owner": "agentic-prd",
+      "layer": "prd",
+      "folder": "requirements",
+      "id": "^[RX]-\\d{3}$",
+      "status": ["draft", "accepted", "retired"],
+      "group-by": "topic",
+      "citable": false,
+      "body-budget": 25
+    },
+    "outcome-metric": {
+      "owner": "agentic-prd",
+      "layer": "prd",
+      "folder": "metrics",
+      "id": "^OUT-\\d+$",
+      "status": ["draft", "accepted", "retired"],
+      "group-by": "topic",
+      "citable": false,
+      "body-budget": 25
+    },
+    "epic": {
+      "owner": "agentic-prd",
+      "layer": "backlog",
+      "folder": "backlog",
+      "id": "^EPIC-\\d{2}$",
+      "status": ["draft", "accepted", "retired"],
+      "group-by": "topic",
+      "citable": false,
+      "body-budget": 25
+    },
+    "feature": {
+      "owner": "agentic-prd",
+      "layer": "backlog",
+      "folder": "backlog",
+      "id": "^FEAT-\\d{2}$",
+      "status": ["draft", "accepted", "retired"],
+      "group-by": "topic",
+      "citable": false,
+      "body-budget": 25
+    },
+    "user-story": {
+      "owner": "user-story-builder",
+      "layer": "backlog",
+      "folder": "backlog",
+      "id": "^US-\\d{2}$",
+      "status": ["draft", "ready", "published", "retired"],
+      "group-by": "topic",
+      "citable": false,
+      "body-budget": 60,
+      "_": [
+        "Written by user-story-builder from sources, and by agentic-prd when a whole backlog is",
+        "decomposed at once. One shape, so a story is the same note whichever route produced it.",
+        "Its status ladder is the one a tracker-bound note needs -- drafted, read by a person,",
+        "pushed, retired -- not the PRD's `accepted`, which is a claim about a gate the story",
+        "itself never crosses."
+      ]
+    },
+
+    "prd-review": {
+      "owner": "agentic-prd",
+      "layer": "derived",
+      "folder": "prd",
+      "id": null,
+      "status": [],
+      "group-by": null,
+      "citable": false,
+      "body-budget": null
+    },
+
+    "errata": {
+      "owner": "transcript-knowledge-base",
+      "layer": "evidence",
+      "folder": ".",
+      "id": null,
+      "status": [],
+      "group-by": null,
+      "citable": false,
+      "body-budget": null,
+      "_": [
+        "The one file in a transcript vault that is hand-kept rather than generated: misheard words",
+        "and unlabeled speakers, each row carrying its evidence. It has no status because a row's",
+        "state lives in the row."
+      ]
+    },
+
+    "moc": {
+      "owner": "anchored-knowledge",
+      "layer": "index",
+      "folder": "moc",
+      "id": null,
+      "status": [],
+      "group-by": null,
+      "citable": false,
+      "body-budget": null
+    },
+    "narrative": {
+      "owner": "anchored-knowledge",
+      "layer": "derived",
+      "folder": "narrative",
+      "id": null,
+      "status": ["draft", "current", "stale"],
+      "group-by": "topic",
+      "citable": false,
+      "body-budget": null
+    },
+
+    "transcript-item": {
+      "owner": "transcript-knowledge-base",
+      "layer": "evidence",
+      "folder": "items",
+      "id": "^[A-Z][A-Z0-9]*-\\d+$",
+      "status": ["confirmed", "tentative", "draft", "pending", "deferred", "superseded"],
+      "group-by": "category",
+      "citable": false,
+      "body-budget": 25
+    },
+    "meeting": {
+      "owner": "transcript-knowledge-base",
+      "layer": "evidence",
+      "folder": "meetings",
+      "id": null,
+      "status": ["ingested"],
+      "group-by": null,
+      "citable": false,
+      "body-budget": 25
+    },
+
+    "intake": {
+      "owner": "anchored-knowledge",
+      "layer": "workbench",
+      "folder": "intake",
+      "id": null,
+      "status": ["untriaged", "converted", "archived"],
+      "group-by": null,
+      "citable": false,
+      "body-budget": null
+    }
+  }
+}

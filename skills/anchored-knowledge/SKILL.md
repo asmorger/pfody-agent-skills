@@ -11,6 +11,10 @@ description: >
   already recorded; whenever a question is answered, a decision reversed, or scope may have grown; and
   whenever a knowledge base or vault needs standing up, adopting or health-checking. Not for parsing
   transcripts, which `transcript-knowledge-base` does, nor for the stories or PRDs that cite it.
+allowed-tools: Read, Write, Edit, Glob, Grep, Skill, Bash(python3 *)
+metadata:
+  requires: [transcript-knowledge-base, git-guide]
+  related: [agentic-prd, user-story-builder]
 ---
 
 # anchored-knowledge

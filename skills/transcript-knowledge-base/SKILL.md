@@ -11,6 +11,10 @@ description: >
   existing index without redoing prior work; and even when the request is only "summarise what we
   agreed across these calls, with sources". Not for reconciling the result into a project's rule set,
   which `anchored-knowledge` does, nor for transcription itself.
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash(python *), Bash(python3 *)
+metadata:
+  requires: []
+  related: [anchored-knowledge]
 ---
 
 # transcript-knowledge-base
@@ -39,10 +43,10 @@ it names — each is short and self-contained.
 3. Precision over volume — a meeting yields a handful of real rules, not dozens; a large corpus yields a superset to curate, not a finished index → `principles/precision-over-volume.md`, `principles/a-large-corpus-is-a-superset.md`
 4. A statement is declarative and spec-style, one rule per item — never a quote or a paraphrase of chatter → `principles/a-statement-is-not-a-quote.md`, `principles/one-rule-per-item.md`
 5. Caveats go in `status` and `note`, never buried in the statement; and evidence is never discarded — duplicates merge sources, supersession marks and keeps → `principles/status-is-a-field-not-a-sentence.md`, `principles/evidence-is-never-discarded.md`
-7. Copy each file's hash from the manifest, and seed the taxonomy, so nothing churns between runs → `principles/the-content-hash-is-the-unit-of-work.md`, `principles/ids-are-stable-across-runs.md`
-8. No interpreter means stop and say so — never produce the notes by hand → `principles/never-fake-the-output.md`
-9. Every note is generated — fix a wording by re-extracting, never by editing output — and all of it is evidence, not record → `anti-patterns/editing-a-generated-note.md`, `anti-patterns/the-generated-index-shipped-as-finished.md`
-10. Verify every quote against its transcript before handing the vault on, and report the unchecked count; a mishearing goes in the errata register, never into a transcript → `principles/a-quote-is-checked-not-trusted.md`, `patterns/errata-register.md`
+6. Copy each file's hash from the manifest, and seed the taxonomy, so nothing churns between runs → `principles/the-content-hash-is-the-unit-of-work.md`, `principles/ids-are-stable-across-runs.md`
+7. No interpreter means stop and say so — never produce the notes by hand → `principles/never-fake-the-output.md`
+8. Every note is generated — fix a wording by re-extracting, never by editing output — and all of it is evidence, not record → `anti-patterns/editing-a-generated-note.md`, `anti-patterns/the-generated-index-shipped-as-finished.md`
+9. Verify every quote against its transcript before handing the vault on, and report the unchecked count; a mishearing goes in the errata register, never into a transcript → `principles/a-quote-is-checked-not-trusted.md`, `patterns/errata-register.md`
 
 ## The workflow
 

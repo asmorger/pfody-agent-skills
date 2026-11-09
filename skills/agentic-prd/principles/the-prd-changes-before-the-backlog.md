@@ -15,7 +15,7 @@ thing that is wrong.
 - `CHANGE` touches the PRD, then the backlog, in that order and never the reverse
   ([`../practices/change-a-requirement.md`](../practices/change-a-requirement.md)).
 - Raise the version on every behaviour change; the backlog header names the version it came from.
-- `DECOMPOSE` never edits an Accepted PRD. A gap it finds is reported, and the person decides whether
+- `DECOMPOSE` never edits an `accepted` PRD. A gap it finds is reported, and the person decides whether
   to run `CHANGE` ([`../practices/decompose-a-prd.md`](../practices/decompose-a-prd.md)).
 - `REVIEW` never edits the PRD at all, even when a check fails.
 - Acceptance criteria already in a tracker change only after the PRD has.

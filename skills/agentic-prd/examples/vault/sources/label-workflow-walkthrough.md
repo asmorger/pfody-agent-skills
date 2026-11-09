@@ -1,6 +1,6 @@
 ---
-id: SRC-04
-aliases: [SRC-04]
+id: SRC-0003
+aliases: [SRC-0003]
 type: source
 status: registered
 source-type: transcript
@@ -17,4 +17,4 @@ updated: 2026-10-22
 
 **Illustrative example only.** Invented.
 
-**Does not cover** who is permitted to void — raised as [[who-may-void-a-printed-label|Q-03]].
+**Does not cover** who is permitted to void — raised as [[who-may-void-a-printed-label|Q-0003]].

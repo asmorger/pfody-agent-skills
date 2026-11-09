@@ -11,6 +11,15 @@ PRD. Where both skills write the same kind of note — an open question, a decis
 write **the same note**, in the same folder, with the same type. A PRD's gap is a question the
 project needs answered; two question registers is the failure the never-copy rule exists to prevent.
 
+**That sentence is now a check rather than a promise.** Every type, id pattern, status vocabulary
+and grouping key below is declared once in
+[`vault-taxonomy.json`](vault-taxonomy.json), which `prd.py` and `anchored-knowledge`'s `vault.py`
+both read, and which the repo's `check-taxonomy.py` compares against this file and against the worked
+example. It had to be built: the same three shared types used to carry two id widths (`SRC-01` here,
+`SRC-0002` there), two prefixes for one decision, two status casings, and six types the other
+skill's linter called `unknown type` — none of which any check could see while the contract lived
+in prose on both sides.
+
 ## 1. Folder map
 
     docs/
@@ -18,11 +27,19 @@ project needs answered; two question registers is the failure the never-copy rul
       prd/<prd-slug>.review.md        review findings — type: prd-review
       requirements/<kebab-title>.md   R-001, X-001 — type: requirement
       metrics/<kebab-title>.md        OUT-1 — type: outcome-metric
-      questions/<kebab-title>.md      Q-03 — type: open-question
+      questions/<kebab-title>.md      Q-0003 — type: open-question
       backlog/<kebab-title>.md        EPIC-01, FEAT-01, US-01 — type: epic | feature | user-story
-      sources/<kebab-name>.md         SRC-01, DEC-02 — type: source | decision
+      sources/<kebab-name>.md         SRC-0002 — type: source
+      decisions/<kebab-title>.md      ADR-0004 — type: decision
       moc/requirements.md  coverage.md  backlog.md
       bases/*.base
+
+A decision goes in `decisions/`, not in `sources/`: it is a thing the project decided, not a thing
+the project read. That is also where `anchored-knowledge` keeps it, which is the point — one folder
+and one id per note, so the two skills cannot each grow a decision register. The worked example used
+to hold `sources/credit-hold-blocks-labelling.md` as `DEC-02` with the same `summary`, the same
+`decided` date and the same rejected alternative as that vault's `ADR-0004`: one decision, written
+down twice.
 
 Folders are flat and the level lives in `type`, so the whole backlog sits in one folder and a Bases
 view groups it. A project that keeps its PRDs elsewhere says so once in its `CLAUDE.md`; the shapes
@@ -63,11 +80,11 @@ feature: "[[create-and-print-a-label|FEAT-01]]"    # omitted on an X- requiremen
 applies-to: [All]         # X- only: All, or the FEAT ids it changes
 priority: P0              # P0 | P1 | P2 | P3
 verify: Auto              # Auto | Manual | Eval | Telemetry
-source: SRC-01 @12:04     # SRC-nn with a locator | DEC-nn | A-nn | PROPOSED
+source: SRC-0002 @12:04     # SRC-nnnn with a locator | ADR-nnnn | A-nn | PROPOSED
 outcomes: ["[[address-error-rate-on-parcels|OUT-1]]"]
 coverage: covered         # covered | blocked | skipped-proposed | skipped-p3 | retired
 stories: ["[[create-a-label-for-a-confirmed-order|US-01]]"]    # required when coverage is covered
-questions: ["[[who-may-void-a-printed-label|Q-03]]"]   # required when coverage is blocked
+questions: ["[[who-may-void-a-printed-label|Q-0003]]"]   # required when coverage is blocked
 superseded-by: "[[notify-on-carrier-outage|R-011]]"  # when status is retired
 ```
 
@@ -83,7 +100,7 @@ checks:
   empty-state: "N/A — a confirmed order always has at least one line."
   loading-state: "[[show-the-label-queue|R-007]]"
   error-state: "[[show-the-carrier-rejection-reason|R-002]], [[reprint-a-damaged-label|R-008]]"
-  permissions: "Gap: [[who-may-void-a-printed-label|Q-03]]"
+  permissions: "Gap: [[who-may-void-a-printed-label|Q-0003]]"
   bad-input-and-boundaries: "[[cancel-a-queued-label|R-009]]"
   concurrency: "[[export-the-days-labels|R-010]]"
   current-records-and-data-migration: "N/A — labels did not exist before this release."
@@ -120,6 +137,6 @@ cover ([`../principles/the-check-is-not-a-reviewer.md`](../principles/the-check-
 
 ## 6. PREVIEW is a gate, not a label
 
-While the PRD is not `Accepted`, every story note says `PREVIEW` in its first lines and the check
+While the PRD is not `accepted`, every story note says `PREVIEW` in its first lines and the check
 enforces it. A preview is not published
 ([`../principles/only-a-person-crosses-a-gate.md`](../principles/only-a-person-crosses-a-gate.md)).

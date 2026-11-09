@@ -3,6 +3,7 @@ id: R-014
 aliases: [R-014]
 type: requirement
 status: accepted
+topic: labels
 prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 feature: "[[void-a-label|FEAT-02]]"
 priority: P3

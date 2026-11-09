@@ -70,15 +70,15 @@ Tell the user what was auto-detected vs. what they chose, and that the map is sa
 Use **only** the reference names from `field_mappings`. Never hardcode `Custom.BlockedReason` or assume `Microsoft.VSTS.Common.AcceptanceCriteria` — read them from the config.
 
 ### 2a0. Strip wikilink brackets (before anything else)
-The story notes use wikilinks — `[[LABEL-2]]`, `[[ORDER-1|the address freeze]]`, `![[R-001]]`. Azure
+The story notes use wikilinks — `[[a-printed-label-may-be-voided|LABEL-2]]`, `[[order-address-frozen-on-confirmation|the address freeze]]`, `![[create-a-label-on-order-confirmation]]`. Azure
 DevOps has no idea what those are and renders the brackets literally, so a reader sees a link that
 goes nowhere. Before any other transformation:
 
 | In the note | Sent to the tracker |
 |---|---|
-| `[[LABEL-2]]` | `LABEL-2` |
+| `[[a-printed-label-may-be-voided|LABEL-2]]` | `LABEL-2` |
 | `[[ORDER-1\|the address freeze]]` | `the address freeze` |
-| `![[R-001]]` | the embedded note's own text, inlined |
+| `![[create-a-label-on-order-confirmation]]` | the embedded note's own text, inlined |
 
 Do this **first**, because an embed pulls in text that then needs the same ASCII normalization as
 everything else. A criterion's `[LABEL-2]` source tag is already a bare id and is sent verbatim.

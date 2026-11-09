@@ -30,9 +30,9 @@ decision or a drift.
    where the new understanding costs more than the baseline allows.
 7. **Propose, do not apply.** The shift reaches the record through approval and promotion
    ([`promote-to-the-record.md`](promote-to-the-record.md)).
-8. **Add it to the home note's Recently changed list**, so a reader sees it without searching. That
+8. **Add it to the start note's Recently changed list**, so a reader sees it without searching. That
    list is judgement, not a query, which is why it is written by hand
-   ([`../patterns/home-note.md`](../patterns/home-note.md)).
+   ([`../patterns/start-note.md`](../patterns/start-note.md)).
 
 **Done when** `CH-NNNN` names both anchors and the interpretation, every affected entry carries a
 dated note, the previous understanding is preserved with its anchor, and anything the shift opened has

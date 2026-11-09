@@ -11,7 +11,6 @@ location: https://example.invalid/carrier/api
 citable: false
 created: 2026-11-08
 updated: 2026-11-08
-tags: [source/vendor-doc]
 ---
 
 # Carrier API reference

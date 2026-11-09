@@ -1,4 +1,8 @@
-# One note, one fact
+# One fact per note
+
+**This rule is about a note's size and scope.** Its converse — a fact appears in only one note — is
+[`facts-are-never-copied.md`](facts-are-never-copied.md). This one says a note holds no more than one
+fact; that one says a fact lives in no more than one note. Both hold, and neither implies the other.
 
 **Rule.** Each rule, term, boundary, decision, question and source is its own note, named for what it
 says, holding one statement and a body of at most 25 lines. A note that needs a second `##` heading

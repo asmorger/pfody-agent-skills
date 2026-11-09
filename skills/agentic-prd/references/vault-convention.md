@@ -9,7 +9,7 @@ contract for the shared parts: frontmatter as the query surface, wikilinks as th
 callout vocabulary, and the MOC's `<!-- generated -->` markers. This file is the part specific to a
 PRD. Where both skills write the same kind of note — an open question, a decision, a source — they
 write **the same note**, in the same folder, with the same type. A PRD's gap is a question the
-project needs answered; two question registers is the failure the one-home rule exists to prevent.
+project needs answered; two question registers is the failure the never-copy rule exists to prevent.
 
 ## 1. Folder map
 
@@ -32,8 +32,8 @@ do not change.
 
 **A PRD is read cold**, top to bottom, by an agent that has never loaded this skill. That is why the
 hub keeps intent, scope, context, agent boundaries, rollout and the agent protocol as prose, and why
-it **embeds** rather than merely links the notes a reader must not miss: `![[OUT-1]]`, `![[EPIC-01]]`,
-`![[X-002]]`. An embed resolves to whatever the note says now, so the hub cannot go stale, and a
+it **embeds** rather than merely links the notes a reader must not miss: `![[address-error-rate-on-parcels]]`, `![[carrier-labels-on-the-order-screen]]`,
+`![[record-every-label-action]]`. An embed resolves to whatever the note says now, so the hub cannot go stale, and a
 reader who scrolls the hub still sees everything
 ([`../patterns/prd-hub-note.md`](../patterns/prd-hub-note.md)).
 
@@ -58,18 +58,17 @@ id: R-001                 # R-NNN, or X-NNN for cross-cutting. Immutable, never 
 aliases: [R-001]
 type: requirement
 status: accepted          # draft | accepted | retired
-prd: "[[PRD-001]]"
-feature: "[[FEAT-01]]"    # omitted on an X- requirement
+prd: "[[shipping-labels-at-order-processing|PRD-001]]"
+feature: "[[create-and-print-a-label|FEAT-01]]"    # omitted on an X- requirement
 applies-to: [All]         # X- only: All, or the FEAT ids it changes
 priority: P0              # P0 | P1 | P2 | P3
 verify: Auto              # Auto | Manual | Eval | Telemetry
 source: SRC-01 @12:04     # SRC-nn with a locator | DEC-nn | A-nn | PROPOSED
-outcomes: ["[[OUT-1]]"]
+outcomes: ["[[address-error-rate-on-parcels|OUT-1]]"]
 coverage: covered         # covered | blocked | skipped-proposed | skipped-p3 | retired
-stories: ["[[US-01]]"]    # required when coverage is covered
-questions: ["[[Q-03]]"]   # required when coverage is blocked
-superseded-by: "[[R-011]]"  # when status is retired
-tags: [requirement/labels]
+stories: ["[[create-a-label-for-a-confirmed-order|US-01]]"]    # required when coverage is covered
+questions: ["[[who-may-void-a-printed-label|Q-03]]"]   # required when coverage is blocked
+superseded-by: "[[notify-on-carrier-outage|R-011]]"  # when status is retired
 ```
 
 The **statement is the H1**, in one of the five patterns, and appears nowhere else:
@@ -82,11 +81,11 @@ A Feature carries its seven coverage lines as a nested mapping, which is what ma
 ```yaml
 checks:
   empty-state: "N/A — a confirmed order always has at least one line."
-  loading-state: "[[R-007]]"
-  error-state: "[[R-002]], [[R-008]]"
-  permissions: "Gap: [[Q-03]]"
-  bad-input-and-boundaries: "[[R-009]]"
-  concurrency: "[[R-010]]"
+  loading-state: "[[show-the-label-queue|R-007]]"
+  error-state: "[[show-the-carrier-rejection-reason|R-002]], [[reprint-a-damaged-label|R-008]]"
+  permissions: "Gap: [[who-may-void-a-printed-label|Q-03]]"
+  bad-input-and-boundaries: "[[cancel-a-queued-label|R-009]]"
+  concurrency: "[[export-the-days-labels|R-010]]"
   current-records-and-data-migration: "N/A — labels did not exist before this release."
 ```
 

@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.hasTag("requirement")
+    - note.type == "requirement"
     - 'note.coverage != "retired"'
 views:
   - type: table

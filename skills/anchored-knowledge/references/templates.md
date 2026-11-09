@@ -6,8 +6,8 @@ in frontmatter. The contract these instance is
 [`bases.md`](bases.md). Adapt folders, property names and prefixes to the project and record any
 deviation in `anchored-knowledge.config.md` — an existing vault's conventions win.
 
-Every note carries `type`, `status`, `created`, `updated` and `tags`, plus `id` and `aliases`
-wherever there is an id. Quote wikilinks in properties: `sources: ["[[note name]]"]`.
+Every note carries `type`, `status`, `created` and `updated`, plus `id` and `aliases` wherever there
+is an id. There is no `tags` property. Quote wikilinks in properties: `sources: ["[[note name]]"]`.
 
 ---
 
@@ -21,46 +21,45 @@ id: PREFIX-N
 aliases: [PREFIX-N]
 type: business-rule
 status: draft | confirmed | needs-review | superseded | out-of-scope | rejected
-topic: <topic, matching the tag's second segment>
+topic: <topic, from the config's topic list>
 authority: 1-contractual | 2-approved-requirements | 3-client-clarification | 4-source-artifact | 5-internal-interpretation | 6-unreviewed-intake
 sources: ["[[source-note]]"]
 confirmed: YYYY-MM-DD          # when status is confirmed
 pending-on: <stakeholder>      # when status is draft
-questions: ["[[Q-NNNN]]"]
-decisions: ["[[ADR-NNNN]]"]
+questions: ["[[<kebab-question>|Q-NNNN]]"]
+decisions: ["[[<kebab-decision>|ADR-NNNN]]"]
 supersedes: []
 superseded-by:                 # a wikilink, when status is superseded
 scope-watch: []
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [rule/<topic>]
 ---
 
 # PREFIX-N — <Title: what the rule says>
 
 One self-contained, testable sentence. Field and entity names in backticks
-(`EntityName.fieldName`), cross-references as wikilinks ([[PREFIX-M]]).
+(`EntityName.fieldName`), cross-references as wikilinks ([[<other-note>|PREFIX-M]]).
 
-**Also** [[PREFIX-M]] <why a reader of this rule wants it next> · [[term]]
+**Also** [[<other-note>|PREFIX-M]] <why a reader of this rule wants it next> · [[term]]
 ```
 
 A callout is added **only** when the property cannot say it. One of:
 
 ```markdown
 > [!warning] Draft — pending <stakeholder>, as of YYYY-MM-DD
-> What would close it, and the question it waits on: [[Q-NNNN]].
+> What would close it, and the question it waits on: [[<kebab-question>|Q-NNNN]].
 
 > [!todo] Needs review — inherited, source unknown
 > What is being checked, and by whom.
 
-> [!abstract] Superseded by [[PREFIX-M]] — YYYY-MM-DD
-> The earlier understanding, with the anchor it rested on. See [[CH-NNNN]].
+> [!abstract] Superseded by [[<other-note>|PREFIX-M]] — YYYY-MM-DD
+> The earlier understanding, with the anchor it rested on. See [[<kebab-change>|CH-NNNN]].
 
 > [!failure] Out of scope — Phase N
-> Deferred to a future phase. If it returns, it arrives through [[SW-NNNN]].
+> Deferred to a future phase. If it returns, it arrives through [[<kebab-watch-item>|SW-NNNN]].
 
 > [!question] Open
-> The part of this statement nobody has settled. See [[Q-NNNN]].
+> The part of this statement nobody has settled. See [[<kebab-question>|Q-NNNN]].
 
 > [!quote] Evidence
 > "the words somebody actually said"
@@ -76,11 +75,10 @@ term: <Term, as the project capitalises it>
 aliases: [<Term>, <RetiredName>]
 category: <core-concepts | systems-integration | roles | …>
 status: confirmed
-governed-by: ["[[PREFIX-N]]"]
+governed-by: ["[[<kebab-title>|PREFIX-N]]"]
 sources: ["[[source-note]]"]
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [term/<category>]
 ---
 
 # <Term>
@@ -88,8 +86,11 @@ tags: [term/<category>]
 Precise definition for someone new to the domain. Link the governing rule; never restate it.
 ```
 
-Retired names go in `aliases` so `[[OldName]]` still resolves, with a `[!abstract] Retired name`
-callout giving the date and the change note that renamed it.
+Retired names go in `aliases` so autocomplete and search still find the note under the old word,
+with a `[!abstract] Retired name` callout giving the date and the change note that renamed it. An
+alias does **not** make `[[OldName]]` resolve. Renaming the file is what fixes the existing links —
+Obsidian rewrites every one of them — and if a name has to keep resolving from outside the vault,
+leave a one-line stub note at the old filename pointing here.
 
 ## Scope boundary — `scope/<kebab-boundary>.md`
 
@@ -101,11 +102,10 @@ area: <feature area>
 inclusion: included | not-included
 authority: 1-contractual
 sources: ["[[source-note]]"]
-rules: ["[[PREFIX-N]]"]
+rules: ["[[<kebab-title>|PREFIX-N]]"]
 scope-watch: []
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [scope/<area>]
 ---
 
 # <Behaviour> is [not] included
@@ -128,14 +128,13 @@ summary: One sentence. The decisions MOC reads it from here, so it is written on
 decided: YYYY-MM-DD
 deciders: []
 confidence: low | medium | high
-rules: ["[[PREFIX-N]]"]
+rules: ["[[<kebab-title>|PREFIX-N]]"]
 sources: ["[[source-note]]"]
 supersedes: []
 superseded-by:
 review-when: <the event or date that triggers a review>
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [decision]
 ---
 
 # ADR-NNNN — <Decision title>
@@ -144,7 +143,7 @@ tags: [decision]
 Why the decision is needed. The problem and the constraints.
 
 ## Decision
-What was decided, and where it is enforced ([[PREFIX-N]]).
+What was decided, and where it is enforced ([[<kebab-title>|PREFIX-N]]).
 
 ## Consequences
 **Easier.** What this buys.
@@ -157,7 +156,7 @@ What was decided, and where it is enforced ([[PREFIX-N]]).
 Conditions that must stay true for this decision to hold.
 
 ## Related
-[[PREFIX-N]] · [[term]] · [[source-note]]
+[[<kebab-title>|PREFIX-N]] · [[term]] · [[source-note]]
 ```
 
 A reversal is a **new** note naming what it supersedes; the old one takes `status: superseded`,
@@ -177,10 +176,9 @@ applies-to: <area, feature, workflow, integration>
 confidence: low | medium | high
 authority: 4-source-artifact
 sources: ["[[source-note]]"]
-rules: ["[[PREFIX-N]]"]
+rules: ["[[<kebab-title>|PREFIX-N]]"]
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [fact/<topic>]
 ---
 
 # K-NNNN — <The fact>
@@ -199,11 +197,10 @@ No id, cited by name, no size budget. The home for mechanics a rule must not car
 type: reference
 topic: <api | integration | build | sql | test | …>
 status: confirmed
-governs: ["[[PREFIX-N]]"]
+governs: ["[[<kebab-title>|PREFIX-N]]"]
 sources: ["[[source-note]]"]
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [reference/<topic>]
 ---
 
 # <Topic> Conventions
@@ -212,7 +209,7 @@ The purpose, in one sentence.
 
 ## <Section>
 Rules, naming patterns, field maps, state machines, message contracts, examples. Link the decision
-that set the convention ([[ADR-NNNN]]).
+that set the convention ([[<kebab-decision>|ADR-NNNN]]).
 ```
 
 ---
@@ -236,7 +233,6 @@ citable: false
 participants: []               # transcripts and meetings only
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [source/<source-type>]
 ---
 
 # <Source name>
@@ -260,13 +256,12 @@ type: open-question
 status: open | partial | answered | blocked | dropped
 owner: <name or role>          # mandatory
 needed-by: YYYY-MM-DD          # mandatory
-blocks: ["[[PREFIX-N]]"]
+blocks: ["[[<kebab-title>|PREFIX-N]]"]
 answered-by: []                # the rule or decision that now holds the answer
 sources: ["[[source-note]]"]
 scope-watch: []
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [question]
 ---
 
 # Q-NNNN — <The question?>
@@ -293,12 +288,11 @@ status: watch | clarify | in-scope | deferred | change-request | closed
 owner: <name or role>
 baseline: ["[[baseline-source]]"]
 requested: ["[[newer-source]]"]
-affects: ["[[PREFIX-N]]"]
+affects: ["[[<kebab-title>|PREFIX-N]]"]
 questions: []
 disposition:                   # filled by a person: outcome, date, source
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [scope-watch]
 ---
 
 # SW-NNNN — <Watch item>
@@ -322,13 +316,12 @@ type: knowledge-change
 status: proposed | accepted | needs-review | closed
 change-type: contradiction | scope-refinement | terminology-shift | decision-update | requirement-update | source-correction
 identified: YYYY-MM-DD
-older: ["[[older-source]]", "[[PREFIX-N]]"]
+older: ["[[older-source]]", "[[<kebab-title>|PREFIX-N]]"]
 newer: ["[[newer-source]]"]
-affects: ["[[PREFIX-N]]"]
+affects: ["[[<kebab-title>|PREFIX-N]]"]
 owner: <name or role>
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [change]
 ---
 
 # CH-NNNN — <What changed>
@@ -360,7 +353,6 @@ snapshot:
   columns: [id, title, status, sources]
   exclude-status: [superseded, rejected]
   group-by: topic
-tags: [moc]
 ---
 
 # <Title>
@@ -376,7 +368,7 @@ A few lines of prose: the baseline, what a reader may cite, what the views are f
 Leave the markers empty and run `python3 scripts/vault.py moc <vault>` to fill them. Everything
 between them is overwritten on every run; nothing else in the note is touched.
 
-## Home note — `moc/knowledge.md`
+## Start note — `moc/knowledge.md`
 
 ```markdown
 ---
@@ -384,7 +376,6 @@ type: moc
 updated: YYYY-MM-DD
 review-cadence: <discovery / build / handoff cadence>
 owner: <role>
-tags: [moc]
 ---
 
 # Knowledge
@@ -403,7 +394,7 @@ Contract, approved requirements, delivery baseline.
 Questions needing answers, scope watch, decisions in flight, ingestion backlog.
 
 ## Recently changed
-- YYYY-MM-DD — [[CH-NNNN]] <what changed>
+- YYYY-MM-DD — [[<kebab-change>|CH-NNNN]] <what changed>
 ```
 
 `Now` and `Recently changed` are judgement, not a query, which is why they are the only tables in

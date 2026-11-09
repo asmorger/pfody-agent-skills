@@ -17,7 +17,7 @@ for what it says, carrying a stable id in its frontmatter.
   reference notes are the designated home for long mechanics and are unbounded.
 - A note that needs a second `##` heading is two notes, except in a decision or reference note.
 - Nothing is copied between notes. A link resolves to whatever the other note says now; a copy goes
-  stale silently ([`../principles/one-home-per-fact.md`](../principles/one-home-per-fact.md)).
+  stale silently ([`../principles/facts-are-never-copied.md`](../principles/facts-are-never-copied.md)).
 
 ## 2. Folder map
 
@@ -26,7 +26,7 @@ The vault **is** the record. Open `docs_dir` in Obsidian.
     <repo>/docs/                        the vault — record of source of truth
       anchored-knowledge.config.md      the per-project config
       moc/
-        knowledge.md                    the home note; where a newcomer starts
+        knowledge.md                    the start note; where a newcomer starts
         business-rules.md  glossary.md  scope.md  decisions.md
         open-questions.md  scope-watch.md  changes.md  sources.md
       rules/<kebab-title>.md            business rules, flat, topic as a property
@@ -39,6 +39,7 @@ The vault **is** the record. Open `docs_dir` in Obsidian.
       sources/<kebab-name>.md           one note per registered source, meetings included
       facts/<kebab-title>.md            optional K- notes
       reference/<topic>.md              convention and domain reference notes
+      narrative/<topic>.md              derived reading surfaces; they own no facts
       bases/<name>.base                 the Bases definitions the MOCs embed
 
     <repo>/knowledge-working/           the workbench — never committed, outside the vault
@@ -65,12 +66,17 @@ window state and conflict on every pull.
 |---|---|---|
 | Filename | kebab-case title, no id | `rules/order-address-frozen-on-confirmation.md` |
 | `id` | the immutable citable id | `ORDER-1` |
-| `aliases` | the id, so `[[ORDER-1]]` resolves | `[ORDER-1]` |
+| `aliases` | the id, for autocomplete and search — **not** for resolving a link | `[ORDER-1]` |
 | H1 | `# <ID> — <Title>` | `# ORDER-1 — Order address frozen on confirmation` |
 
 The **id** never changes. The **title and filename may** — rewording a title is an improvement, and
 Obsidian rewrites every link to it. That split is the whole reason the id lives in frontmatter rather
 than in the filename ([`../principles/ids-are-immutable.md`](../principles/ids-are-immutable.md)).
+
+**Filenames are vault-unique, because the filename is the link target.** Two notes with one
+basename — `rules/credit-hold-blocks-labelling.md` and `decisions/credit-hold-blocks-labelling.md` —
+make the same link text resolve differently depending on which note it is written in, and under §6
+one of the two becomes uncitable outright. The lint reports it.
 
 A project already numbering its files — `adr/0004-credit-hold-blocks-labelling.md` — keeps that form.
 The config's file map wins.
@@ -88,19 +94,33 @@ id: ORDER-1                 # omit on MOC and reference notes
 aliases: [ORDER-1]          # omit where there is no id
 type: business-rule         # closed vocabulary, §5
 status: confirmed           # closed vocabulary per type, §5
-created: 2026-10-02
-updated: 2026-11-08
-tags: [rule/orders]         # <type-tag>/<topic>, derived from type and topic
+created: 2026-10-02         # written once, never rewritten
+updated: 2026-11-08         # checkable against git: `vault.py lint . --git`
 ---
 ```
+
+**Dates come in two kinds, and only one is typed.** An **event date** — `decided`, `confirmed`,
+`identified`, `source-date`, `meeting-date`, `needed-by` — records something that happened. It is a
+fact, a person writes it, and no generator touches it. A **freshness date** is a claim about the
+file: `created` is written once, `generated` and `covers-through` are written only by the scripts,
+and `updated` is the one nobody remembers to bump — which is why `lint --git` checks it against the
+last commit that touched the note
+([`../principles/a-freshness-date-is-derived.md`](../principles/a-freshness-date-is-derived.md)).
 
 Wikilinks in a property are Link objects to Obsidian, so they give backlinks and graph edges. Quote
 them, or YAML reads `[[` as a nested sequence: `sources: ["[[order-fulfilment-sow-v3]]"]`.
 
-`tags` duplicates `type` and `topic` by design — it is the one sanctioned redundancy, because the tag
-pane and `file.hasTag()` are worth it. **The properties are authoritative**; the tag is derived from
-them and never carries anything else. Status is never a tag: it changes, and a stale tag beside a
-current property is two answers to one question.
+**There are no `tags`.** An earlier version of this convention carried `tags: [rule/orders]` as "the
+one sanctioned redundancy", on the strength of the tag pane and `file.hasTag()`. It did not pay for
+itself. `type` and `topic` are already properties, the Bases views and the MOCs group by them
+directly, and nothing derived the tag — so it was a hand-kept third copy of two fields, free to
+disagree with both. Worse, it undid the reason the folders are flat: a rule's topic is a property
+*so that* changing it is one edit, and the tag made it two
+([`../principles/structure-must-pay-for-itself.md`](../principles/structure-must-pay-for-itself.md)).
+
+A project that already runs a tag program keeps it and records it in the config; this convention
+simply does not propose one
+([`../principles/match-the-projects-voice.md`](../principles/match-the-projects-voice.md)).
 
 ### Per-type properties
 
@@ -117,6 +137,7 @@ current property is two answers to one question.
 | `fact` | `topic`, `applies-to`, `confidence`, `sources[]` |
 | `reference` | `topic`, `governs[]` — no `id`, cited as `[[api-conventions]]` |
 | `moc` | `snapshot` (§7) — no `id`, no `status` |
+| `narrative` | `derived-from[]`, `covers-through`, `input-manifest-sha256` — no `id`; never cited ([`../patterns/narrative-note.md`](../patterns/narrative-note.md)) |
 
 **A source note never lists what it updated.** Each rule names its source; the source note's
 backlinks are the list, always current. That is the Source Register's Notes column, replaced by
@@ -127,7 +148,7 @@ something that cannot go stale ([`../patterns/source-note.md`](../patterns/sourc
 Closed sets. The audit checks membership, so a value outside these is a finding.
 
     type          business-rule · glossary-term · scope-boundary · decision · open-question
-                  scope-watch · knowledge-change · source · fact · reference · moc
+                  scope-watch · knowledge-change · source · fact · reference · moc · narrative
                   intake · reconciliation            (workbench only)
 
     status        business-rule, fact, scope-boundary
@@ -142,25 +163,41 @@ Closed sets. The audit checks membership, so a value outside these is a finding.
                       proposed · accepted · needs-review · closed
                   source
                       registered · stale · superseded
+                  narrative
+                      draft · current · stale
 
     authority     1-contractual · 2-approved-requirements · 3-client-clarification
                   4-source-artifact · 5-internal-interpretation · 6-unreviewed-intake
 
-    tag prefix    rule/ · term/ · scope/ · decision · question · scope-watch · change
-                  source/ · fact/ · reference/ · moc
 
 The authority values are the default ladder, overridable per project
 ([`../patterns/authority-ladder.md`](../patterns/authority-ladder.md)).
 
 ## 6. Links and callouts
 
-**Every reference is a wikilink.** `[[ORDER-1]]` for a rule by id, `[[ORDER-1|the address freeze]]`
-when the sentence needs the words, `[[api-conventions]]` for a reference note, `![[R-001]]` to embed
-a note inside another. Never a relative path, never a copied sentence.
+**Every reference is a wikilink, and its target is always a filename.** Obsidian resolves a wikilink
+against filenames and paths — **never through `aliases`**. A bare `[[ORDER-1]]` therefore resolves
+to nothing: clicking it offers to create a new empty note. The `aliases` entry powers autocomplete
+and search, and nothing else. (Pick an alias from Obsidian's own autocomplete and watch what it
+inserts:
+`[[order-address-frozen-on-confirmation|ORDER-1]]`. That is this convention.)
+
+So one citable form, everywhere:
+
+    [[order-address-frozen-on-confirmation|ORDER-1]]        a rule, cited by id
+    [[order-address-frozen-on-confirmation|the address freeze]]   when the sentence needs the words
+    [[api-conventions]]                                     a reference note, which has no id
+    ![[one-label-per-parcel]]                               an embed; it takes no display text
+    | [[one-label-per-parcel\|LABEL-1]] |                    inside a table, the pipe is escaped
+
+Never a relative path, never a copied sentence, and never the bare id.
 
 - A wikilink that resolves to nothing is a finding, not a placeholder. The record is cited by builds
   ([`../anti-patterns/a-dangling-citation.md`](../anti-patterns/a-dangling-citation.md)).
-- Every note is reachable from the home note in one or more hops, and has at least one inbound link.
+- **Display text shaped like an id must be that note's id.** `[[one-label-per-order|LABEL-9]]` opens
+  the right note under a wrong name, so the link works and the citation lies. The lint compares them.
+- A `#heading` or `#^block` must exist in the target. The lint checks both.
+- Every note is reachable from the start note in one or more hops, and has at least one inbound link.
   An unreachable note is knowledge nobody will find
   ([`../anti-patterns/an-orphan-note.md`](../anti-patterns/an-orphan-note.md)).
 
@@ -173,14 +210,14 @@ statement itself does not say — and never to restate the status property.
     > [!todo] Needs review — inherited, source unknown
     > What is being checked and by whom.
 
-    > [!abstract] Superseded by [[LABEL-5]] — YYYY-MM-DD
+    > [!abstract] Superseded by [[one-label-per-consignment|LABEL-5]] — YYYY-MM-DD
     > The earlier understanding, with the anchor it rested on.
 
     > [!failure] Out of scope — Phase 1
     > What was considered, and where it was deferred to.
 
     > [!question] Open
-    > The part of this statement nobody has settled. See [[Q-0003]].
+    > The part of this statement nobody has settled. See [[who-may-void-a-printed-label|Q-0003]].
 
     > [!quote] Evidence
     > "the words somebody actually said"
@@ -205,7 +242,6 @@ snapshot:
   columns: [id, status, topic, sources]
   exclude-status: [superseded, rejected]
   group-by: topic
-tags: [moc]
 ---
 
 # Business Rules
@@ -219,7 +255,7 @@ What this system does, as agreed. Rules are notes in `rules/`; this note indexes
 
 | ID | Rule | Status | Sources |
 |---|---|---|---|
-| [[ORDER-1]] | Order address frozen on confirmation | confirmed | [[order-fulfilment-sow-v3]] |
+| [[order-address-frozen-on-confirmation|ORDER-1]] | Order address frozen on confirmation | confirmed | [[order-fulfilment-sow-v3]] |
 <!-- /generated -->
 ```
 

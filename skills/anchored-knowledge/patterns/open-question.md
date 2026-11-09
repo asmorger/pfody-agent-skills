@@ -13,12 +13,11 @@ type: open-question
 status: open
 owner: operations lead
 needed-by: 2026-11-20
-blocks: ["[[LABEL-2]]"]
+blocks: ["[[a-printed-label-may-be-voided|LABEL-2]]"]
 sources: ["[[operations-lead-on-label-voiding]]"]
 scope-watch: []
 created: 2026-10-21
 updated: 2026-11-08
-tags: [question]
 ---
 
 # Q-0003 — Who may void a printed label?
@@ -30,11 +29,11 @@ it. The carrier portal allows it for any authenticated account, which is not an 
 about our users.
 
 **Next.** Operations lead to confirm at the 2026-11-18 review; the answer becomes a clause on
-[[LABEL-2]].
+[[a-printed-label-may-be-voided|LABEL-2]].
 ```
 
-Answered, it keeps no answer — `status: answered`, `answered-by: ["[[LABEL-5]]"]`, and one line:
-"Answered 2026-11-19 by the operations lead; the rule is [[LABEL-5]]."
+Answered, it keeps no answer — `status: answered`, `answered-by: ["[[one-label-per-consignment|LABEL-5]]"]`, and one line:
+"Answered 2026-11-19 by the operations lead; the rule is [[one-label-per-consignment|LABEL-5]]."
 
 **Notes.**
 - **`owner` and `needed-by` are mandatory.** A question with neither cannot close, so it is an audit

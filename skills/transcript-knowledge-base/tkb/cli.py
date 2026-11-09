@@ -6,11 +6,17 @@ The lifecycle the agent (or a human) drives:
     2. <extract> — the agent reads the briefs and produces items.json
     3. merge    — fold the extracted items into the index state (dedup + provenance)
     4. render   — write the vault: one note per statement, one per meeting, one MOC
+    5. verify   — read the transcripts again and check every quote the vault claims
 
     python -m tkb.cli prepare  --folder ./Transcripts
     python -m tkb.cli merge    --items items.json
     python -m tkb.cli render   --out ./transcript-knowledge
+    python -m tkb.cli verify   --vault ./transcript-knowledge --folder ./Transcripts
     python -m tkb.cli status
+
+Step 5 is the only one that checks meaning rather than shape: an extraction that invents a quote,
+attributes it to the wrong person, or moves it to a timestamp where nobody said it passes every
+other check in this skill.
 
 All commands are thin wrappers over the library so they stay unit-testable.
 """
@@ -61,6 +67,11 @@ def build_parser() -> argparse.ArgumentParser:
     sp = sub.add_parser("render", help="Write the vault of notes", parents=[common])
     sp.add_argument("--out", default="transcript-knowledge",
                     help="vault directory (created if absent); every note in it is generated")
+
+    sp = sub.add_parser("verify", help="Check every quote in the vault against its transcript",
+                        parents=[common])
+    sp.add_argument("--vault", default="transcript-knowledge")
+    sp.add_argument("--folder", required=True, help="the transcript folder the vault was built from")
 
     sub.add_parser("status", help="Show index status", parents=[common])
 
@@ -125,6 +136,21 @@ def cmd_render(args, cfg: Config) -> None:
     _print(summary)
 
 
+def cmd_verify(args, cfg: Config) -> int:
+    from .verify import verify
+    result = verify(args.vault, args.folder)
+    _print({
+        "vault": args.vault,
+        "quotes_checked": result.checked,
+        "problems": [str(p) for p in result.problems],
+        "unchecked": [str(p) for p in result.unchecked],
+    })
+    if not result.problems:
+        print(f"ok — {result.checked} quote(s) verified against their transcripts"
+              + (f"; {len(result.unchecked)} unchecked" if result.unchecked else ""))
+    return 1 if result.problems else 0
+
+
 def cmd_status(args, cfg: Config) -> None:
     idx = _load_index(cfg)
     by_cat = {c: sum(1 for it in idx.items.values() if it.category == c) for c in idx.category_order}
@@ -140,11 +166,10 @@ def cmd_status(args, cfg: Config) -> None:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     cfg = _cfg(args)
-    {
+    return {
         "prepare": cmd_prepare, "merge": cmd_merge,
-        "render": cmd_render, "status": cmd_status,
-    }[args.command](args, cfg)
-    return 0
+        "render": cmd_render, "status": cmd_status, "verify": cmd_verify,
+    }[args.command](args, cfg) or 0
 
 
 if __name__ == "__main__":

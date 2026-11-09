@@ -75,7 +75,7 @@ vault:          true | false      # false => the skill asks before converting a 
 link_style:     wikilink          # wikilink | markdown  (an existing vault's style wins)
 query_engine:   bases             # bases (Obsidian 1.9+) | dataview | none
 snapshot:       true | false      # generated tables beneath each embed; keep true for non-Obsidian readers
-home_note:      moc/knowledge.md
+start_note:      moc/knowledge.md
 
 # Folders under docs_dir — the Reference Layer (only these may be cited downstream)
 rules:          rules/            # one note per business rule
@@ -92,7 +92,7 @@ scope_watch:    scope-watch/
 changes:        changes/
 
 # Index notes and queries
-moc:            moc/              # one MOC per note type, plus the home note
+moc:            moc/              # one MOC per note type, plus the start note
 bases:          bases/            # the .base definitions the MOCs embed
 
 # Property names — change only to match an existing vault

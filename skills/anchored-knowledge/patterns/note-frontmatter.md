@@ -10,12 +10,11 @@ both closed vocabularies are in
 ```yaml
 ---
 id: ORDER-1                 # immutable; omit on MOC and reference notes
-aliases: [ORDER-1]          # makes [[ORDER-1]] resolve; omit where there is no id
+aliases: [ORDER-1]          # autocomplete and search only; links resolve by filename
 type: business-rule         # closed vocabulary
 status: confirmed           # closed vocabulary, per type
 created: 2026-10-02
 updated: 2026-11-08
-tags: [rule/orders]         # <type-tag>/<topic>, derived from type and topic
 ---
 ```
 
@@ -31,12 +30,11 @@ topic: labels
 authority: 3-client-clarification
 sources: ["[[operations-lead-on-label-voiding]]"]
 pending-on: operations lead
-questions: ["[[Q-0003]]"]
-decisions: ["[[ADR-0004]]"]
+questions: ["[[who-may-void-a-printed-label|Q-0003]]"]
+decisions: ["[[enforce-credit-hold-at-label-creation|ADR-0004]]"]
 supersedes: []
 created: 2026-10-21
 updated: 2026-11-08
-tags: [rule/labels]
 ---
 ```
 
@@ -45,10 +43,10 @@ tags: [rule/labels]
   sequence. Quoted, Obsidian reads it as a Link and gives you the backlink and the graph edge.
 - A list property is a list even with one entry, and `[]` when empty. A Bases filter on a scalar
   that is sometimes a list silently matches nothing.
-- `tags` duplicates `type` and `topic` on purpose, and is the only duplication allowed. The
-  properties win; the tag is derived
-  ([`../principles/properties-are-the-query-surface.md`](../principles/properties-are-the-query-surface.md)).
-- **Status is never a tag and never prose.** One home, one answer
+- **There is no `tags` property.** `type` and `topic` already carry what a tag would, the Bases views
+  and MOCs group by them directly, and a hand-kept third copy of two fields is free to disagree with
+  both ([`../principles/structure-must-pay-for-itself.md`](../principles/structure-must-pay-for-itself.md)).
+- **Status is never prose.** One home, one answer
   ([`../anti-patterns/status-in-two-places.md`](../anti-patterns/status-in-two-places.md)).
 - `updated` moves on every edit; `created` never does. `confirmed`, `decided`, `identified` and
   `needed-by` are the dates that mean something to a reader, and the audit reads them

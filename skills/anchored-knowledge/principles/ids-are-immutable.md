@@ -2,7 +2,7 @@
 
 **Rule.** An id, once issued, belongs to that note forever: never reused, never renumbered, never
 deleted. A new rule takes the next free number for its topic. Gaps in the numbering are normal and
-stay. The id lives in frontmatter, with an alias so `[[ORDER-1]]` resolves — which is what frees the
+stay. The id lives in frontmatter, with an alias so `[[order-address-frozen-on-confirmation|ORDER-1]]` resolves — which is what frees the
 **title and filename** to be reworded whenever a better wording is found.
 
 **Why.** The id is the whole value of the base to everything downstream — a story's source grounding,
@@ -16,8 +16,9 @@ wording.
 - `PREFIX-N` per topic, one unique prefix per topic, declared in the config. The topic is a property,
   so moving a rule between topics never changes its id
   ([`../patterns/business-rule-note.md`](../patterns/business-rule-note.md)).
-- **Rename a title freely; never touch an `id`.** Obsidian rewrites every wikilink to a renamed note,
-  and `aliases` keeps `[[ORDER-1]]` resolving either way
+- **Rename a title freely; never touch an `id`.** Obsidian rewrites every wikilink to a renamed
+  note, including the filename half of `[[order-address-frozen-on-confirmation|ORDER-1]]`, so the
+  citation survives the rewording and still reads as `ORDER-1`
   ([`../patterns/note-frontmatter.md`](../patterns/note-frontmatter.md)).
 - Refine a rule in place. Split it when it has grown two ideas — the original keeps its id and one
   idea, the second takes a new number

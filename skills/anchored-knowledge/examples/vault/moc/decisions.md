@@ -4,7 +4,11 @@ updated: 2026-11-08
 snapshot:
   type: decision
   columns: [id, title, status, decided, summary]
-tags: [moc]
+generator: vault.py moc
+generated: 2026-11-09
+input-paths: [decisions/]
+input-manifest-sha256: 3d87dd44954d0e01543edc1261547aefcb8182126dff3b08a025c6c8f29c8ced
+managed-block-sha256: 0d3a3d2e0276c20e2c09d299ec0cda872dc2c73a8b901389875f3aa2150e2e88
 ---
 
 # Decisions
@@ -14,8 +18,8 @@ that names what it supersedes; a decision's body is never overwritten.
 
 ![[decisions.base]]
 
-<!-- generated: do not edit · 2026-11-08 -->
+<!-- generated: do not edit · 2026-11-09 -->
 | ID | Title | Status | Decided | Summary |
 |---|---|---|---|---|
-| [[ADR-0004]] | A credit hold blocks labelling | accepted | 2026-10-21 | An order on credit hold cannot be labelled; the hold is enforced at label creation. |
+| [[enforce-credit-hold-at-label-creation\|ADR-0004]] | A credit hold blocks labelling | accepted | 2026-10-21 | An order on credit hold cannot be labelled; the hold is enforced at label creation. |
 <!-- /generated -->

@@ -6,11 +6,10 @@ status: accepted
 summary: An order on credit hold cannot be labelled; the hold is enforced at label creation.
 decided: 2026-10-21
 deciders: [Example Operations Lead, Example Architect]
-prd: "[[PRD-001]]"
-requirements: ["[[R-003]]", "[[X-002]]"]
+prd: "[[shipping-labels-at-order-processing|PRD-001]]"
+requirements: ["[[refuse-a-label-on-credit-hold|R-003]]", "[[record-every-label-action|X-002]]"]
 created: 2026-10-21
 updated: 2026-10-21
-tags: [decision]
 ---
 
 # DEC-02 — A credit hold blocks labelling
@@ -22,7 +21,7 @@ A labelled parcel is treated as committed stock, so a held order was leaving bef
 payment.
 
 ## Decision
-The hold is checked at label creation, read live from finance ([[R-003]]).
+The hold is checked at label creation, read live from finance ([[refuse-a-label-on-credit-hold|R-003]]).
 
 ## Alternatives
 **Nightly reconciliation.** Rejected: a parcel can leave before the sweep runs.

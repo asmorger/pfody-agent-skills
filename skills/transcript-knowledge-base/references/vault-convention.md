@@ -31,7 +31,11 @@ dropped into the folder yourself survives.
 ## 2. The item note
 
 Filename is a slug of the statement, truncated at 72 characters on a word boundary. The id lives in
-frontmatter with a matching alias, so `[[AUTH-1]]` resolves however the statement is later reworded.
+frontmatter with a matching alias, and an item is cited as
+`[[sso-is-required-for-the-order-portal|AUTH-1]]` — filename as target, id as display text. A bare
+`[[AUTH-1]]` resolves to nothing: Obsidian matches a wikilink against filenames and paths, never
+against `aliases`. Rewording the statement renames the file, and Obsidian rewrites the target half
+of every citation, so the id keeps pointing at the right note.
 
 ```markdown
 ---
@@ -46,7 +50,6 @@ related: []
 citable: false
 created: 2026-01-16
 updated: 2026-11-08
-tags: [transcript-item/authentication]
 ---
 
 # AUTH-1 — Users authenticate via SSO through Acme ID.
@@ -92,7 +95,6 @@ content-hash: 9f2a1c4e7b0d8a63
 citable: false
 created: 2026-01-16
 updated: 2026-11-08
-tags: [meeting]
 ---
 
 # Alignment — 2026-01-15

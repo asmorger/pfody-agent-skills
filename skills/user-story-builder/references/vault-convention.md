@@ -28,16 +28,16 @@ id: US-03
 aliases: [US-03]
 type: user-story
 status: draft                  # draft | ready | published
-parent: "[[FEAT-02]]"          # the Feature; copied, never invented
+parent: "[[void-a-label|FEAT-02]]"          # the Feature; copied, never invented
 source-mode: A                 # A | B | C — and the note says so when it is not A
-sources: ["[[LABEL-2]]", "[[LABEL-3]]", "[[ADR-0004]]"]
+sources: ["[[a-printed-label-may-be-voided|LABEL-2]]", "[[bulk-printing-across-orders|LABEL-3]]", "[[enforce-credit-hold-at-label-creation|ADR-0004]]"]
 requirements: []               # R- ids when built from a PRD
 testing-complexity: Medium     # High | Medium | Low
 tracker-id:                    # filled by the publish step, never by hand
 tracker-url:
 created: 2026-11-08
 updated: 2026-11-08
-tags: [backlog/user-story, review-required]
+review-required: true
 ---
 
 # US-03 — Void a printed label
@@ -63,8 +63,12 @@ they agree ([`../principles/cite-once-per-story.md`](../principles/cite-once-per
 
 `parent` is a wikilink to the Feature, copied from the source and never invented
 ([`../anti-patterns/an-invented-parent-id.md`](../anti-patterns/an-invented-parent-id.md)). `id` goes
-in `aliases` too, so `[[US-03]]` resolves however the title is later reworded — the id is what was
-cited, not the wording.
+in `aliases` too, so searching the id finds the story however the title is later reworded — the id is
+what was cited, not the wording.
+
+Cite a story as `[[void-a-printed-label|US-03]]`: the filename is the link target and the id is the
+display text. A bare `[[void-a-printed-label-story|US-03]]` resolves to nothing, because Obsidian matches a wikilink against
+filenames and paths and never against `aliases`.
 
 A story's id is unique across the backlog. An Epic or a Feature is a note of the same shape with
 `type: epic` or `type: feature`, written only when the source has one.
@@ -78,8 +82,8 @@ that was not returned by the tracker is a claim that something was published whe
 ([`../practices/publish-to-a-tracker.md`](../practices/publish-to-a-tracker.md)).
 
 **Wikilinks do not survive the trip.** Before converting to the tracker's markup, strip the brackets:
-`[[LABEL-2]]` becomes `LABEL-2`, and `[[ORDER-1|the address freeze]]` becomes `the address freeze`.
-A tracker that renders `[[LABEL-2]]` literally is showing a reader a link that goes nowhere, and the
+`[[a-printed-label-may-be-voided|LABEL-2]]` becomes `LABEL-2`, and `[[order-address-frozen-on-confirmation|the address freeze]]` becomes `the address freeze`.
+A tracker that renders `[[a-printed-label-may-be-voided|LABEL-2]]` literally is showing a reader a link that goes nowhere, and the
 ASCII normalisation runs after this, not before
 ([`../principles/tracker-text-is-ascii.md`](../principles/tracker-text-is-ascii.md)).
 
@@ -90,5 +94,6 @@ tracker returned an id. `source-mode` records which mode produced it, so a Mode 
 visibly not Mode A in every view — not only in the sentence that announced it at the time
 ([`../principles/mode-honesty.md`](../principles/mode-honesty.md)).
 
-A story needing review carries a `review-required` tag, which is what makes "what still needs a
-person?" a query rather than a reading job.
+A story needing review carries `review-required: true` — a property, not a tag, so it is read by
+the same query surface as everything else and cannot drift from a second copy. It is what makes
+"what still needs a person?" a query rather than a reading job.

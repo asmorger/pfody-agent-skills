@@ -19,8 +19,8 @@ makes it look checked.
   ([`../patterns/the-two-trees.md`](../patterns/the-two-trees.md)).
 - Every source note carries `citable: false`, so the distinction is queryable rather than
   remembered ([`../patterns/source-note.md`](../patterns/source-note.md)).
-- The home note states the three layers. It is the only place a newcomer learns which they may cite
-  ([`../patterns/home-note.md`](../patterns/home-note.md)).
+- The start note states the three layers. It is the only place a newcomer learns which they may cite
+  ([`../patterns/start-note.md`](../patterns/start-note.md)).
 - The transcript index is registered as a supplemental source and reconciled in, never cited
   ([`transcripts-are-delegated.md`](transcripts-are-delegated.md)).
 - Keep supplemental material out of the vault entirely rather than in a folder inside it. A note that

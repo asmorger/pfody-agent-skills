@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.hasTag("requirement")
+    - note.type == "requirement"
 properties:
   note.id:
     displayName: ID

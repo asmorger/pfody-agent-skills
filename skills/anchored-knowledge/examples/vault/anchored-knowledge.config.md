@@ -29,7 +29,7 @@ folders:
   facts:          facts/
   reference:      reference/
   bases:          bases/
-home_note:        moc/knowledge.md
+start_note:        moc/knowledge.md
 query_engine:     bases                  # bases | dataview | none
 snapshot:         true                   # generated tables beneath each embed
 

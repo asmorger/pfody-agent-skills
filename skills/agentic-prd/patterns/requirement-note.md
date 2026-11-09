@@ -11,15 +11,14 @@ id: R-001
 aliases: [R-001]
 type: requirement
 status: accepted           # draft | accepted | retired
-prd: "[[PRD-001]]"
-feature: "[[FEAT-01]]"
+prd: "[[shipping-labels-at-order-processing|PRD-001]]"
+feature: "[[create-and-print-a-label|FEAT-01]]"
 priority: P0               # P0 | P1 | P2 | P3
 verify: Auto               # Auto | Manual | Eval | Telemetry
 source: SRC-01 @12:04      # SRC-nn + locator | DEC-nn | A-nn | PROPOSED
-outcomes: ["[[OUT-1]]"]
+outcomes: ["[[address-error-rate-on-parcels|OUT-1]]"]
 coverage: covered          # covered | blocked | skipped-proposed | skipped-p3 | retired
-stories: ["[[US-01]]"]
-tags: [requirement/labels]
+stories: ["[[create-a-label-for-a-confirmed-order|US-01]]"]
 ---
 
 # R-001 — When a clerk confirms an order, the system shall create a carrier label for the order's shipping address.

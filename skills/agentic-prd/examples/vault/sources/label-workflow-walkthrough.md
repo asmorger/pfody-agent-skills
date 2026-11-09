@@ -11,11 +11,10 @@ location: ../transcripts/2026-10-21-label-workflow.vtt
 citable: false
 created: 2026-10-22
 updated: 2026-10-22
-tags: [source/transcript]
 ---
 
 # Label workflow walkthrough
 
 **Illustrative example only.** Invented.
 
-**Does not cover** who is permitted to void — raised as [[Q-03]].
+**Does not cover** who is permitted to void — raised as [[who-may-void-a-printed-label|Q-03]].

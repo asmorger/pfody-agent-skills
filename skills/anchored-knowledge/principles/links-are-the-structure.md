@@ -1,9 +1,12 @@
 # Links are the structure
 
-**Rule.** Every reference between notes is a wikilink: `[[ORDER-1]]` by id, `[[ORDER-1|the address
-freeze]]` when the sentence needs words, `![[ORDER-1]]` to embed. Never a relative path, never a
-copied sentence, never a bare id in prose. A link that resolves to nothing is a finding. Every note
-has at least one inbound link and is reachable from the home note.
+**Rule.** Every reference between notes is a wikilink, and **its target is always a filename**:
+`[[order-address-frozen-on-confirmation|ORDER-1]]` to cite by id,
+`[[order-address-frozen-on-confirmation|the address freeze]]` when the sentence needs words,
+`![[order-address-frozen-on-confirmation]]` to embed. Never a relative path, never a copied
+sentence, and never a bare `[[ORDER-1]]`, which resolves to nothing
+([`a-link-targets-a-filename.md`](a-link-targets-a-filename.md)). A link that resolves to nothing is
+a finding. Every note has at least one inbound link and is reachable from the start note.
 
 **Why.** In a graph of small notes the links are the only structure there is — there is no document
 order to carry meaning, so an unlinked note is unreachable knowledge and a dangling link is a
@@ -14,14 +17,17 @@ graph does. Every list a person would otherwise maintain by hand, and let rot, i
 instead.
 
 **In the base.**
-- Cite by id; the id is an alias on the note, so `[[ORDER-1]]` resolves however the title is worded
-  ([`../patterns/note-frontmatter.md`](../patterns/note-frontmatter.md)).
+- Cite by id in the display text and by filename in the target. Obsidian rewrites the target when
+  the note is retitled, so the citation survives every rewording
+  ([`a-link-targets-a-filename.md`](a-link-targets-a-filename.md),
+  [`../patterns/note-frontmatter.md`](../patterns/note-frontmatter.md)).
 - Wikilinks in frontmatter are Link objects to Obsidian, so a property link is a graph edge too.
   Quote them: `sources: ["[[order-fulfilment-sow-v3]]"]`.
 - Embed with `![[…]]` where a reader needs the other note's words in place. Embedding is not copying
   — it resolves to whatever that note says now
-  ([`one-home-per-fact.md`](one-home-per-fact.md)).
-- Retired glossary names stay as aliases, so old references keep resolving
+  ([`facts-are-never-copied.md`](facts-are-never-copied.md)).
+- Retired glossary names stay as aliases, so the old word still finds the note in search. It does
+  not make a link to the old name resolve — renaming the file is what repairs existing links
   ([`../patterns/glossary-term-note.md`](../patterns/glossary-term-note.md)).
 - Drafts in the workbench use plain text, not wikilinks to notes that do not exist yet
   ([`../patterns/intake-entry.md`](../patterns/intake-entry.md)).

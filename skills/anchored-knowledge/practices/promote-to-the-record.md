@@ -26,8 +26,8 @@ filling with half-finished notes.
    ([`regenerate-the-mocs.md`](regenerate-the-mocs.md)).
 6. **Leave evidence where it is.** Raw sources and the transcript index stay in the workbench
    ([`../principles/two-directories-promote-to-commit.md`](../principles/two-directories-promote-to-commit.md)).
-7. **Refresh the home note's Now and Recently changed**, which are judgement rather than a query
-   ([`../patterns/home-note.md`](../patterns/home-note.md)).
+7. **Refresh the start note's Now and Recently changed**, which are judgement rather than a query
+   ([`../patterns/start-note.md`](../patterns/start-note.md)).
 8. **Report the exact ids**: added, changed, deprecated, and any `CH-`, `SW-` or `Q-` notes opened.
 9. **Commit through `git-guide`** when the record is git-managed: save as a private checkpoint naming
    those ids in the message, then publish to open a review. Never auto-commit, and never commit the

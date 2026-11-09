@@ -9,11 +9,11 @@ makes it checkable.
 ```yaml
 checks:
   empty-state: "N/A — a confirmed order always has at least one line."
-  loading-state: "[[R-007]]"
-  error-state: "[[R-002]], [[R-008]]"
-  permissions: "Gap: [[Q-03]]"
-  bad-input-and-boundaries: "[[R-009]]"
-  concurrency: "[[R-010]]"
+  loading-state: "[[show-the-label-queue|R-007]]"
+  error-state: "[[show-the-carrier-rejection-reason|R-002]], [[reprint-a-damaged-label|R-008]]"
+  permissions: "Gap: [[who-may-void-a-printed-label|Q-03]]"
+  bad-input-and-boundaries: "[[cancel-a-queued-label|R-009]]"
+  concurrency: "[[export-the-days-labels|R-010]]"
   current-records-and-data-migration: "N/A — labels did not exist before this release."
 ```
 
@@ -26,7 +26,7 @@ checks:
 - `N/A` with no reason is a blank line wearing a label, and the check says so. The reason is the
   record that somebody thought about it
   ([`../anti-patterns/a-blank-coverage-line.md`](../anti-patterns/a-blank-coverage-line.md)).
-- `Gap: [[Q-03]]` requires the question note to exist with an owner and a needed-by. A dangling gap
+- `Gap: [[who-may-void-a-printed-label|Q-03]]` requires the question note to exist with an owner and a needed-by. A dangling gap
   is caught as a dangling wikilink ([`open-question.md`](open-question.md)).
 - Filling a line from inference means an `A-xx` source on a new requirement, not a citation
   ([`../principles/implied-is-not-stated.md`](../principles/implied-is-not-stated.md)).

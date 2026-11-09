@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.hasTag("backlog")
+    - note.type == "epic" || note.type == "feature" || note.type == "user-story"
 views:
   - type: table
     name: Work items

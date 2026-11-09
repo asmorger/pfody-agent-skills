@@ -14,7 +14,7 @@ Mode A story's `sources` point at rule notes that exist in `anchored-knowledge/e
 |---|---|
 | `void-a-printed-label.md` | Mode A: `source-mode: A`, `sources` as wikilinks, every criterion carrying a rule id |
 | `export-the-days-labels.md` | Mode C: `source-mode: C`, `sources: []`, criteria tagged `[Request]`, and a callout that says so |
-| both | `tracker-id` empty, `status: draft`, a `review-required` tag — the three things that make "what still needs a person?" a query |
+| both | `tracker-id` empty, `status: draft`, `review-required: true` — the three things that make "what still needs a person?" a query |
 
 The Mode C note is the honest one to read carefully. Nothing in it is invented beyond what the user
 said, every gap went to an Assumption or an Open Question, and the mode is a property rather than a
@@ -28,6 +28,6 @@ writes `tracker-id`, `tracker-url` and `status: published` back into the note �
 later run update rather than duplicate, and lets a reviewer in the tracker get back to the sourced
 note ([`../practices/publish-to-a-tracker.md`](../practices/publish-to-a-tracker.md)).
 
-Before anything is sent, the wikilink brackets are stripped — `[[LABEL-2]]` becomes `LABEL-2` — and
+Before anything is sent, the wikilink brackets are stripped — `[[a-printed-label-may-be-voided|LABEL-2]]` becomes `LABEL-2` — and
 then the whole field is normalised to pure ASCII. In that order
 ([`../principles/tracker-text-is-ascii.md`](../principles/tracker-text-is-ascii.md)).

@@ -31,7 +31,7 @@ config.
   leave in place ([`../practices/diagnose-a-failed-run.md`](../practices/diagnose-a-failed-run.md)).
 - A tracker number is not a source tag.
 - **A source tag is a bare id, never a wikilink.** It is sent to the tracker verbatim, and a tracker
-  rendering `[[LABEL-2]]` shows a reader a link that goes nowhere. The story's `sources` property
+  rendering `[[a-printed-label-may-be-voided|LABEL-2]]` shows a reader a link that goes nowhere. The story's `sources` property
   carries the wikilinks ([`../references/vault-convention.md`](../references/vault-convention.md)).
 
 **Related.** [`acceptance-criterion.md`](acceptance-criterion.md), [`knowledge-config.md`](knowledge-config.md).

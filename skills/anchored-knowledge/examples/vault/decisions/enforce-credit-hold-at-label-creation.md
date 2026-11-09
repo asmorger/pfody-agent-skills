@@ -7,13 +7,12 @@ summary: An order on credit hold cannot be labelled; the hold is enforced at lab
 decided: 2026-10-21
 deciders: [operations lead, architect]
 confidence: high
-rules: ["[[ORDER-2]]"]
+rules: ["[[credit-hold-blocks-labelling|ORDER-2]]"]
 sources: ["[[operations-lead-on-credit-holds]]"]
 supersedes: []
 review-when: when the finance system exposes a hard-hold flag
 created: 2026-10-21
 updated: 2026-10-21
-tags: [decision]
 ---
 
 # ADR-0004 — A credit hold blocks labelling
@@ -26,7 +25,7 @@ with the carrier before finance had resolved payment.
 
 ## Decision
 
-An order on credit hold cannot be labelled. The check happens at label creation ([[ORDER-2]]),
+An order on credit hold cannot be labelled. The check happens at label creation ([[credit-hold-blocks-labelling|ORDER-2]]),
 reading the hold flag live from finance rather than from a cached order field.
 
 ## Consequences
@@ -50,4 +49,4 @@ The finance hold flag is authoritative and available synchronously.
 
 ## Related
 
-[[ORDER-2]] · [[credit-hold]] · [[operations-lead-on-credit-holds]]
+[[credit-hold-blocks-labelling|ORDER-2]] · [[credit-hold]] · [[operations-lead-on-credit-holds]]

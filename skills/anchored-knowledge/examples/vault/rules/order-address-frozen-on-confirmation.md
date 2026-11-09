@@ -9,12 +9,11 @@ sources: ["[[order-fulfilment-sow-v3]]"]
 confirmed: 2026-10-02
 created: 2026-10-02
 updated: 2026-11-08
-tags: [rule/orders]
 ---
 
 # ORDER-1 — Order address frozen on confirmation
 
 A confirmed order cannot change its `shippingAddress`. After a split, the address is frozen per
-parcel (see [[ORDER-5]]).
+parcel (see [[confirmed-order-may-split-across-parcels|ORDER-5]]).
 
-**Also** [[LABEL-1]] creates the label from this address · [[parcel]]
+**Also** [[one-label-per-parcel|LABEL-1]] creates the label from this address · [[parcel]]

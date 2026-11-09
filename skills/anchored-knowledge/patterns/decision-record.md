@@ -17,12 +17,11 @@ summary: An order on credit hold cannot be labelled; the hold is enforced at lab
 decided: 2026-10-21
 deciders: [operations lead, architect]
 confidence: high
-rules: ["[[ORDER-2]]", "[[LABEL-3]]"]
+rules: ["[[credit-hold-blocks-labelling|ORDER-2]]", "[[bulk-printing-across-orders|LABEL-3]]"]
 supersedes: []
 review-when: when the finance system exposes a hard-hold flag
 created: 2026-10-21
 updated: 2026-10-21
-tags: [decision]
 ---
 
 # ADR-0004 — A credit hold blocks labelling
@@ -32,7 +31,7 @@ Credit holds live in the finance system and are advisory there. Clerks were labe
 and a labelled parcel is treated as committed stock.
 
 ## Decision
-An order on credit hold cannot be labelled. The check happens at label creation ([[ORDER-2]]).
+An order on credit hold cannot be labelled. The check happens at label creation ([[credit-hold-blocks-labelling|ORDER-2]]).
 
 ## Consequences
 **Easier** · **Harder** — what this buys and what it costs.

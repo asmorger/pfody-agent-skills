@@ -11,20 +11,19 @@ id: FEAT-01
 aliases: [FEAT-01]
 type: feature              # epic | feature | user-story
 status: accepted
-prd: "[[PRD-001]]"
-parent: "[[EPIC-01]]"
-requirements: ["[[R-001]]", "[[R-002]]", "[[R-003]]"]
+prd: "[[shipping-labels-at-order-processing|PRD-001]]"
+parent: "[[carrier-labels-on-the-order-screen|EPIC-01]]"
+requirements: ["[[create-a-label-on-order-confirmation|R-001]]", "[[show-the-carrier-rejection-reason|R-002]]", "[[refuse-a-label-on-credit-hold|R-003]]"]
 checks:                    # the seven coverage lines — features only
   empty-state: "N/A — a confirmed order always has at least one line."
   …
-tags: [backlog/feature]
 ---
 
 # FEAT-01 — Create and print a label
 
 One job for one role: a clerk turns a confirmed order into a printed carrier label.
 
-**Stories** [[US-01]]
+**Stories** [[create-a-label-for-a-confirmed-order|US-01]]
 ```
 
 `moc/backlog.md` carries the definition of done and the generated work-item table:
@@ -32,7 +31,7 @@ One job for one role: a clerk turns a confirmed order into a printed carrier lab
 ```markdown
 ## Definition of Done for all User Stories
 
-1. DoD-1 [[X-002]] Every label action is recorded against the order with the acting user and a
+1. DoD-1 [[record-every-label-action|X-002]] Every label action is recorded against the order with the acting user and a
    timestamp.
 
 ![[backlog.base]]

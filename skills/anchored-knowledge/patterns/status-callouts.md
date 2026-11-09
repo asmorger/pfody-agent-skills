@@ -8,20 +8,20 @@ state; the callout carries what a reader must see.
 
 ```markdown
 > [!warning] Draft — pending operations lead, as of 2026-11-08
-> Confirmation expected at the 2026-11-18 review. See [[Q-0003]].
+> Confirmation expected at the 2026-11-18 review. See [[who-may-void-a-printed-label|Q-0003]].
 
 > [!todo] Needs review — inherited, source unknown
-> Adopted from the previous base with no anchor. [[Q-0007]] asks where it came from.
+> Adopted from the previous base with no anchor. [[who-signs-off-the-carrier-contract|Q-0007]] asks where it came from.
 
-> [!abstract] Superseded by [[LABEL-5]] — 2026-11-08
+> [!abstract] Superseded by [[one-label-per-consignment|LABEL-5]] — 2026-11-08
 > Earlier understanding: one label per order, anchored at [[order-fulfilment-sow-v3]] §4.2. It held
-> because splitting did not exist. See [[CH-0003]].
+> because splitting did not exist. See [[one-label-per-parcel-not-per-order|CH-0003]].
 
 > [!failure] Out of scope — Phase 1
-> Deferred to a future phase. If it returns, it arrives through [[SW-0002]].
+> Deferred to a future phase. If it returns, it arrives through [[order-splitting-across-parcels|SW-0002]].
 
 > [!question] Open
-> Who may void a printed label is unsettled. See [[Q-0003]].
+> Who may void a printed label is unsettled. See [[who-may-void-a-printed-label|Q-0003]].
 
 > [!quote] Evidence
 > "once it's submitted that address is locked"

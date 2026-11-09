@@ -12,7 +12,6 @@ location: ../transcripts/2026-10-21-label-workflow-call.vtt
 citable: false
 created: 2026-10-21
 updated: 2026-10-21
-tags: [source/transcript]
 ---
 
 # 2026-10-21 Label workflow call

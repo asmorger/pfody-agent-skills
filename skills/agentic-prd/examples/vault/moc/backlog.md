@@ -4,19 +4,23 @@ updated: 2026-11-05
 snapshot:
   type: user-story
   columns: [id, title, parent, testing-complexity]
-tags: [moc]
+generator: prd.py moc
+generated: 2026-11-09
+input-paths: [backlog/]
+input-manifest-sha256: 9590d69adc661d8aa7215d7cedd9e6f2e01aeba29828e28801cc7aa637bffc03
+managed-block-sha256: 6b33f3ef2485658b147f56f86d9cfd1602cad3772076fde787a4cf83f9210555
 ---
 
 # Backlog
 
-Epics, Features and User Stories for [[PRD-001]], one note each, each naming its parent. The PRD
+Epics, Features and User Stories for [[shipping-labels-at-order-processing|PRD-001]], one note each, each naming its parent. The PRD
 owns why and what; the tracker owns state. Nothing here carries a task or an estimate.
 
-**Epics** [[EPIC-01]] · **Features** [[FEAT-01]], [[FEAT-02]]
+**Epics** [[carrier-labels-on-the-order-screen|EPIC-01]] · **Features** [[create-and-print-a-label|FEAT-01]], [[void-a-label|FEAT-02]]
 
 ## Definition of Done for all User Stories
 
-1. DoD-1 [[X-002]] Every label action is recorded against the order with the acting user and a
+1. DoD-1 [[record-every-label-action|X-002]] Every label action is recorded against the order with the acting user and a
    timestamp.
 
 ![[backlog.base]]
@@ -24,5 +28,5 @@ owns why and what; the tracker owns state. Nothing here carries a task or an est
 <!-- generated: do not edit -->
 | ID | Title | Parent | Testing complexity |
 |---|---|---|---|
-| [[US-01]] | Create a label for a confirmed order | [[FEAT-01]] | Medium |
+| [[create-a-label-for-a-confirmed-order\|US-01]] | Create a label for a confirmed order | [[create-and-print-a-label\|FEAT-01]] | Medium |
 <!-- /generated -->

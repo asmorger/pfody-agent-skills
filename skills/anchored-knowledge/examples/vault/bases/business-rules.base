@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.hasTag("rule")
+    - note.type == "business-rule"
     - 'note.status != "superseded"'
     - 'note.status != "rejected"'
 properties:

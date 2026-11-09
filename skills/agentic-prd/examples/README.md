@@ -11,7 +11,7 @@ numbers — and it is the fixture the bundled script is tested against. It share
 
 | Look at | To see |
 |---|---|
-| `prd/shipping-labels-at-order-processing.md` | the hub: prose for intent, scope and agent boundaries, `![[OUT-1]]` and `![[EPIC-01]]` embedded rather than summarised |
+| `prd/shipping-labels-at-order-processing.md` | the hub: prose for intent, scope and agent boundaries, `![[address-error-rate-on-parcels]]` and `![[carrier-labels-on-the-order-screen]]` embedded rather than summarised |
 | `requirements/create-a-label-on-order-confirmation.md` | a requirement note — the statement is the H1, everything else is a property |
 | `requirements/void-a-printed-label.md` | `coverage: blocked`, with the question that blocks it |
 | `requirements/one-label-per-order.md` | retired in place: the id and the note stay forever |

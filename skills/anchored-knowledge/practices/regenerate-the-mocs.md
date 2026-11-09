@@ -25,9 +25,9 @@ lines above it.
    note you did not mean to change.
 4. **Never fix a table by editing it.** Change the note, or change the `snapshot` spec, and
    regenerate ([`../anti-patterns/a-generated-table-edited-by-hand.md`](../anti-patterns/a-generated-table-edited-by-hand.md)).
-5. **Refresh the home note by hand.** `Now` and `Recently changed` are judgement, not a query —
+5. **Refresh the start note by hand.** `Now` and `Recently changed` are judgement, not a query —
    which is why they are the only tables in the vault a person writes
-   ([`../patterns/home-note.md`](../patterns/home-note.md)).
+   ([`../patterns/start-note.md`](../patterns/start-note.md)).
 6. **No interpreter?** Say so and stop. Hand-writing a snapshot is how the drift starts, and a MOC
    with a stale snapshot and no generator is a MOC nobody can trust again
    ([`../principles/properties-are-the-query-surface.md`](../principles/properties-are-the-query-surface.md)).
@@ -35,5 +35,5 @@ lines above it.
    ([`promote-to-the-record.md`](promote-to-the-record.md)).
 
 **Done when** the lint is clean or its findings are reported, every `snapshot` block matches the
-notes, the home note's `Now` reflects what is actually open, and nothing between the markers was
+notes, the start note's `Now` reflects what is actually open, and nothing between the markers was
 written by hand.

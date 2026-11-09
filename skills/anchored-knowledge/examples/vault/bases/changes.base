@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.hasTag("change")
+    - note.type == "knowledge-change"
 views:
   - type: table
     name: Recent shifts

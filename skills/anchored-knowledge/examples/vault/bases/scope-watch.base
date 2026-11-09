@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.hasTag("scope-watch")
+    - note.type == "scope-watch"
 views:
   - type: table
     name: Open watch items

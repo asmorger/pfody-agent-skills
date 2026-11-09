@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.hasTag("source")
+    - note.type == "source"
 views:
   - type: table
     name: By authority

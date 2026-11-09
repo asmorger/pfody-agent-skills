@@ -38,7 +38,10 @@ def render_vault(idx: KnowledgeIndex, out_dir: str) -> dict:
     previous = _read_manifest(out_dir)
 
     meetings = _meeting_notes(idx)
-    items = _item_notes(idx, meetings)
+    # Filenames first, because a citation's target is a filename: an item cannot be linked until
+    # the note that holds it has a name. Both the item notes and the MOC cite from this one map.
+    stems = _item_stems(idx)
+    items = _item_notes(idx, meetings, stems)
     written: list[str] = []
 
     for rel, body in sorted(meetings_payload(idx, meetings, today).items()):
@@ -49,7 +52,7 @@ def render_vault(idx: KnowledgeIndex, out_dir: str) -> dict:
     moc_rel = "moc/" + _slug(idx.title or "transcript knowledge") + ".md"
     base_rel = "bases/" + _slug(idx.title or "transcript knowledge") + ".base"
     written.append(_write(out_dir, base_rel, _base_definition()))
-    written.append(_write(out_dir, moc_rel, _moc_note(idx, today, base_rel)))
+    written.append(_write(out_dir, moc_rel, _moc_note(idx, today, base_rel, stems)))
 
     removed = _prune(out_dir, previous, written)
     _write_manifest(out_dir, written)
@@ -119,8 +122,7 @@ def meetings_payload(idx: KnowledgeIndex, stems: dict[tuple, str], today: str) -
             "citable": "false",
             "created": today,
             "updated": today,
-            "tags": ["meeting"],
-        }
+            }
         body = [
             f"# {name}" + (f" — {date}" if date else ""),
             "",
@@ -139,18 +141,41 @@ def meetings_payload(idx: KnowledgeIndex, stems: dict[tuple, str], today: str) -
 # ---------------------------------------------------------------------------- #
 # Items
 # ---------------------------------------------------------------------------- #
-def _item_notes(idx: KnowledgeIndex, meetings: dict[tuple, str]) -> dict[str, str]:
-    out: dict[str, str] = {}
+def _item_stems(idx: KnowledgeIndex) -> dict[str, str]:
+    """id -> note filename, assigned once so every citation of an item agrees on its target."""
     used: set[str] = set()
+    stems: dict[str, str] = {}
+    for item in sorted(idx.items.values(), key=lambda i: _sort_key(i.id)):
+        stems[item.id] = _unique(_slug(item.statement) or item.id.lower(), used)
+    return stems
+
+
+def _cite(ident: str, stems: dict[str, str], table: bool = False) -> str:
+    """An id as a link Obsidian resolves: filename as target, id as display text.
+
+    Obsidian matches a wikilink against filenames and paths, never against `aliases`, so a bare
+    `[[AUTH-1]]` opens a new empty note however faithfully the alias is written. In a table cell
+    the pipe has to be escaped or it ends the column.
+    """
+    stem = stems.get(ident)
+    if not stem:
+        return ident
+    return f"[[{stem}\\|{ident}]]" if table else f"[[{stem}|{ident}]]"
+
+
+def _item_notes(idx: KnowledgeIndex, meetings: dict[tuple, str],
+                stems: dict[str, str]) -> dict[str, str]:
+    out: dict[str, str] = {}
     by_id = {it.id: it for it in idx.items.values()}
     for item in sorted(idx.items.values(), key=lambda i: _sort_key(i.id)):
-        stem = _unique(_slug(item.statement) or item.id.lower(), used)
-        out[f"items/{stem}.md"] = _item_note(item, meetings, by_id, used_stem=stem)
+        stem = stems[item.id]
+        out[f"items/{stem}.md"] = _item_note(item, meetings, by_id, used_stem=stem, stems=stems)
     return out
 
 
 def _item_note(item: KnowledgeItem, meetings: dict[tuple, str],
-               by_id: dict[str, KnowledgeItem], used_stem: str) -> str:
+               by_id: dict[str, KnowledgeItem], used_stem: str,
+               stems: dict[str, str]) -> str:
     sources = sorted({meetings[(s.meeting, s.date)]
                       for s in item.sources if s.meeting and (s.meeting, s.date) in meetings})
     meta = {
@@ -160,12 +185,11 @@ def _item_note(item: KnowledgeItem, meetings: dict[tuple, str],
         "status": item.status,
         "category": item.category,
         "sources": [f"[[{s}]]" for s in sources],
-        "supersedes": [f"[[{s}]]" for s in item.supersedes],
-        "related": [f"[[{r}]]" for r in item.related],
+        "supersedes": [_cite(s, stems) for s in item.supersedes],
+        "related": [_cite(r, stems) for r in item.related],
         "citable": "false",
         "created": "",          # filled by _write from the existing file, or today
         "updated": "",
-        "tags": [f"transcript-item/{_slug(item.category) or 'general'}"],
     }
     body = [f"# {item.id} — {item.statement}", ""]
     if item.status != "confirmed" or item.note:
@@ -177,7 +201,7 @@ def _item_note(item: KnowledgeItem, meetings: dict[tuple, str],
         if item.note:
             body += [f"> {item.note}"]
         if item.supersedes:
-            body += ["> Supersedes " + ", ".join(f"[[{s}]]" for s in item.supersedes) + "."]
+            body += ["> Supersedes " + ", ".join(_cite(s, stems) for s in item.supersedes) + "."]
         body += [""]
     for s in item.sources:
         if not s.quote:
@@ -188,19 +212,18 @@ def _item_note(item: KnowledgeItem, meetings: dict[tuple, str],
         stamp = f" {s.timestamp}" if s.timestamp else ""
         body += ["> [!quote] Evidence", f'> "{s.quote.strip()}"', f"> — {who}, {cite}{stamp}", ""]
     if item.related:
-        body += ["**Also** " + " · ".join(f"[[{r}]]" for r in item.related)]
+        body += ["**Also** " + " · ".join(_cite(r, stems) for r in item.related)]
     return _note(meta, body)
 
 
 # ---------------------------------------------------------------------------- #
 # MOC and Bases
 # ---------------------------------------------------------------------------- #
-def _moc_note(idx: KnowledgeIndex, today: str, base_rel: str) -> str:
+def _moc_note(idx: KnowledgeIndex, today: str, base_rel: str, stems: dict[str, str]) -> str:
     meta = {
         "type": "moc",
         "updated": today,
         "transcripts": len(idx.ingested_files),
-        "tags": ["moc"],
     }
     body = [f"# {idx.title}", ""]
     if idx.intro:
@@ -228,8 +251,8 @@ def _moc_note(idx: KnowledgeIndex, today: str, base_rel: str) -> str:
         body += [f"### {category}", "", "| ID | Statement | Status | Sources |", "|---|---|---|---|"]
         for it in rows:
             srcs = sorted({f"[[{m}]]" for m in _item_meeting_stems(it, idx)})
-            body.append(f"| [[{it.id}]] | {_cell(it.statement)} | {it.status} | "
-                        f"{' · '.join(srcs) or '—'} |")
+            body.append(f"| {_cite(it.id, stems, table=True)} | {_cell(it.statement)} | "
+                        f"{it.status} | {' · '.join(srcs) or '—'} |")
         body.append("")
     body.append(GEN_CLOSE)
     return _note(meta, body)

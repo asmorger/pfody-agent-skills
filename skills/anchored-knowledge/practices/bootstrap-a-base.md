@@ -29,12 +29,12 @@ decidable.
    ([`../patterns/business-rule-note.md`](../patterns/business-rule-note.md)).
 8. **Capture every unknown as an open question**, each with an owner and a needed-by
    ([`../patterns/open-question.md`](../patterns/open-question.md)).
-9. **Write the home note and one MOC per type**, with a `.base` beside each, so a newcomer learns
-   which notes they may cite ([`../patterns/home-note.md`](../patterns/home-note.md),
+9. **Write the start note and one MOC per type**, with a `.base` beside each, so a newcomer learns
+   which notes they may cite ([`../patterns/start-note.md`](../patterns/start-note.md),
    [`../patterns/moc-note.md`](../patterns/moc-note.md),
    [`../references/bases.md`](../references/bases.md)).
 10. **Lint, regenerate, and report what is still draft.** Define review cadence and ownership in the
-    config or the home note ([`regenerate-the-mocs.md`](regenerate-the-mocs.md)).
+    config or the start note ([`regenerate-the-mocs.md`](regenerate-the-mocs.md)).
 
 **Done when** both trees exist, the config records the locations, the baseline source and the id
 scheme, every seeded rule is anchored or dated-`Draft`, every unknown is a question with an owner, and

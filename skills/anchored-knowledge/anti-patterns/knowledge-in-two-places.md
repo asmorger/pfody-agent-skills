@@ -16,5 +16,5 @@ the decision holds the reasoning and the rule cites it. Where a reader genuinely
 note's words in place, **embed** it — `![[ORDER-1]]` resolves to whatever that note says now, which
 is the opposite of a copy. When a statement seems to belong in two notes it is usually two statements
 — a *what* and a *how* — and they get split, not copied
-([`../principles/one-home-per-fact.md`](../principles/one-home-per-fact.md),
+([`../principles/facts-are-never-copied.md`](../principles/facts-are-never-copied.md),
 [`../patterns/reference-note.md`](../patterns/reference-note.md)).

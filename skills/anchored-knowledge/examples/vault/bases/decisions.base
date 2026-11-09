@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.hasTag("decision")
+    - note.type == "decision"
 views:
   - type: table
     name: All decisions

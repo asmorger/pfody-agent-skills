@@ -16,5 +16,5 @@ it.
 status, source and dates, and the notes cross-link. The grouping you wanted is a property — `topic:
 labels` — and the view of it is the MOC, which costs nothing to maintain. Where the long content is
 genuinely one thing, a field map or a state machine, it is a reference note and the rules link to it
-([`../principles/one-note-one-fact.md`](../principles/one-note-one-fact.md),
+([`../principles/one-fact-per-note.md`](../principles/one-fact-per-note.md),
 [`../patterns/reference-note.md`](../patterns/reference-note.md)).

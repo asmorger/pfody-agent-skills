@@ -11,11 +11,10 @@ and the designated home for everything a rule note must not carry.
 type: reference
 topic: api
 status: confirmed
-governs: ["[[LABEL-2]]"]
-decisions: ["[[ADR-0003]]"]
+governs: ["[[a-printed-label-may-be-voided|LABEL-2]]"]
+decisions: ["[[keep-a-void-window-on-printed-labels|ADR-0003]]"]
 created: 2026-10-02
 updated: 2026-11-08
-tags: [reference/api]
 ---
 
 # API Conventions
@@ -26,11 +25,11 @@ How this project shapes its HTTP surface, so a reviewer and an agent reach the s
 Resources are plural nouns; actions are verbs on a sub-path.
 
 ## Error responses
-Every failure returns the carrier's own reason text where one exists ([[LABEL-2]]).
+Every failure returns the carrier's own reason text where one exists ([[a-printed-label-may-be-voided|LABEL-2]]).
 ```
 
 `docs/reference/order-data-mapping.md` is the same shape holding a field map, a state machine or a message
-contract — the mechanics that [[LABEL-1]] links to rather than stating.
+contract — the mechanics that [[one-label-per-parcel|LABEL-1]] links to rather than stating.
 
 **Notes.**
 - **No id, and cited by name**: `[[api-conventions]]`. These notes are Reference Layer and citable,
@@ -39,13 +38,13 @@ contract — the mechanics that [[LABEL-1]] links to rather than stating.
   in a sentence is two notes.
 - **Rules say what the system does; convention notes say how the team builds it.** A statement that
   fits both is split between them, never duplicated
-  ([`../principles/one-home-per-fact.md`](../principles/one-home-per-fact.md)).
+  ([`../principles/facts-are-never-copied.md`](../principles/facts-are-never-copied.md)).
 - When a rule needs long mechanics, the mechanics come here and the rule links. The rule stays one
   testable sentence ([`business-rule-note.md`](business-rule-note.md)).
 - `governs` lists the rules that depend on this note, so the rule and its mechanics find each other
   from either end.
 - Multiple `##` headings are expected here and nowhere else in the record
-  ([`../principles/one-note-one-fact.md`](../principles/one-note-one-fact.md)).
+  ([`../principles/one-fact-per-note.md`](../principles/one-fact-per-note.md)).
 - Supporting material — raw exports, examples, meeting recordings — is **not** this. It stays in the
   workbench and is registered as a source
   ([`../principles/only-the-reference-layer-is-citable.md`](../principles/only-the-reference-layer-is-citable.md)).

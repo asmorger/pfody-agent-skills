@@ -10,7 +10,7 @@ bundled script is tested against.
 
 | Look at | To see |
 |---|---|
-| `moc/knowledge.md` | the home note: what may be cited, the baseline, what is open now |
+| `moc/knowledge.md` | the start note: what may be cited, the baseline, what is open now |
 | `moc/business-rules.md` | a MOC: prose, an embedded Bases view, and a generated snapshot |
 | `rules/order-address-frozen-on-confirmation.md` | a confirmed rule — twelve lines, no callout needed |
 | `rules/confirmed-order-may-split-across-parcels.md` | a draft, with the stakeholder and date that can close it |

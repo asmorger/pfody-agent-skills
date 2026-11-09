@@ -11,7 +11,6 @@ type: moc
 updated: 2026-11-05
 snapshot:
   type: coverage
-tags: [moc]
 ---
 
 # Coverage

@@ -15,7 +15,6 @@ snapshot:
   columns: [id, title, status, sources]
   exclude-status: [superseded, rejected]
   group-by: topic
-tags: [moc]
 ---
 
 # Business Rules
@@ -50,11 +49,11 @@ What this system does, as agreed. Each rule is a note in `rules/`; this note ind
   ([`../anti-patterns/a-generated-table-edited-by-hand.md`](../anti-patterns/a-generated-table-edited-by-hand.md)).
 - Prose above the embed is not generated, and is where the MOC earns its place: what the baseline is,
   what a reader may cite, what the views are for. Keep it to a few lines
-  ([`../principles/one-home-per-fact.md`](../principles/one-home-per-fact.md)).
+  ([`../principles/facts-are-never-copied.md`](../principles/facts-are-never-copied.md)).
 - The snapshot exists for the readers who are not in Obsidian — a reviewer on GitHub, an agent, a
   diff — and for a vault on a version without Bases. It is not a fallback for a missing query; both
   are written every time.
-- One MOC per note type, plus the home note ([`home-note.md`](home-note.md)).
+- One MOC per note type, plus the start note ([`start-note.md`](start-note.md)).
 
 **Related.** [`../references/bases.md`](../references/bases.md),
 [`note-frontmatter.md`](note-frontmatter.md), [`the-two-trees.md`](the-two-trees.md).

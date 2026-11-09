@@ -10,7 +10,6 @@ questions: ["[[who-may-void-a-printed-label|Q-0003]]"]
 confirmed: 2026-10-21
 created: 2026-10-21
 updated: 2026-11-08
-tags: [rule/labels]
 ---
 
 # LABEL-2 — A printed label may be voided

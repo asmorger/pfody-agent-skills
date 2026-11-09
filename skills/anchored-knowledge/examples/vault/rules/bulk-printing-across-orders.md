@@ -9,7 +9,6 @@ sources: ["[[order-fulfilment-sow-v3]]"]
 scope-watch: ["[[order-splitting-across-parcels|SW-0002]]"]
 created: 2026-10-02
 updated: 2026-10-02
-tags: [rule/labels]
 ---
 
 # LABEL-3 — Bulk printing across orders

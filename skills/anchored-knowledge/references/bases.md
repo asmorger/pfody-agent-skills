@@ -11,7 +11,8 @@ exists.
 
 Schema reminders, because they are easy to get wrong: top-level keys are `filters`, `formulas`,
 `properties`, `summaries` and `views`. A frontmatter property is referenced bare (`status`) or as
-`note.status`. `file.hasTag("rule")` matches nested tags such as `#rule/orders`. A comparison is a
+`note.status`. Filter by `note.type`, not by a tag — this convention has no `tags`
+([`vault-convention.md`](vault-convention.md) §4). A comparison is a
 YAML string — single-quote it when it contains double quotes. **There is no documented `sort` key**;
 order columns with `order`, and group with `groupBy`.
 
@@ -20,7 +21,7 @@ order columns with `order`, and group with `groupBy`.
 ```yaml
 filters:
   and:
-    - file.hasTag("rule")
+    - note.type == "business-rule"
     - 'note.status != "superseded"'
     - 'note.status != "rejected"'
 properties:
@@ -77,7 +78,7 @@ and out of the way of the live rules.
 ```yaml
 filters:
   and:
-    - file.hasTag("question")
+    - note.type == "open-question"
 properties:
   note.needed-by:
     displayName: Needed by
@@ -125,7 +126,7 @@ a gap rather than hidden as a tidy row.
 ```yaml
 filters:
   and:
-    - file.hasTag("source")
+    - note.type == "source"
 views:
   - type: table
     name: By authority
@@ -157,7 +158,7 @@ levels 5 and 6 is a record nobody has confirmed
 ```yaml
 filters:
   and:
-    - file.hasTag("decision")
+    - note.type == "decision"
 views:
   - type: table
     name: All decisions
@@ -183,7 +184,7 @@ views:
 ```yaml
 filters:
   and:
-    - file.hasTag("scope")
+    - note.type == "scope-boundary"
 views:
   - type: table
     name: Boundaries
@@ -206,7 +207,7 @@ quotable in a scope conversation without anybody maintaining an outline
 ```yaml
 filters:
   and:
-    - file.hasTag("scope-watch")
+    - note.type == "scope-watch"
 views:
   - type: table
     name: Open watch items
@@ -225,7 +226,7 @@ views:
 ```yaml
 filters:
   and:
-    - file.hasTag("change")
+    - note.type == "knowledge-change"
 views:
   - type: table
     name: Recent shifts
@@ -242,7 +243,7 @@ views:
 ```yaml
 filters:
   and:
-    - file.hasTag("term")
+    - note.type == "glossary-term"
 views:
   - type: table
     name: Terms

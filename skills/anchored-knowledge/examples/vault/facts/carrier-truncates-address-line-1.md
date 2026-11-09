@@ -11,7 +11,6 @@ sources: ["[[carrier-api-reference]]"]
 rules: ["[[one-label-per-parcel|LABEL-1]]"]
 created: 2026-11-08
 updated: 2026-11-08
-tags: [fact/labels]
 ---
 
 # K-0001 — The carrier truncates address line 1 at 35 characters

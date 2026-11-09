@@ -3,7 +3,7 @@
 **Use when** the sources do not answer something the PRD needs. One note per question in
 `questions/` — the one shape a gap is allowed to take. Same note type and folder as
 `anchored-knowledge` uses, because a PRD's gap is a question the project needs answered, and two
-question registers is the failure the one-home rule exists to prevent.
+question registers is the failure the never-copy rule exists to prevent.
 
 **Skeleton.** `questions/who-may-void-a-printed-label.md`
 
@@ -18,7 +18,6 @@ needed-by: 2026-11-20      # mandatory — a date, or a gate name in a draft
 blocks: ["[[void-a-printed-label|R-012]]", "[[void-a-label|FEAT-02]]"]
 prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 answered-by: []
-tags: [question]
 ---
 
 # Q-03 — Who may void a printed label — any clerk, or a supervisor?

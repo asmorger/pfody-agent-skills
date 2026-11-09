@@ -9,7 +9,7 @@ contract for the shared parts: frontmatter as the query surface, wikilinks as th
 callout vocabulary, and the MOC's `<!-- generated -->` markers. This file is the part specific to a
 PRD. Where both skills write the same kind of note — an open question, a decision, a source — they
 write **the same note**, in the same folder, with the same type. A PRD's gap is a question the
-project needs answered; two question registers is the failure the one-home rule exists to prevent.
+project needs answered; two question registers is the failure the never-copy rule exists to prevent.
 
 ## 1. Folder map
 
@@ -69,7 +69,6 @@ coverage: covered         # covered | blocked | skipped-proposed | skipped-p3 | 
 stories: ["[[create-a-label-for-a-confirmed-order|US-01]]"]    # required when coverage is covered
 questions: ["[[who-may-void-a-printed-label|Q-03]]"]   # required when coverage is blocked
 superseded-by: "[[notify-on-carrier-outage|R-011]]"  # when status is retired
-tags: [requirement/labels]
 ```
 
 The **statement is the H1**, in one of the five patterns, and appears nowhere else:

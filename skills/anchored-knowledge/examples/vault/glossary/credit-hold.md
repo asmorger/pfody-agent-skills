@@ -8,7 +8,6 @@ governed-by: ["[[credit-hold-blocks-labelling|ORDER-2]]"]
 sources: ["[[operations-lead-on-credit-holds]]"]
 created: 2026-10-21
 updated: 2026-10-21
-tags: [term/core-concepts]
 ---
 
 # Credit hold

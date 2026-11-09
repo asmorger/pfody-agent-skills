@@ -9,7 +9,6 @@ requirements: ["[[create-a-label-on-order-confirmation|R-001]]", "[[show-the-car
 testing-complexity: Medium
 created: 2026-10-02
 updated: 2026-11-05
-tags: [backlog/user-story]
 ---
 
 # US-01 — Create a label for a confirmed order

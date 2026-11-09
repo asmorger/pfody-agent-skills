@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.hasTag("scope")
+    - note.type == "scope-boundary"
 views:
   - type: table
     name: Boundaries

@@ -19,7 +19,6 @@ source: SRC-01 @12:04      # SRC-nn + locator | DEC-nn | A-nn | PROPOSED
 outcomes: ["[[address-error-rate-on-parcels|OUT-1]]"]
 coverage: covered          # covered | blocked | skipped-proposed | skipped-p3 | retired
 stories: ["[[create-a-label-for-a-confirmed-order|US-01]]"]
-tags: [requirement/labels]
 ---
 
 # R-001 — When a clerk confirms an order, the system shall create a carrier label for the order's shipping address.

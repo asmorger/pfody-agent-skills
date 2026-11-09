@@ -11,7 +11,6 @@ affects: ["[[one-label-per-parcel|LABEL-1]]", "[[one-label-per-order|LABEL-4]]",
 owner: delivery lead
 created: 2026-11-08
 updated: 2026-11-08
-tags: [change]
 ---
 
 # CH-0003 — One label per parcel, not per order

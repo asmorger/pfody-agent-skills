@@ -103,7 +103,10 @@ class TestVaultRender(unittest.TestCase):
         self.assertIn("type: transcript-item", note)
         self.assertIn("status: confirmed", note)
         self.assertIn("citable: false", note)
-        self.assertIn('tags: [transcript-item/authentication-access]', note)
+        # No `tags`: `type` and `category` already carry what the tag encoded, and a hand-kept
+        # third copy of two fields is free to disagree with both.
+        self.assertNotIn("tags:", note)
+        self.assertIn('category: "Authentication & Access"', note)
         # the source is a quoted wikilink to the meeting note, so Obsidian reads it as a link
         self.assertIn('sources: ["[[2026-01-15-alignment]]"]', note)
         self.assertIn("# AUTH-1 — Users authenticate via SSO through Acme ID.", note)

@@ -5,7 +5,7 @@ error rate down to about 1.5%" — beside an `OUT-1` note that holds the baselin
 denominator and the window. Section 4 lists the requirements in prose. Section 7 has a table of
 sources that also exist as notes. Each summary is shorter and reads more easily than the embed would.
 
-**Why it is wrong.** It is the one-home rule broken in the one document everybody reads. The summary
+**Why it is wrong.** It is the never-copy rule broken in the one document everybody reads. The summary
 and the note will diverge — the note gets the correction because it is what the check and the
 coverage table read, and the hub keeps the old number because nobody re-reads prose they wrote. Then
 a cold reader, which is exactly who the hub exists for, takes the number from the hub. The failure is

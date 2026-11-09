@@ -17,7 +17,6 @@ requirements: ["[[create-a-label-on-order-confirmation|R-001]]", "[[show-the-car
 checks:                    # the seven coverage lines — features only
   empty-state: "N/A — a confirmed order always has at least one line."
   …
-tags: [backlog/feature]
 ---
 
 # FEAT-01 — Create and print a label

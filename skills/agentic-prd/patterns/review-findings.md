@@ -14,7 +14,6 @@ version: 0.4
 checked: 2026-11-08
 errors: 0           # and warnings: 4
 verdict: not-ready
-tags: [prd-review]
 ---
 # Review of [[shipping-labels-at-order-processing|PRD-001]], version 0.4
 

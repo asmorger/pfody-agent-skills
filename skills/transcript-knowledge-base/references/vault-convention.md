@@ -50,7 +50,6 @@ related: []
 citable: false
 created: 2026-01-16
 updated: 2026-11-08
-tags: [transcript-item/authentication]
 ---
 
 # AUTH-1 — Users authenticate via SSO through Acme ID.
@@ -96,7 +95,6 @@ content-hash: 9f2a1c4e7b0d8a63
 citable: false
 created: 2026-01-16
 updated: 2026-11-08
-tags: [meeting]
 ---
 
 # Alignment — 2026-01-15

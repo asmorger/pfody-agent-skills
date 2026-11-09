@@ -14,7 +14,7 @@ Mode A story's `sources` point at rule notes that exist in `anchored-knowledge/e
 |---|---|
 | `void-a-printed-label.md` | Mode A: `source-mode: A`, `sources` as wikilinks, every criterion carrying a rule id |
 | `export-the-days-labels.md` | Mode C: `source-mode: C`, `sources: []`, criteria tagged `[Request]`, and a callout that says so |
-| both | `tracker-id` empty, `status: draft`, a `review-required` tag — the three things that make "what still needs a person?" a query |
+| both | `tracker-id` empty, `status: draft`, `review-required: true` — the three things that make "what still needs a person?" a query |
 
 The Mode C note is the honest one to read carefully. Nothing in it is invented beyond what the user
 said, every gap went to an Assumption or an Open Question, and the mode is a property rather than a

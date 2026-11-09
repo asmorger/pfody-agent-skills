@@ -16,7 +16,6 @@ checks:
   current-records-and-data-migration: "N/A — no labels predate this release."
 created: 2026-10-21
 updated: 2026-11-05
-tags: [backlog/feature]
 ---
 
 # FEAT-02 — Void a label

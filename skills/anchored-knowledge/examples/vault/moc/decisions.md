@@ -4,11 +4,10 @@ updated: 2026-11-08
 snapshot:
   type: decision
   columns: [id, title, status, decided, summary]
-tags: [moc]
 generator: vault.py moc
 generated: 2026-11-09
 input-paths: [decisions/]
-input-manifest-sha256: 2bd94c687bf4a485b52ecb8de8f99dcf4715102d09c4f003a1ed5cc4f8f9ca5b
+input-manifest-sha256: 3d87dd44954d0e01543edc1261547aefcb8182126dff3b08a025c6c8f29c8ced
 managed-block-sha256: 0d3a3d2e0276c20e2c09d299ec0cda872dc2c73a8b901389875f3aa2150e2e88
 ---
 

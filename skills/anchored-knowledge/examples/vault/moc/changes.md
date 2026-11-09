@@ -4,11 +4,10 @@ updated: 2026-11-08
 snapshot:
   type: knowledge-change
   columns: [id, title, change-type, identified, affects]
-tags: [moc]
 generator: vault.py moc
 generated: 2026-11-09
 input-paths: [changes/]
-input-manifest-sha256: dbd27dc487bdba2da180479367534c5a79fc53f6545b812ad9fce94f7009195c
+input-manifest-sha256: 53b3262b11fc6af199b9404045377c254e57cce8f1888a458fdd53e84a25d919
 managed-block-sha256: 41fae42f489341405797d27c62451bf20c19ff127f76ba501b442bad66268b13
 ---
 

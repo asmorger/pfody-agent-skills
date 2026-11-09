@@ -3,7 +3,6 @@ type: moc
 updated: 2026-11-08
 review-cadence: weekly during discovery; on-change in build; full audit at handoff
 owner: delivery lead
-tags: [moc]
 ---
 
 # Knowledge

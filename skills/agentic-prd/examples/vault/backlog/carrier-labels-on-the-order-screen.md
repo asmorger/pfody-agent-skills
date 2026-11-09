@@ -8,7 +8,6 @@ parent: "[[shipping-labels-at-order-processing|PRD-001]]"
 outcomes: ["[[address-error-rate-on-parcels|OUT-1]]"]
 created: 2026-10-02
 updated: 2026-11-05
-tags: [backlog/epic]
 ---
 
 # EPIC-01 — Shipping labels at order processing

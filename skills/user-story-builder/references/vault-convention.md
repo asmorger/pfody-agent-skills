@@ -37,7 +37,7 @@ tracker-id:                    # filled by the publish step, never by hand
 tracker-url:
 created: 2026-11-08
 updated: 2026-11-08
-tags: [backlog/user-story, review-required]
+review-required: true
 ---
 
 # US-03 — Void a printed label
@@ -94,5 +94,6 @@ tracker returned an id. `source-mode` records which mode produced it, so a Mode 
 visibly not Mode A in every view — not only in the sentence that announced it at the time
 ([`../principles/mode-honesty.md`](../principles/mode-honesty.md)).
 
-A story needing review carries a `review-required` tag, which is what makes "what still needs a
-person?" a query rather than a reading job.
+A story needing review carries `review-required: true` — a property, not a tag, so it is read by
+the same query surface as everything else and cannot drift from a second copy. It is what makes
+"what still needs a person?" a query rather than a reading job.

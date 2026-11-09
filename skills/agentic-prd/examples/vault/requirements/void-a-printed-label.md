@@ -12,7 +12,6 @@ coverage: blocked
 questions: ["[[who-may-void-a-printed-label|Q-03]]"]
 created: 2026-10-21
 updated: 2026-11-05
-tags: [requirement/labels]
 ---
 
 # R-012 — When an authorised user voids a printed label, the system shall return the order to the unlabelled state.

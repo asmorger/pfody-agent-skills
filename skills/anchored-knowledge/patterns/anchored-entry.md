@@ -20,7 +20,6 @@ sources: ["[[carrier-api-reference]]"]
 rules: ["[[one-label-per-parcel|LABEL-1]]"]
 created: 2026-11-08
 updated: 2026-11-08
-tags: [fact/labels]
 ---
 
 # K-0001 — The carrier truncates address line 1 at 35 characters
@@ -42,7 +41,7 @@ validate length before the request. Mechanics: [[order-data-mapping]].
 - Facts are Reference Layer and citable by id, like rules
   ([`../principles/only-the-reference-layer-is-citable.md`](../principles/only-the-reference-layer-is-citable.md)).
 - If two facts start overlapping, one of them wanted to be a rule
-  ([`../principles/one-home-per-fact.md`](../principles/one-home-per-fact.md)).
+  ([`../principles/facts-are-never-copied.md`](../principles/facts-are-never-copied.md)).
 
 **Related.** [`business-rule-note.md`](business-rule-note.md),
 [`reference-note.md`](reference-note.md).

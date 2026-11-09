@@ -16,7 +16,6 @@ status: confirmed
 governed-by: ["[[one-label-per-parcel|LABEL-1]]"]
 created: 2026-10-02
 updated: 2026-11-08
-tags: [term/core-concepts]
 ---
 
 # Parcel
@@ -36,8 +35,8 @@ One physical box leaving the warehouse. A split order produces several ([[confir
   exist, because Obsidian rewrites all of them; leave a stub note at the old name only if something
   outside the vault cites it ([`note-frontmatter.md`](note-frontmatter.md)).
 - The definition says what the word means and **links** the governing rule. It never restates the
-  rule ([`../principles/one-home-per-fact.md`](../principles/one-home-per-fact.md)).
-- `category` sets the tag's second segment and the MOC's grouping — core concepts, systems and
+  rule ([`../principles/facts-are-never-copied.md`](../principles/facts-are-never-copied.md)).
+- `category` sets the MOC's grouping and the Bases views' `groupBy` — core concepts, systems and
   integration, roles, whatever the project already uses.
 - Two terms for one meaning, and one term used two ways, are both audit findings. Reconcile them
   here, by making one note the home and the other name an alias of it — never by picking a winner in

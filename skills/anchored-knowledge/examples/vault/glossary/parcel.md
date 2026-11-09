@@ -8,7 +8,6 @@ governed-by: ["[[one-label-per-parcel|LABEL-1]]"]
 sources: ["[[operations-lead-on-split-orders]]"]
 created: 2026-10-02
 updated: 2026-11-08
-tags: [term/core-concepts]
 ---
 
 # Parcel

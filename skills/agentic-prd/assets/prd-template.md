@@ -11,7 +11,6 @@ epics: []
 outcomes: []
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [prd]
 ---
 
 # PRD-000 — <Project or feature name>

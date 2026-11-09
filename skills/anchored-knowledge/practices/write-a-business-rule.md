@@ -19,8 +19,8 @@ own.
    `[[confirmed-order-may-split-across-parcels|ORDER-5]]` resolves. One prefix per topic, from the config; a rule that fits no topic means a
    new topic, which is a config decision
    ([`../principles/ids-are-immutable.md`](../principles/ids-are-immutable.md)).
-4. **Fill the frontmatter.** `type`, `status`, `topic`, `authority`, `sources`, the dates, and the
-   `tags` derived from type and topic. A confirmed rule needs `confirmed` and a non-empty `sources`
+4. **Fill the frontmatter.** `type`, `status`, `topic`, `authority`, `sources` and the dates —
+   there is no `tags`. A confirmed rule needs `confirmed` and a non-empty `sources`
    ([`../patterns/note-frontmatter.md`](../patterns/note-frontmatter.md)).
 5. **Add a callout only if the property cannot say it** — the stakeholder a draft waits on, what a
    supersession replaced, which clause is still open. A confirmed rule carries none

@@ -10,7 +10,6 @@ decisions: ["[[enforce-credit-hold-at-label-creation|ADR-0004]]"]
 confirmed: 2026-10-21
 created: 2026-10-21
 updated: 2026-10-21
-tags: [rule/orders]
 ---
 
 # ORDER-2 — An order on credit hold cannot be labelled

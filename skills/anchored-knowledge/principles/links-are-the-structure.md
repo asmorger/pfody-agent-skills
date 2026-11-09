@@ -6,7 +6,7 @@
 `![[order-address-frozen-on-confirmation]]` to embed. Never a relative path, never a copied
 sentence, and never a bare `[[ORDER-1]]`, which resolves to nothing
 ([`a-link-targets-a-filename.md`](a-link-targets-a-filename.md)). A link that resolves to nothing is
-a finding. Every note has at least one inbound link and is reachable from the home note.
+a finding. Every note has at least one inbound link and is reachable from the start note.
 
 **Why.** In a graph of small notes the links are the only structure there is — there is no document
 order to carry meaning, so an unlinked note is unreachable knowledge and a dangling link is a
@@ -25,7 +25,7 @@ instead.
   Quote them: `sources: ["[[order-fulfilment-sow-v3]]"]`.
 - Embed with `![[…]]` where a reader needs the other note's words in place. Embedding is not copying
   — it resolves to whatever that note says now
-  ([`one-home-per-fact.md`](one-home-per-fact.md)).
+  ([`facts-are-never-copied.md`](facts-are-never-copied.md)).
 - Retired glossary names stay as aliases, so the old word still finds the note in search. It does
   not make a link to the old name resolve — renaming the file is what repairs existing links
   ([`../patterns/glossary-term-note.md`](../patterns/glossary-term-note.md)).

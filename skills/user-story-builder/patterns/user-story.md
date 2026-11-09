@@ -16,7 +16,7 @@ source-mode: A
 sources: ["[[a-printed-label-may-be-voided|LABEL-2]]", "[[bulk-printing-across-orders|LABEL-3]]", "[[enforce-credit-hold-at-label-creation|ADR-0004]]"]
 testing-complexity: Medium
 tracker-id:                    # filled by the publish step, never by hand
-tags: [backlog/user-story, review-required]
+review-required: true
 ---
 
 # US-03 — Void a printed label

@@ -10,7 +10,6 @@ sources: ["[[operations-lead-on-split-orders]]"]
 scope-watch: ["[[order-splitting-across-parcels|SW-0002]]"]
 created: 2026-11-08
 updated: 2026-11-08
-tags: [question]
 ---
 
 # Q-0004 — Can a split order be despatched partially?

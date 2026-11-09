@@ -12,7 +12,6 @@ coverage: covered
 stories: ["[[create-a-label-for-a-confirmed-order|US-01]]"]
 created: 2026-10-21
 updated: 2026-11-05
-tags: [requirement/cross-cutting]
 ---
 
 # X-002 — The system shall record every label action against the order with the acting user and a timestamp.

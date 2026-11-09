@@ -12,7 +12,6 @@ status: current                 # draft | current | stale
 derived-from: [rules, scope, decisions, questions]
 covers-through: 2026-11-08      # written by the script; the ONLY date in the note
 input-manifest-sha256: ""       # written by the script
-tags: [narrative]
 ---
 
 # How labelling works
@@ -35,7 +34,7 @@ The readable story, derived from the notes. **It owns no facts.**
 **Notes.**
 - **Every section cites, and every claim of eight words or more links.** The lint enforces both. A
   section that cites nothing is a section whose claims have no home
-  ([`../principles/one-home-per-fact.md`](../principles/one-home-per-fact.md)).
+  ([`../principles/facts-are-never-copied.md`](../principles/facts-are-never-copied.md)).
 - **`covers-through` is the only date.** `vault.py narrative` writes it from the newest input note,
   and the lint rejects a hand-written "last updated" line in the prose — a freshness claim nobody
   maintains is worse than no claim.

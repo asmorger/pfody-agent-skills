@@ -7,11 +7,10 @@ snapshot:
   group-by: feature
   group-fallback: Cross-cutting
   exclude-status: [retired]
-tags: [moc]
 generator: prd.py moc
 generated: 2026-11-09
 input-paths: [requirements/]
-input-manifest-sha256: ad51422f146495ea68c2edd07b37a96605214db6275bdf4369de0c2e2880a71e
+input-manifest-sha256: bad215fc0e64001c16338fa88cde0d13b21f4435b565ed29b70d17a1e64f50fe
 managed-block-sha256: ea6d4fb3ba923e486baf734c55f5922ee72fb617dc14aec331ca03f6b19fde5f
 ---
 

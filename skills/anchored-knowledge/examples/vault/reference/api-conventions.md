@@ -6,7 +6,6 @@ governs: ["[[a-printed-label-may-be-voided|LABEL-2]]"]
 sources: ["[[carrier-api-reference]]"]
 created: 2026-10-02
 updated: 2026-11-08
-tags: [reference/api]
 ---
 
 # API Conventions

@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.hasTag("question")
+    - note.type == "open-question"
 properties:
   note.needed-by:
     displayName: Needed by

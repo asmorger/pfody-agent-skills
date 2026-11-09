@@ -17,7 +17,6 @@ provider: Operations lead
 source-date: 2026-10-02
 location: <link to the system of record>
 citable: false
-tags: [source/transcript]
 ---
 
 # Warehouse discovery call

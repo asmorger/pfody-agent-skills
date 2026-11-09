@@ -122,8 +122,7 @@ def meetings_payload(idx: KnowledgeIndex, stems: dict[tuple, str], today: str) -
             "citable": "false",
             "created": today,
             "updated": today,
-            "tags": ["meeting"],
-        }
+            }
         body = [
             f"# {name}" + (f" — {date}" if date else ""),
             "",
@@ -191,7 +190,6 @@ def _item_note(item: KnowledgeItem, meetings: dict[tuple, str],
         "citable": "false",
         "created": "",          # filled by _write from the existing file, or today
         "updated": "",
-        "tags": [f"transcript-item/{_slug(item.category) or 'general'}"],
     }
     body = [f"# {item.id} — {item.statement}", ""]
     if item.status != "confirmed" or item.note:
@@ -226,7 +224,6 @@ def _moc_note(idx: KnowledgeIndex, today: str, base_rel: str, stems: dict[str, s
         "type": "moc",
         "updated": today,
         "transcripts": len(idx.ingested_files),
-        "tags": ["moc"],
     }
     body = [f"# {idx.title}", ""]
     if idx.intro:

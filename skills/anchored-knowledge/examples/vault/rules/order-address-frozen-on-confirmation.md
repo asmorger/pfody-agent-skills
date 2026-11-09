@@ -9,7 +9,6 @@ sources: ["[[order-fulfilment-sow-v3]]"]
 confirmed: 2026-10-02
 created: 2026-10-02
 updated: 2026-11-08
-tags: [rule/orders]
 ---
 
 # ORDER-1 — Order address frozen on confirmation

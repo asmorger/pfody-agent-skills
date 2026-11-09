@@ -25,6 +25,14 @@ deriving* instead of inventing it. `agentic-prd` renders the PRD with its embeds
 raw file. Both fail a check once the notes move on, so a stale document is visible rather than
 believed.
 
+**There is no `tags` property.** It used to carry `type` and `topic` a second time, as "the one
+sanctioned redundancy", justified by the tag pane. Nothing derived it and nothing checked it, so it
+was a hand-kept third copy of two fields — and it undid the reason the folders are flat, since
+`topic` is a property precisely so that changing it is *one* edit. `type` and `topic` are what the
+Bases views and MOCs group by now, which is what the tag encoded anyway. That decision has a
+principle behind it, `structure-must-pay-for-itself.md`: new structure earns its place by reducing
+the time to retrieve, verify, decide, scope or hand off, and the person adding it names which.
+
 **Citations are `[[file-name|ID]]`, never a bare `[[ID]]`.** Obsidian resolves a wikilink against
 file names and paths and never against `aliases`, so a bare id link opens a new empty note — and a
 linter that accepts the alias cannot tell the difference, which is how a vault ends up with a hollow
@@ -131,6 +139,7 @@ A skill that writes a vault also ships a checker for its **output**:
     cd skills/anchored-knowledge/examples/vault
     python3 ../../scripts/vault.py lint      .            # links, anchors, vocabulary, sizes, ids
     python3 ../../scripts/vault.py lint      . --baseline findings.txt   # only what a change broke
+    python3 ../../scripts/vault.py lint      . --git     # an `updated` older than the last commit
     python3 ../../scripts/vault.py moc       . [--check]  # refresh the index tables, or fail if stale
     python3 ../../scripts/vault.py narrative . [--check]  # stamp the derived narrative, or fail if stale
 
@@ -167,6 +176,12 @@ Three of them are worth calling out, because they check things the rest cannot:
   `input-manifest-sha256`, so "is this current?" has a mechanical answer.
 - **`--baseline` judges a change by what it broke.** Without it the first run on an adopted vault
   reports everything at once, and a list nobody has time to read is a checker nobody runs.
+- **`--git` catches the date nobody bumps.** `updated` is a claim about the file rather than a fact
+  about the world, so it rots — and the MOC tables and Bases views that sort on it then sort on
+  fiction. Git already knows when each note last changed, so the check compares the two, reading the
+  *author* date because a rebase resets the committer date and would flag the whole vault at once.
+  It is opt-in: a vault's dates may legitimately be fictional, as this repo's worked examples are.
+  (Verified in a scratch repo rather than in `check-vault-tools.py`, for that reason.)
 
     python3 scripts/check-vault-tools.py                     # the checkers, checked
 

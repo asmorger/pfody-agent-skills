@@ -17,9 +17,11 @@ reading jobs nobody does.
   local improvement ([`../references/vault-convention.md`](../references/vault-convention.md) §5).
 - A list property is a list even with one entry, and `[]` when empty. A filter on a scalar that is
   sometimes a list matches nothing, quietly.
-- `tags` duplicates `type` and `topic` and is the only sanctioned duplication; the properties win and
-  the tag is derived from them. **Status is never a tag**
-  ([`../anti-patterns/status-in-two-places.md`](../anti-patterns/status-in-two-places.md)).
+- **No `tags`.** Nothing is duplicated into a second field: a Bases view filters `note.type` and
+  groups by `note.topic`, which is what a tag would have encoded anyway. **Status lives in `status`
+  and nowhere else**
+  ([`structure-must-pay-for-itself.md`](structure-must-pay-for-itself.md),
+  [`../anti-patterns/status-in-two-places.md`](../anti-patterns/status-in-two-places.md)).
 - A callout says what a property cannot — what would close a draft, what a supersession replaced —
   and never repeats the property itself
   ([`../patterns/status-callouts.md`](../patterns/status-callouts.md)).

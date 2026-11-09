@@ -13,7 +13,6 @@ supersedes: []
 review-when: when the finance system exposes a hard-hold flag
 created: 2026-10-21
 updated: 2026-10-21
-tags: [decision]
 ---
 
 # ADR-0004 — A credit hold blocks labelling

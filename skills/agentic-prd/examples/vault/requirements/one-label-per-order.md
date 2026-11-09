@@ -11,7 +11,6 @@ superseded-by: "[[create-a-label-on-order-confirmation|R-001]]"
 coverage: retired
 created: 2026-10-02
 updated: 2026-11-05
-tags: [requirement/labels]
 ---
 
 # R-005 — Retired. Superseded by [[create-a-label-on-order-confirmation|R-001]].

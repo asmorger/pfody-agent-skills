@@ -13,7 +13,6 @@ coverage: covered
 stories: ["[[create-a-label-for-a-confirmed-order|US-01]]"]
 created: 2026-10-02
 updated: 2026-11-05
-tags: [requirement/labels]
 ---
 
 # R-001 — When a clerk confirms an order, the system shall create a carrier label for the order's shipping address.

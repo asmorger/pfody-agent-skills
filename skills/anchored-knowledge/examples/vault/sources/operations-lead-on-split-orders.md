@@ -11,7 +11,6 @@ location: "[[2026-11-08-operations-review]]"
 citable: false
 created: 2026-11-08
 updated: 2026-11-08
-tags: [source/stakeholder-answer]
 ---
 
 # Operations lead on split orders

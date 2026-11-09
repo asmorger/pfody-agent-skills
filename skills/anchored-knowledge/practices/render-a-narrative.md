@@ -19,7 +19,7 @@ between this and the hand-written summary that goes stale
    reaches a source only through the note that cites it.
 2. **Write section by section, link as you go.** Each statement is one line and carries the link to
    the note that holds it. If you want to restate a number, a date or a status, link or embed instead
-   ([`../principles/one-home-per-fact.md`](../principles/one-home-per-fact.md)).
+   ([`../principles/facts-are-never-copied.md`](../principles/facts-are-never-copied.md)).
 3. **Carry status with every claim.** A draft rule is described as draft and a proposed decision as
    proposed, in the sentence. A narrative that flattens status reads as agreement the vault never
    recorded.

@@ -13,7 +13,6 @@ coverage: covered
 stories: ["[[create-a-label-for-a-confirmed-order|US-01]]"]
 created: 2026-10-02
 updated: 2026-11-05
-tags: [requirement/labels]
 ---
 
 # R-002 — If the carrier rejects the address, then the system shall show the carrier's reason and leave the order unlabelled.

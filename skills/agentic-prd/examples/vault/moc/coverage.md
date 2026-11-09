@@ -3,11 +3,10 @@ type: moc
 updated: 2026-11-05
 snapshot:
   type: coverage
-tags: [moc]
 generator: prd.py moc
 generated: 2026-11-09
 input-paths: [requirements/]
-input-manifest-sha256: 44c5bf50da3b2e5ed147dcd4b4c967109581f31b4c8fb45c2cf646bad9b45c57
+input-manifest-sha256: e077957d63e98eaf33f94bbd16d2def0bd217ee4d0dc671f447f7c9d04c99d84
 managed-block-sha256: eaf4f8b93378000e3e44e8641fc3b04520592df896124088f0ae4b25b6070e46
 ---
 

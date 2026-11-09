@@ -1,6 +1,6 @@
 """Lint an anchored-knowledge Obsidian vault, and regenerate the MOC snapshots in it.
 
-    python3 scripts/vault.py lint      <vault> [--baseline FILE]  # findings; exit 1 if any
+    python3 scripts/vault.py lint      <vault> [--baseline FILE] [--git]   # exit 1 on a finding
     python3 scripts/vault.py moc       <vault> [--check]          # rewrite the generated blocks
     python3 scripts/vault.py narrative <vault> [--check]          # stamp the derived narratives
 
@@ -22,9 +22,14 @@ usable on a vault you have just adopted instead of something people learn to ign
 `moc` reads each MOC's `snapshot` frontmatter and rewrites only the block between the markers, then
 stamps the note's provenance. `--check` writes nothing and fails if regeneration would change
 anything, so a stale index is caught in review instead of being silently repaired by the next run.
-Standard library only, Python 3.10+.
+
+`--git` adds the one check only version control can make: a note whose `updated` predates the last
+commit that touched it. `updated` is a claim about the file rather than a fact about the world, and
+nobody remembers to bump it — so the MOC tables and Bases views that sort on it sort on fiction.
+It is opt-in because a vault's dates may legitimately be fictional, as this skill's own worked
+example's are. Standard library only, Python 3.10+.
 """
-import hashlib, os, re, sys, pathlib, collections
+import hashlib, os, re, subprocess, sys, pathlib, collections
 
 STATUS = {
     "business-rule": {"draft", "confirmed", "needs-review", "superseded", "out-of-scope", "rejected"},
@@ -203,8 +208,9 @@ def load(vault):
     return notes, others
 
 
-def lint(vault, baseline=None):
+def lint(vault, baseline=None, use_git=False):
     notes, others = load(vault)
+    commits = _git_dates(vault) if use_git else None
     findings, by_target, ids = [], collections.defaultdict(list), collections.defaultdict(list)
     by_stem = collections.defaultdict(list)
     for n in notes:
@@ -272,6 +278,13 @@ def lint(vault, baseline=None):
                 findings.append(f"{n.rel}: generated note is missing {', '.join(missing)}")
         if n.type == "narrative":
             findings += _narrative(n, notes)
+        if commits:
+            rel = str(n.rel).replace(os.sep, "/")
+            last = commits.get(rel, "")
+            updated = str(n.meta.get("updated", ""))
+            if last and updated and updated < last:
+                findings.append(f"{n.rel}: updated says {updated} but the note last changed "
+                                f"{last} — a freshness date nobody bumps is read as current")
         if n.type in CITABLE and n.type != "reference" and n.status == "confirmed" \
                 and not _as_list(n.meta.get("sources")):
             findings.append(f"{n.rel}: status confirmed with no sources")
@@ -341,7 +354,7 @@ def _narrative(note, notes):
             continue
         if text.strip() and not WIKILINK.search(text):
             findings.append(f"{note.rel}: section '{name}' cites nothing, so its claims have no "
-                            f"home note")
+                            f"start note")
         # Per claim, not per line: a bullet's link often wraps onto the next line, and a narrative
         # judged line by line would be unwritable at a sane column width.
         for claim in _claims(lines):
@@ -353,6 +366,42 @@ def _narrative(note, notes):
         findings.append(f"{note.rel}: a hand-written date in the prose — `covers-through` is the "
                         f"only date a narrative carries")
     return findings
+
+
+def _git_dates(vault):
+    """Vault-relative path -> the date of the last commit that touched it.
+
+    One `git log` pass, because a call per note is slow enough on a real vault that people stop
+    running the check. Returns None when there is no git here, or git is not installed: the check
+    then reports nothing rather than guessing, since a wrong staleness claim is the thing it exists
+    to prevent.
+    """
+    def git(*args):
+        try:
+            out = subprocess.run(["git", "-C", str(vault), *args],
+                                 capture_output=True, text=True, timeout=60)
+        except (OSError, subprocess.SubprocessError):
+            return None
+        return out.stdout if out.returncode == 0 else None
+
+    prefix = git("rev-parse", "--show-prefix")
+    # Author date, not committer date: a rebase or an amend resets the committer date and would
+    # mark the whole vault stale at once, which is how a check earns its way onto the ignore list.
+    log = git("log", "--format=%as", "--name-only")
+    if prefix is None or log is None:
+        return None
+    prefix = prefix.strip()
+    dates, date = {}, ""
+    for line in log.splitlines():
+        line = line.strip()
+        if re.fullmatch(r"\d{4}-\d\d-\d\d", line):
+            date = line
+        elif line:
+            # Paths come out relative to the repo root; the first time a path appears is its
+            # newest commit, because `git log` walks history backwards.
+            if not prefix or line.startswith(prefix):
+                dates.setdefault(line[len(prefix):], date)
+    return dates
 
 
 def _claims(lines):
@@ -572,7 +621,8 @@ if __name__ == "__main__":
             sys.exit(2)
         baseline = argv[i + 1]
         del argv[i:i + 2]
-    argv = [a for a in argv if a != "--check"]
+    use_git = "--git" in argv
+    argv = [a for a in argv if a not in ("--check", "--git")]
     if len(argv) != 2 or argv[0] not in ("lint", "moc", "narrative"):
         print(__doc__)
         sys.exit(2)
@@ -581,7 +631,7 @@ if __name__ == "__main__":
         print(f"not a directory: {vault}")
         sys.exit(2)
     if cmd == "lint":
-        out = lint(vault, baseline)
+        out = lint(vault, baseline, use_git)
         print(f"{len(out)} findings" if out else "ok")
         for line in out:
             print(f"  {line}")

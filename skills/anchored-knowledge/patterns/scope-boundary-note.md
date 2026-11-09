@@ -18,7 +18,6 @@ scope-watch: ["[[order-splitting-across-parcels|SW-0002]]"]
 rules: ["[[bulk-printing-across-orders|LABEL-3]]"]
 created: 2026-10-02
 updated: 2026-11-08
-tags: [scope/label-creation]
 ---
 
 # Bulk printing across orders is not included

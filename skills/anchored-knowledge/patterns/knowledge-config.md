@@ -21,7 +21,7 @@ working_dir_gitignored: true
 vault:            true
 link_style:       wikilink               # wikilink | markdown
 query_engine:     bases                  # bases | dataview | none
-home_note:        moc/knowledge.md
+start_note:        moc/knowledge.md
 folders:          moc/ rules/ glossary/ scope/ decisions/ questions/ changes/
                   scope-watch/ sources/ facts/ reference/ bases/
 

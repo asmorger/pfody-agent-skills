@@ -19,7 +19,6 @@ affects: ["[[one-label-per-parcel|LABEL-1]]", "[[confirmed-order-may-split-acros
 owner: delivery lead
 created: 2026-11-08
 updated: 2026-11-08
-tags: [change]
 ---
 
 # CH-0003 — One label per parcel, not per order
@@ -50,8 +49,8 @@ the prior boundary preserved in [[scope/one-parcel-per-order]] · [[partial-desp
   ([`status-callouts.md`](status-callouts.md)).
 - Where authority does not settle it, the note opens a question rather than choosing
   ([`authority-ladder.md`](authority-ladder.md)).
-- Add it to the home note's **Recently changed** list, so a reader sees it without searching
-  ([`home-note.md`](home-note.md)).
+- Add it to the start note's **Recently changed** list, so a reader sees it without searching
+  ([`start-note.md`](start-note.md)).
 
 **Related.** [`scope-watch-item.md`](scope-watch-item.md),
 [`../practices/log-a-knowledge-shift.md`](../practices/log-a-knowledge-shift.md).

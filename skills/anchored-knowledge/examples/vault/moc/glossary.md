@@ -5,11 +5,10 @@ snapshot:
   type: glossary-term
   columns: [term, aliases, governed-by]
   group-by: category
-tags: [moc]
 generator: vault.py moc
 generated: 2026-11-09
 input-paths: [glossary/]
-input-manifest-sha256: 58bb71ae59af1765e0e0bdfd094bb552bea1446f94f869ceaf5a352307e77781
+input-manifest-sha256: a5631987d44850fc51e29310d582f74469d2f78a9b1a79148988ba260c87655f
 managed-block-sha256: 80d64eafedaac2ba377ba77162142b1857e10979e06b9bc9b644013ffbc6ffc1
 ---
 

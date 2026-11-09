@@ -1,4 +1,9 @@
-# One home per fact
+# Facts are never copied
+
+**This rule is about where a fact lives.** Its converse — a note holds no more than one fact — is
+[`one-fact-per-note.md`](one-fact-per-note.md). That one bounds a note's size and scope; this one
+says the fact appears nowhere else. Both hold, and neither implies the other. The note a fact lives
+in is its **home**; "home" means only that.
 
 **Rule.** Each fact, rule, term or decision lives in exactly one note. Everything else links to it,
 or embeds it with `![[…]]`. Never copy a sentence between notes, never restate a rule's mechanics in

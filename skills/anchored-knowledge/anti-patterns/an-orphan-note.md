@@ -6,7 +6,7 @@ something you would have to already know.
 
 **Why it is wrong.** In a graph of small notes the links *are* the structure; there is no document
 order left to carry meaning. So an orphan is knowledge the record contains and cannot deliver: the
-reader who needed it did not know to look, and the reader browsing from the home note never arrives.
+reader who needed it did not know to look, and the reader browsing from the start note never arrives.
 Orphans also break the derived lists the vault depends on. A source note with no inbound links looks
 like a source that changed nothing, when it may be the anchor for six rules whose authors cited it in
 prose instead of in a property.

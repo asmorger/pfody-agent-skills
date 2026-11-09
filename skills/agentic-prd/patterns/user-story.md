@@ -15,7 +15,6 @@ prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 parent: "[[void-a-label|FEAT-02]]"
 requirements: ["[[void-a-printed-label|R-012]]", "[[record-every-label-action|X-002]]"]
 testing-complexity: Medium
-tags: [backlog/user-story]
 ---
 
 # US-03 — Void a printed label

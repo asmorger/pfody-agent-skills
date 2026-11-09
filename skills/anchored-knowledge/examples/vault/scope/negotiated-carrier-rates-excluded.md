@@ -7,7 +7,6 @@ authority: 5-internal-interpretation
 sources: []
 created: 2026-10-02
 updated: 2026-11-08
-tags: [scope/label-creation]
 ---
 
 # Negotiated carrier rates are not included

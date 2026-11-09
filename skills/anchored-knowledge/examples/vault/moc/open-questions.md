@@ -5,11 +5,10 @@ snapshot:
   type: open-question
   columns: [id, title, status, owner, needed-by]
   exclude-status: [dropped]
-tags: [moc]
 generator: vault.py moc
 generated: 2026-11-09
 input-paths: [questions/]
-input-manifest-sha256: 5fdaa552a0d9bac40c9d3e289fdbb0de8b72f835cdd33925295fb9f2bb5b9c3e
+input-manifest-sha256: 5de0ad2750e7fbd6e8202bff8bd75f05f52a0e083fb55b6434107d8f62131dcf
 managed-block-sha256: ce036c33b904fab846fb0569270d6c49f625cd075e4f1764244b00ff690855ae
 ---
 

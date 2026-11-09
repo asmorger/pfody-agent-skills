@@ -17,7 +17,6 @@ checks:
   current-records-and-data-migration: "N/A — labels did not exist before this release."
 created: 2026-10-02
 updated: 2026-11-05
-tags: [backlog/feature]
 ---
 
 # FEAT-01 — Create and print a label

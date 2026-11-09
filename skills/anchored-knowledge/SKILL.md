@@ -36,9 +36,9 @@ note. Then find your task below and read only the files it names.
 ## Non-negotiables
 
 1. Locate the base and load or provision the config before anything else; ask, never guess → `principles/config-before-anything.md`
-2. One note, one fact, one id; 25 lines of body → `principles/one-note-one-fact.md`
+2. One fact per note, with one id; 25 lines of body — the note's *size and scope* → `principles/one-fact-per-note.md`
 3. Every durable statement is anchored in `sources`, or carries `status: draft` / `needs-review` → `principles/anchor-or-flag.md`
-4. One home per fact; link or embed, never copy → `principles/one-home-per-fact.md`
+4. A fact is never copied: it has one home note, and everything else links or embeds it → `principles/facts-are-never-copied.md`
 5. Every reference is a wikilink **targeting a filename** — `[[kebab-title|ID]]`, never a bare `[[ID]]`; frontmatter is the query surface, and prose restates neither → `principles/a-link-targets-a-filename.md`, `principles/links-are-the-structure.md`, `principles/properties-are-the-query-surface.md`
 6. Only the Reference Layer may be cited as source of record → `principles/only-the-reference-layer-is-citable.md`
 7. Ids are immutable and never reused; a note is deprecated in place, never deleted — titles may be reworded freely → `principles/ids-are-immutable.md`, `principles/deprecate-never-delete.md`
@@ -48,6 +48,8 @@ note. Then find your task below and read only the files it names.
 11. A question note is a queue; an answer is promoted into a rule or decision → `principles/a-question-is-a-queue-not-a-store.md`
 12. Transcripts are delegated, never hand-parsed; git goes through `git-guide` → `principles/transcripts-are-delegated.md`, `principles/git-goes-through-git-guide.md`
 13. Adopt the project's existing names, properties and vocabulary; improve structure, do not rename → `principles/match-the-projects-voice.md`
+14. New structure must reduce time to retrieve, verify, decide, scope or hand off — name which, or do not add it → `principles/structure-must-pay-for-itself.md`
+15. An event date is typed once; a freshness date is derived, and `updated` is checked against git → `principles/a-freshness-date-is-derived.md`
 
 ## Task → read
 
@@ -61,7 +63,7 @@ note. Then find your task below and read only the files it names.
 | Writing or refining a business rule | `practices/write-a-business-rule.md`, `patterns/business-rule-note.md` |
 | Marking a note draft, superseded, out of scope or partly open | `patterns/status-callouts.md` |
 | Moving approved knowledge into the vault | `practices/promote-to-the-record.md` |
-| Writing or refreshing an index note, the home note or a Bases view | `patterns/moc-note.md`, `patterns/home-note.md`, `references/bases.md`, `practices/regenerate-the-mocs.md` |
+| Writing or refreshing an index note, the start note or a Bases view | `patterns/moc-note.md`, `patterns/start-note.md`, `references/bases.md`, `practices/regenerate-the-mocs.md` |
 | Asked to explain the vault in prose, onboard someone, or write "the why" | `practices/render-a-narrative.md`, `patterns/narrative-note.md` |
 | Answering a question, or recording a decision | `practices/answer-an-open-question.md`, `patterns/open-question.md`, `practices/record-a-decision.md`, `patterns/decision-record.md` |
 | Handling a newer source that contradicts the record | `practices/log-a-knowledge-shift.md`, `patterns/knowledge-change-entry.md` |
@@ -73,25 +75,23 @@ note. Then find your task below and read only the files it names.
 
 ## Folders
 
-    principles/     the rules and why each one holds
-    patterns/       the note shapes, as fill-in skeletons (neutral Order / shipping-label domain)
-    practices/      step-by-step procedures with a done-when checklist
-    anti-patterns/  knowledge-keeping that fails — what it looks like, why, what to do instead
-    references/     the vault convention, the Bases definitions, templates, the config template
-    scripts/        `vault.py lint`, `vault.py moc`, `vault.py narrative` — the derived things
+    principles/  the rules and why each holds · patterns/  the note shapes, as skeletons
+    practices/   procedures with a done-when · anti-patterns/  knowledge-keeping that fails
+    references/  the vault convention, the Bases definitions, templates, the config template
+    scripts/     `vault.py lint`, `vault.py moc`, `vault.py narrative` — the derived things
     examples/ evals/   a worked vault to open in Obsidian, and the trigger prompts
 
 ## Conventions this skill assumes
 
     <repo>/docs/              the vault: moc/ rules/ glossary/ scope/ decisions/ questions/
-                              scope-watch/ changes/ sources/ facts/ reference/ bases/
-                              (<project>/Knowledge/Docs/ without a repo)
+                              scope-watch/ changes/ sources/ facts/ reference/ narrative/
+                              bases/   (<project>/Knowledge/Docs/ without a repo)
     <working_dir>/            the workbench — intake, drafts, the transcript index. Never
                               committed, and kept OUTSIDE the vault
 
 Every path, folder, property name and id scheme is declared in the per-project config and the config
-wins ([`patterns/knowledge-config.md`](patterns/knowledge-config.md)). The scripts need Python 3.10+;
-Bases views need Obsidian 1.9+, and a vault without them reads the snapshots.
+wins ([`patterns/knowledge-config.md`](patterns/knowledge-config.md)). Scripts need Python 3.10+;
+Bases needs Obsidian 1.9+, and a vault without it reads the snapshots.
 
 ## Related skills
 

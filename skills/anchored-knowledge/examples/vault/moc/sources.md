@@ -5,11 +5,10 @@ snapshot:
   type: source
   columns: [id, title, source-type, source-date, citable]
   group-by: authority
-tags: [moc]
 generator: vault.py moc
 generated: 2026-11-09
 input-paths: [sources/]
-input-manifest-sha256: c4d801a326b8b8996e53e3ac749768fc1df69662cca2f616e92b64198028f7ae
+input-manifest-sha256: 51b866d4df056030a32800f535b413e62ef22ffcc0ebacdc6cf53bc7f05e32a8
 managed-block-sha256: 10e6b862f999025c033cc2c9a5bbcffe9a46362f2f659a2e354e3bd4eec9c68a
 ---
 

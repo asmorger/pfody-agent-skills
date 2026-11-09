@@ -44,5 +44,5 @@ mirrors a development repository.
 - All filenames kebab-case, and the config's file map wins wherever an existing vault differs
   ([`../principles/match-the-projects-voice.md`](../principles/match-the-projects-voice.md)).
 
-**Related.** [`knowledge-config.md`](knowledge-config.md), [`home-note.md`](home-note.md),
+**Related.** [`knowledge-config.md`](knowledge-config.md), [`start-note.md`](start-note.md),
 [`../practices/bootstrap-a-base.md`](../practices/bootstrap-a-base.md).

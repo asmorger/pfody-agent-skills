@@ -11,7 +11,6 @@ facts: ["[[carrier-truncates-address-line-1|K-0001]]"]
 confirmed: 2026-11-08
 created: 2026-10-02
 updated: 2026-11-08
-tags: [rule/labels]
 ---
 
 # LABEL-1 — One label per parcel

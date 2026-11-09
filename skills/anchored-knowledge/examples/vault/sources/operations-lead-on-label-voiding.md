@@ -11,7 +11,6 @@ location: "[[2026-10-21-label-workflow-call]]"
 citable: false
 created: 2026-10-21
 updated: 2026-10-21
-tags: [source/stakeholder-answer]
 ---
 
 # Operations lead on label voiding

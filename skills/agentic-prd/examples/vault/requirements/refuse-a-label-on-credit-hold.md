@@ -12,7 +12,6 @@ coverage: covered
 stories: ["[[create-a-label-for-a-confirmed-order|US-01]]"]
 created: 2026-10-21
 updated: 2026-11-05
-tags: [requirement/orders]
 ---
 
 # R-003 — While an order is on credit hold, the system shall refuse to create a label.

@@ -8,7 +8,6 @@ sources: ["[[order-fulfilment-sow-v3]]"]
 rules: ["[[one-label-per-parcel|LABEL-1]]", "[[a-printed-label-may-be-voided|LABEL-2]]"]
 created: 2026-10-02
 updated: 2026-10-02
-tags: [scope/label-creation]
 ---
 
 # Creating and printing a label for a confirmed order is included

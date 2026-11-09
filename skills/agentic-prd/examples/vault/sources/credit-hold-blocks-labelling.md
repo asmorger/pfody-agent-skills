@@ -10,7 +10,6 @@ prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 requirements: ["[[refuse-a-label-on-credit-hold|R-003]]", "[[record-every-label-action|X-002]]"]
 created: 2026-10-21
 updated: 2026-10-21
-tags: [decision]
 ---
 
 # DEC-02 — A credit hold blocks labelling

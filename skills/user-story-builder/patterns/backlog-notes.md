@@ -13,7 +13,6 @@ updated: 2026-11-08
 snapshot:
   type: user-story
   columns: [id, title, parent, source-mode, status, tracker-id]
-tags: [moc]
 ---
 
 # Backlog

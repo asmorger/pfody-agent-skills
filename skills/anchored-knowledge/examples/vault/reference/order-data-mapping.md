@@ -6,7 +6,6 @@ governs: ["[[one-label-per-parcel|LABEL-1]]", "[[carrier-truncates-address-line-
 sources: ["[[carrier-api-reference]]"]
 created: 2026-11-08
 updated: 2026-11-08
-tags: [reference/integration]
 ---
 
 # Order Data Mapping

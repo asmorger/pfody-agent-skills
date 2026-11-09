@@ -16,7 +16,6 @@ category: Labels
 sources: ["[[2026-11-08-november-review]]", "[[2026-11-15-carrier-sync]]"]
 supersedes: ["[[one-label-per-parcel|LABEL-1]]"]
 citable: false
-tags: [transcript-item/labels]
 ---
 
 # LABEL-2 — One label is created per parcel; a split order produces several labels.

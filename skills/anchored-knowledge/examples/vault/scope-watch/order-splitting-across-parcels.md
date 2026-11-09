@@ -11,7 +11,6 @@ questions: ["[[partial-despatch-of-a-split-order|Q-0004]]"]
 disposition:
 created: 2026-11-08
 updated: 2026-11-08
-tags: [scope-watch]
 ---
 
 # SW-0002 — Order splitting across parcels

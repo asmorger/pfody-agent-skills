@@ -5,11 +5,10 @@ snapshot:
   type: scope-boundary
   columns: [title, inclusion, authority, sources]
   group-by: area
-tags: [moc]
 generator: vault.py moc
 generated: 2026-11-09
 input-paths: [scope/]
-input-manifest-sha256: 5fd4970f38d066e3371e7f824b95ac826b7dcdb39a183ce1e4e722b35d121a7a
+input-manifest-sha256: f429a2f9ad72bee32bdfc9ce03abbf6839a78ada4d70923693d140b23f012fdd
 managed-block-sha256: 5ef3b561bc822a6ff26cd290c547db8368aedc32b83a043ebbd74db1a98d06d5
 ---
 

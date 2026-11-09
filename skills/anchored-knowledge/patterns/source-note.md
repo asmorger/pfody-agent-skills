@@ -19,7 +19,6 @@ location: ../sow/order-fulfilment-sow-v3.docx
 citable: false
 created: 2026-09-12
 updated: 2026-09-12
-tags: [source/sow]
 ---
 
 # Order Fulfilment SOW v3

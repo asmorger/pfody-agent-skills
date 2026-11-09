@@ -4,9 +4,8 @@ status: current
 audience: internal
 derived-from: [rules, scope, decisions, questions]
 covers-through: 2026-11-08
-input-manifest-sha256: 5e92a4f5e431ea2d837905e834a1456cd86060d8166cb6978ff8b491110ea2b8
+input-manifest-sha256: 7939d8220de9f86c142fb096387ef041693c988d5ea7c722f90c68deae01fcc5
 aliases: [How labelling works]
-tags: [narrative]
 ---
 
 # How labelling works

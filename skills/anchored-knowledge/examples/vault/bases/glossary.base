@@ -1,6 +1,6 @@
 filters:
   and:
-    - file.hasTag("term")
+    - note.type == "glossary-term"
 views:
   - type: table
     name: Terms

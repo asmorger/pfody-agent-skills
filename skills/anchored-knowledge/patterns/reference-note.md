@@ -15,7 +15,6 @@ governs: ["[[a-printed-label-may-be-voided|LABEL-2]]"]
 decisions: ["[[keep-a-void-window-on-printed-labels|ADR-0003]]"]
 created: 2026-10-02
 updated: 2026-11-08
-tags: [reference/api]
 ---
 
 # API Conventions
@@ -39,13 +38,13 @@ contract — the mechanics that [[one-label-per-parcel|LABEL-1]] links to rather
   in a sentence is two notes.
 - **Rules say what the system does; convention notes say how the team builds it.** A statement that
   fits both is split between them, never duplicated
-  ([`../principles/one-home-per-fact.md`](../principles/one-home-per-fact.md)).
+  ([`../principles/facts-are-never-copied.md`](../principles/facts-are-never-copied.md)).
 - When a rule needs long mechanics, the mechanics come here and the rule links. The rule stays one
   testable sentence ([`business-rule-note.md`](business-rule-note.md)).
 - `governs` lists the rules that depend on this note, so the rule and its mechanics find each other
   from either end.
 - Multiple `##` headings are expected here and nowhere else in the record
-  ([`../principles/one-note-one-fact.md`](../principles/one-note-one-fact.md)).
+  ([`../principles/one-fact-per-note.md`](../principles/one-fact-per-note.md)).
 - Supporting material — raw exports, examples, meeting recordings — is **not** this. It stays in the
   workbench and is registered as a source
   ([`../principles/only-the-reference-layer-is-citable.md`](../principles/only-the-reference-layer-is-citable.md)).

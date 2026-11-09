@@ -6,8 +6,8 @@ in frontmatter. The contract these instance is
 [`bases.md`](bases.md). Adapt folders, property names and prefixes to the project and record any
 deviation in `anchored-knowledge.config.md` — an existing vault's conventions win.
 
-Every note carries `type`, `status`, `created`, `updated` and `tags`, plus `id` and `aliases`
-wherever there is an id. Quote wikilinks in properties: `sources: ["[[note name]]"]`.
+Every note carries `type`, `status`, `created` and `updated`, plus `id` and `aliases` wherever there
+is an id. There is no `tags` property. Quote wikilinks in properties: `sources: ["[[note name]]"]`.
 
 ---
 
@@ -21,7 +21,7 @@ id: PREFIX-N
 aliases: [PREFIX-N]
 type: business-rule
 status: draft | confirmed | needs-review | superseded | out-of-scope | rejected
-topic: <topic, matching the tag's second segment>
+topic: <topic, from the config's topic list>
 authority: 1-contractual | 2-approved-requirements | 3-client-clarification | 4-source-artifact | 5-internal-interpretation | 6-unreviewed-intake
 sources: ["[[source-note]]"]
 confirmed: YYYY-MM-DD          # when status is confirmed
@@ -33,7 +33,6 @@ superseded-by:                 # a wikilink, when status is superseded
 scope-watch: []
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [rule/<topic>]
 ---
 
 # PREFIX-N — <Title: what the rule says>
@@ -80,7 +79,6 @@ governed-by: ["[[<kebab-title>|PREFIX-N]]"]
 sources: ["[[source-note]]"]
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [term/<category>]
 ---
 
 # <Term>
@@ -108,7 +106,6 @@ rules: ["[[<kebab-title>|PREFIX-N]]"]
 scope-watch: []
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [scope/<area>]
 ---
 
 # <Behaviour> is [not] included
@@ -138,7 +135,6 @@ superseded-by:
 review-when: <the event or date that triggers a review>
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [decision]
 ---
 
 # ADR-NNNN — <Decision title>
@@ -183,7 +179,6 @@ sources: ["[[source-note]]"]
 rules: ["[[<kebab-title>|PREFIX-N]]"]
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [fact/<topic>]
 ---
 
 # K-NNNN — <The fact>
@@ -206,7 +201,6 @@ governs: ["[[<kebab-title>|PREFIX-N]]"]
 sources: ["[[source-note]]"]
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [reference/<topic>]
 ---
 
 # <Topic> Conventions
@@ -239,7 +233,6 @@ citable: false
 participants: []               # transcripts and meetings only
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [source/<source-type>]
 ---
 
 # <Source name>
@@ -269,7 +262,6 @@ sources: ["[[source-note]]"]
 scope-watch: []
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [question]
 ---
 
 # Q-NNNN — <The question?>
@@ -301,7 +293,6 @@ questions: []
 disposition:                   # filled by a person: outcome, date, source
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [scope-watch]
 ---
 
 # SW-NNNN — <Watch item>
@@ -331,7 +322,6 @@ affects: ["[[<kebab-title>|PREFIX-N]]"]
 owner: <name or role>
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-tags: [change]
 ---
 
 # CH-NNNN — <What changed>
@@ -363,7 +353,6 @@ snapshot:
   columns: [id, title, status, sources]
   exclude-status: [superseded, rejected]
   group-by: topic
-tags: [moc]
 ---
 
 # <Title>
@@ -379,7 +368,7 @@ A few lines of prose: the baseline, what a reader may cite, what the views are f
 Leave the markers empty and run `python3 scripts/vault.py moc <vault>` to fill them. Everything
 between them is overwritten on every run; nothing else in the note is touched.
 
-## Home note — `moc/knowledge.md`
+## Start note — `moc/knowledge.md`
 
 ```markdown
 ---
@@ -387,7 +376,6 @@ type: moc
 updated: YYYY-MM-DD
 review-cadence: <discovery / build / handoff cadence>
 owner: <role>
-tags: [moc]
 ---
 
 # Knowledge

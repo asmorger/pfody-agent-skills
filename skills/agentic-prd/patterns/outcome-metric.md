@@ -19,7 +19,6 @@ source-system: Carrier returns report
 population: Parcels shipped from the main warehouse
 denominator: Parcels shipped
 window: Rolling 30 days
-tags: [metric]
 ---
 
 # OUT-1 — Address-error rate on parcels

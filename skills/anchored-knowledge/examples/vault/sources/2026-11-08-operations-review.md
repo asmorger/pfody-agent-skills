@@ -12,7 +12,6 @@ location: ../transcripts/2026-11-08-operations-review.vtt
 citable: false
 created: 2026-11-08
 updated: 2026-11-08
-tags: [source/transcript]
 ---
 
 # 2026-11-08 Operations review

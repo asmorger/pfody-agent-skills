@@ -9,7 +9,6 @@ blocks: ["[[void-a-printed-label|R-012]]", "[[void-a-label|FEAT-02]]"]
 prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 created: 2026-10-21
 updated: 2026-11-05
-tags: [question]
 ---
 
 # Q-03 — Who may void a printed label — any clerk, or a supervisor?

@@ -19,7 +19,6 @@ version: 1.0
 epics: ["[[carrier-labels-on-the-order-screen|EPIC-01]]"]
 outcomes: ["[[address-error-rate-on-parcels|OUT-1]]"]
 updated: 2026-11-05
-tags: [prd]
 ---
 
 # PRD-001 — Shipping labels at order processing

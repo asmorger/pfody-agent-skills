@@ -6,11 +6,10 @@ snapshot:
   columns: [id, title, status, sources]
   exclude-status: [superseded, rejected]
   group-by: topic
-tags: [moc]
 generator: vault.py moc
 generated: 2026-11-09
 input-paths: [rules/]
-input-manifest-sha256: 99fd27e8f021919faad751c13e5b8f49e321f5ae5054b6da87ae3d6fde6be906
+input-manifest-sha256: ff78154ec54bad33f6bea242a9b4b42960792bbdc2a7bb866c5687a2184332df
 managed-block-sha256: fde7322a1820c7bec08e3cfa341e5172838dce15ca6c91f4164a6a2a8d52bde5
 ---
 

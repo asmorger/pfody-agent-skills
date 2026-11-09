@@ -13,7 +13,6 @@ denominator: Parcels shipped
 window: Rolling 30 days
 created: 2026-10-02
 updated: 2026-11-05
-tags: [metric]
 ---
 
 # OUT-1 — Address-error rate on parcels

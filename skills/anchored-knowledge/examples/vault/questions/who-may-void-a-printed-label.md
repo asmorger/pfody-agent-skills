@@ -9,7 +9,6 @@ blocks: ["[[a-printed-label-may-be-voided|LABEL-2]]"]
 sources: ["[[operations-lead-on-label-voiding]]"]
 created: 2026-10-21
 updated: 2026-11-08
-tags: [question]
 ---
 
 # Q-0003 — Who may void a printed label?

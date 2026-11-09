@@ -9,7 +9,7 @@ resolves to the whole metric and cannot go stale. Outside Obsidian that line ren
 so the cold-read property the hub was designed for is exactly what a non-Obsidian reader loses, and
 the PRD arrives full of holes where its requirements should be.
 
-The wrong fix is to summarise the notes back into the hub by hand: that is the one-home rule broken
+The wrong fix is to summarise the notes back into the hub by hand: that is the never-copy rule broken
 in the document everybody reads
 ([`../anti-patterns/a-hub-that-summarises-its-notes.md`](../anti-patterns/a-hub-that-summarises-its-notes.md)).
 The right fix is to **derive** the readable version and never retype it.
@@ -26,7 +26,7 @@ The right fix is to **derive** the readable version and never retype it.
 
 2. **Put the output where generated things go**, not in the vault beside the notes. It is a
    rendition, not a record: the notes are the record, and two editable copies of one PRD is the
-   failure the one-home rule exists to prevent.
+   failure the never-copy rule exists to prevent.
 
 3. **Never edit it.** Every change goes into the note that holds the thing being changed, and you
    re-render. The banner at the top of the file says so.

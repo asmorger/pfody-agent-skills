@@ -11,7 +11,6 @@ questions: ["[[partial-despatch-of-a-split-order|Q-0004]]"]
 scope-watch: ["[[order-splitting-across-parcels|SW-0002]]"]
 created: 2026-11-08
 updated: 2026-11-08
-tags: [rule/orders]
 ---
 
 # ORDER-5 — A confirmed order may split across parcels

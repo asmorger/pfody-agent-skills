@@ -11,7 +11,7 @@ tracker-id:
 tracker-url:
 created: 2026-11-08
 updated: 2026-11-08
-tags: [backlog/user-story, review-required]
+review-required: true
 ---
 
 # US-07 — Export the day's labels as a CSV

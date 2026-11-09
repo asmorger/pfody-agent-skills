@@ -4,11 +4,10 @@ updated: 2026-11-05
 snapshot:
   type: user-story
   columns: [id, title, parent, testing-complexity]
-tags: [moc]
 generator: prd.py moc
 generated: 2026-11-09
 input-paths: [backlog/]
-input-manifest-sha256: 6c67bbb1896b1bb1a646b68bf0d66cafc3a0056ad9d5829a6c007befb5f2425b
+input-manifest-sha256: 9590d69adc661d8aa7215d7cedd9e6f2e01aeba29828e28801cc7aa637bffc03
 managed-block-sha256: 6b33f3ef2485658b147f56f86d9cfd1602cad3772076fde787a4cf83f9210555
 ---
 

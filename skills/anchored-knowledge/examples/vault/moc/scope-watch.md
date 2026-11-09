@@ -4,11 +4,10 @@ updated: 2026-11-08
 snapshot:
   type: scope-watch
   columns: [id, title, status, owner, affects]
-tags: [moc]
 generator: vault.py moc
 generated: 2026-11-09
 input-paths: [scope-watch/]
-input-manifest-sha256: d8cc870a1f8353fbf826bee3fce8963435dddd8f35ac8702c455c6eb736fc316
+input-manifest-sha256: e61b2b5ab71c6c80c69f89bb10b527eb6d6ebe21e013b98e008b0b833690ccd7
 managed-block-sha256: 3b00274d126d9ee3b79f4e1c884b52ef912cd5ee4ed92e854a40b002999b0254
 ---
 

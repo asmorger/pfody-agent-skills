@@ -11,7 +11,6 @@ location: ../transcripts/2026-09-18-discovery-call.vtt
 citable: false
 created: 2026-09-19
 updated: 2026-09-19
-tags: [source/transcript]
 ---
 
 # Discovery call with the operations lead

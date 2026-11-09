@@ -168,6 +168,13 @@ for an extraction contract. These are artifacts, not prose a model reads to lear
 are exempt from the size limit. Everything a model reads *as instruction* belongs in the four
 folders.
 
+Two of those artifacts are **shared files, copied**: `references/vault-taxonomy.json` and
+`scripts/vaultlib.py`. Each lives once in `shared/` and is copied byte-identically into every skill
+that needs it, because a skill folder has to work when it is the only thing installed — nothing
+outside it may be required at run time. `check-taxonomy.py --fix` pushes the canonical version and
+the check fails on any drift, which is the whole of the discipline: one source, copies checked. Edit
+the file in `shared/`, never a copy.
+
 Skeletons use a neutral `Order` / shipping-label domain — a shipping clerk, a support agent, an
 operations lead. Keep it that way: a skeleton that names a real project's roles or entities stops
 being a skeleton. Worked examples say in their first lines that their content is invented.
@@ -201,7 +208,8 @@ warnings. `anti-patterns/` and `principles/` are deliberately not scanned for in
 command named there is usually the one the skill is telling you *not* to run, and demanding a
 permission for the forbidden thing is the exact inversion the check exists to prevent.
 
-`check-taxonomy.py` enforces the one in `shared/vault-taxonomy.json`: the per-skill copies are
+`check-taxonomy.py` enforces the copy discipline for both shared files, and the contract in
+`shared/vault-taxonomy.json`: the per-skill copies are
 identical, every front matter block in every skill — the worked examples **and the skeletons inside
 fenced blocks**, because a skeleton is what a model copies — has a known type, a status in that
 type's vocabulary, an id matching its pattern and its grouping key filled in, every inline
@@ -229,6 +237,18 @@ Every skill that writes a vault ships a checker for its **output**:
     cd skills/transcript-knowledge-base
     python3 -m tkb.cli verify --vault <vault> --folder <transcripts>   # every quote, re-read
     cd tests && python3 -m unittest discover -s . -t .
+
+The three checkers share one implementation of everything underneath them —
+[`shared/vaultlib.py`](shared/vaultlib.py): notes, wikilinks, front matter, the taxonomy check, the
+provenance stamp, and the row and cell rendering. They each held their own copy until the third one
+shipped, and the copies had already drifted: two spellings of the same finding, two sort keys, and a
+`title` cell that collapsed whitespace in one script and not in another, which would have ended a
+table row early the day a heading wrapped. Sharing the cell renderer is also what lets two
+generators own one index — `moc/backlog.md` has two, since `agentic-prd` writes stories as well —
+because they cannot disagree about a table they render with the same code. What is *not* shared is
+each `moc` generator itself: one stamps the marker with a date and reads `as-of`, one leaves the
+marker alone, one refuses to touch a snapshot it does not own. Those are decisions about a
+particular vault, not primitives.
 
 These are what make the convention enforceable rather than aspirational: a dangling wikilink, a bare
 id that opens an empty note, a `#heading` that does not exist, two notes sharing a file name, an

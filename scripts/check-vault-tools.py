@@ -398,12 +398,23 @@ def main() -> int:
                             f"{native}'s block in {vault} as stale, so the two disagree about a "
                             f"file they can both own\n{_indent(out)}")
 
-    # The regression this file was written for.
-    for rel in ("skills/anchored-knowledge/scripts/vault.py", "skills/agentic-prd/scripts/prd.py"):
-        text = (REPO / rel).read_text(encoding="utf-8")
-        if not re.search(r"if value == \{\}", text):
+    # The regression this file was written for. The parser now lives in `vaultlib.py`, so the
+    # guard follows it there — and to every copy, because a skill runs from its own.
+    parsers = [REPO / "shared" / "vaultlib.py"] + sorted((REPO / "skills").glob("*/scripts/vaultlib.py"))
+    if len(parsers) < 2:
+        findings.append("no vaultlib.py copies found — the shared parser has moved or gone")
+    for path in parsers:
+        rel = path.relative_to(REPO)
+        if not re.search(r"if value == \{\}", path.read_text(encoding="utf-8")):
             findings.append(f"{rel}: the blank-value guard is gone. `key:` with nothing under it "
                             f"parses as {{}}, which is truthy, so every empty-field check passes.")
+    # And the scripts must not have grown their own parser back.
+    for rel in ("skills/anchored-knowledge/scripts/vault.py", "skills/agentic-prd/scripts/prd.py",
+                "skills/user-story-builder/scripts/story.py"):
+        text = (REPO / rel).read_text(encoding="utf-8")
+        if "def split_front_matter" in text or "def _split(" in text:
+            findings.append(f"{rel}: has its own front matter parser again. One parser, in "
+                            f"vaultlib.py, or they drift the way they already did once.")
 
     for case in CASES:
         print(f"{case['name']}: {'ok' if not [f for f in findings if f.startswith(case['name'])] else 'FAILED'}")

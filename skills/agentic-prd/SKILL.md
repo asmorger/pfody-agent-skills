@@ -81,7 +81,7 @@ Pick the earliest mode the files need; name two and they run in order.
     practices/   procedures with a done-when · anti-patterns/  specs that fail, and why
     assets/ references/   the PRD hub template, and the vault convention
     examples/ evals/      a worked PRD vault to open in Obsidian, and trigger queries
-    scripts/     `prd.py check`, `prd.py moc`, `prd.py render`, and the text extractor
+    scripts/     `prd.py check`, `prd.py moc`, `prd.py render`, the text extractor, `vaultlib.py`
 
 ## Conventions this skill assumes
 

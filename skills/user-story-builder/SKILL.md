@@ -83,7 +83,7 @@ in [`references/portable-core.md`](references/portable-core.md), which the patte
     practices/      step-by-step procedures with a done-when checklist
     anti-patterns/  stories that fail — what they look like, why, what to do instead
     references/     the portable core, the vault convention, the config template, the adapters
-    scripts/        `story.py check`, `story.py moc` — the backlog's checker and its index
+    scripts/        `story.py check`, `story.py moc`, and the shared `vaultlib.py`
     examples/ evals/   a Mode A and a Mode C story in a vault, and the trigger prompts
 
 ## Conventions this skill assumes

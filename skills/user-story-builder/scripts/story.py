@@ -18,182 +18,36 @@ whatever else is installed, and the alias it looks like it resolves through is n
 
 Exit code 0 means no errors; warnings do not fail the check. Standard library only, Python 3.10+.
 
-This script deliberately does not re-check what is already checked. Links across a whole vault,
-anchors, orphans and the generated-block hash are vault-wide properties that `anchored-knowledge`'s
-`vault.py lint` and `agentic-prd`'s `prd.py check` already cover, and the repo's
-`check-vault-tools.py` runs both over a composed vault holding these story notes. What is here is
-what is specific to a story.
+The notes, links, front matter and generated-block machinery live in `vaultlib.py` beside this
+file, shared byte-for-byte with the other skills' checkers. This script holds what is specific to a
+story. It deliberately does not re-check what is already checked: links across a whole vault,
+anchors and orphans are vault-wide properties that `anchored-knowledge`'s `vault.py lint` and
+`agentic-prd`'s `prd.py check` cover, and the repo's `check-vault-tools.py` runs both over a
+composed vault holding these story notes.
 """
 from __future__ import annotations
 
 import argparse
 import collections
-import hashlib
-import json
-import os
 import pathlib
 import re
 import sys
 
-UNLIMITED = 10 ** 6
+import vaultlib
+from vaultlib import (GEN, IDLIKE, Note, Report, as_list, check_shape, ids_in, load, new_only,
+                      refs)
 
-
-def _taxonomy():
-    """The note taxonomy, read from this skill's copy of the shared registry.
-
-    Byte-identical to `shared/vault-taxonomy.json`, verified by the repo's `check-taxonomy.py`, and
-    carried inside the skill so the skill installs on its own.
-    """
-    here = pathlib.Path(__file__).resolve()
-    for path in (here.parent.parent / "references" / "vault-taxonomy.json",
-                 here.parents[3] / "shared" / "vault-taxonomy.json"):
-        if path.is_file():
-            return json.loads(path.read_text(encoding="utf-8"))
-    sys.exit("story.py: references/vault-taxonomy.json is missing — copy it from the skill folder")
-
-
-TAXONOMY = _taxonomy()
-TYPES = TAXONOMY["types"]
-STORY = TYPES["user-story"]
+TAX = vaultlib.Taxonomy(__file__)
+TYPES = TAX.types
 MODES = ("A", "B", "C")
-# The eight labels, in order. There is no `**Tags**`: it restated `parent` and `priority`, which the
-# publish step reads from front matter
-# ([`../anti-patterns/...`] — see agentic-prd's a-tags-label-restating-the-parent.md).
+# The eight labels, in order. There is no `**Tags**`: it restated `parent` and `priority`, which
+# the publish step reads from front matter.
 LABELS = ("**Expected Output**", "**Details**", "**Assumptions**", "**Testing Strategy**",
           "**Open Questions**", "**Technical Notes**", "**Acceptance Criteria**")
 FORBIDDEN_LABELS = ("**Tags**",)
-WIKILINK = re.compile(r"(!?)\[\[([^\]|#]+)(#[^\]|]*)?(?:\|([^\]]*))?\]\]")
-FENCED = re.compile(r"```.*?```", re.S)
-IDLIKE = re.compile(r"^[A-Z][A-Za-z]*-\d+$")
-GEN = re.compile(r"(<!-- generated:[^\n]*-->\n)(.*?)(<!-- /generated -->)", re.S)
 CRITERION = re.compile(r"^\s*(\d+)\.\s*AC-(\d+)\s*\[([^\]]*)\]\s*(.*)$", re.M)
 GIVEN_WHEN_THEN = re.compile(r"\bGiven\b.*?\bwhen\b.*?\bthen\b", re.S | re.I)
 GROUNDING = re.compile(r"^- Source grounding: *(.+?)(?:\.\s|\.$|$)", re.M | re.S)
-PROV = ("generator", "generated", "input-paths", "input-manifest-sha256", "managed-block-sha256")
-
-
-# ---------------------------------------------------------------------------- #
-# Notes
-# ---------------------------------------------------------------------------- #
-class Note:
-    def __init__(self, path: pathlib.Path, root: pathlib.Path):
-        self.path, self.rel = path, path.relative_to(root)
-        text = path.read_text(encoding="utf-8")
-        self.has_fm = text.startswith("---\n")
-        self.meta, self.body = split_front_matter(text)
-        self.id = str(self.meta.get("id", "") or "")
-        self.type = str(self.meta.get("type", "") or "")
-        self.status = str(self.meta.get("status", "") or "")
-        self.stem = path.stem
-        self.aliases = as_list(self.meta.get("aliases"))
-        self.refs = refs(text)
-
-    def prop(self, key, default=""):
-        return self.meta.get(key, default)
-
-    @property
-    def title(self) -> str:
-        for line in self.body.splitlines():
-            if line.startswith("# "):
-                head = line[2:].strip()
-                if self.id and head.startswith(self.id):
-                    head = head[len(self.id):].lstrip(" -—–:")
-                return head or self.stem.replace("-", " ")
-        return self.stem.replace("-", " ")
-
-
-def refs(text: str) -> list[dict]:
-    """Every wikilink, with its display text. `\\|` is a table cell's escaped pipe."""
-    out = []
-    for m in WIKILINK.finditer(FENCED.sub("", text).replace("\\|", "|")):
-        _, target, _, display = m.groups()
-        out.append({"target": target.strip(), "display": (display or "").strip()})
-    return out
-
-
-def split_front_matter(text: str):
-    """Front matter as a flat dict: scalars, inline lists, and one level of nesting."""
-    meta, body = {}, text
-    if text.startswith("---\n"):
-        end = text.find("\n---", 4)
-        if end != -1:
-            raw, body = text[4:end], text[end + 4:].lstrip("\n")
-            parent = None
-            for line in raw.splitlines():
-                if not line.strip() or line.lstrip().startswith("#") or ":" not in line:
-                    continue
-                indented = line[0] in " \t"
-                key, _, val = line.strip().partition(":")
-                key, val = key.strip(), val.strip()
-                if indented and parent is not None and isinstance(meta.get(parent), dict):
-                    meta[parent][key] = scalar(val)
-                    continue
-                if val == "":
-                    parent, meta[key] = key, {}
-                else:
-                    parent, meta[key] = None, scalar(val)
-            # `key:` with nothing under it is an empty value, not an empty mapping. Left as {} it
-            # reads as truthy, and every "is this field filled in?" check silently passes.
-            for key, value in list(meta.items()):
-                if value == {}:
-                    meta[key] = ""
-    return meta, body
-
-
-def scalar(val: str):
-    val = val.strip()
-    if val.startswith("[") and val.endswith("]"):
-        inner = val[1:-1].strip()
-        return [p.strip().strip("\"'") for p in inner.split(",") if p.strip()] if inner else []
-    return val.strip("\"'")
-
-
-def as_list(val):
-    if val is None or val == "":
-        return []
-    return val if isinstance(val, list) else [val]
-
-
-def ids_in(val) -> list[str]:
-    """Every id named in a property, read from the wikilink's display text under `[[stem|ID]]`."""
-    out = []
-    for item in as_list(val):
-        text = str(item)
-        found = [(r["display"] if IDLIKE.match(r["display"]) else r["target"]) for r in refs(text)]
-        out += found or [t for t in re.findall(r"[A-Z][A-Za-z]*-\d+", text)]
-    return out
-
-
-def load(root: pathlib.Path):
-    """Notes, plus every other file name a wikilink may legitimately reach."""
-    notes, others = [], set()
-    for dirpath, dirnames, filenames in os.walk(root):
-        dirnames[:] = [d for d in dirnames if not d.startswith(".")]
-        for name in sorted(filenames):
-            path = pathlib.Path(dirpath) / name
-            if name.endswith(".md"):
-                note = Note(path, root)
-                if note.has_fm:
-                    notes.append(note)
-                else:
-                    others.update({name, path.stem})
-            elif not name.startswith("."):
-                others.update({name, path.stem})
-    return notes, others
-
-
-class Report:
-    def __init__(self):
-        self.errors, self.warnings, self.checks = [], [], 0
-
-    def require(self, ok, message) -> bool:
-        self.checks += 1
-        if not ok:
-            self.errors.append(message)
-        return bool(ok)
-
-    def warn(self, message):
-        self.warnings.append(message)
 
 
 # ---------------------------------------------------------------------------- #
@@ -203,8 +57,7 @@ def check(vault: pathlib.Path, report: Report, knowledge: pathlib.Path | None) -
     notes, others = load(vault)
     reachable = dict()
     for n in notes:
-        rel = str(n.rel).replace(os.sep, "/")
-        for key in (n.stem, rel, rel[:-3] if rel.endswith(".md") else rel):
+        for key in vaultlib.link_targets(n):
             reachable.setdefault(key, n)
     # The record vault, when it was given. A Mode A story cites rule and decision ids that live
     # there, and a backlog on its own cannot tell a missing note from an uninstalled vault.
@@ -213,10 +66,7 @@ def check(vault: pathlib.Path, report: Report, knowledge: pathlib.Path | None) -
         extra, extra_others = load(knowledge)
         external |= extra_others
         for n in extra:
-            rel = str(n.rel).replace(os.sep, "/")
-            external |= {n.stem, rel, rel[:-3] if rel.endswith(".md") else rel}
-            for ident in ([n.id] if n.id else []):
-                reachable.setdefault(ident + "\0id", n)
+            external |= vaultlib.link_targets(n)
 
     by_id = {n.id: n for n in notes if n.id}
     by_stem = collections.defaultdict(list)
@@ -236,7 +86,7 @@ def check(vault: pathlib.Path, report: Report, knowledge: pathlib.Path | None) -
     stories = [n for n in notes if n.type == "user-story"]
     report.require(bool(stories), "no story notes found (a note with `type: user-story`)")
     for n in notes:
-        check_shape(n, report)
+        check_shape(n, TAX, report.require)
         check_links(n, report, reachable, external, by_id)
     for n in stories:
         check_story(n, report, reachable, external)
@@ -244,39 +94,6 @@ def check(vault: pathlib.Path, report: Report, knowledge: pathlib.Path | None) -
     published = sum(1 for n in stories if n.status == "published")
     return [f"Stories: {len(stories)}", f"Published: {published}",
             "Modes: " + (" ".join(f"{k or '—'}:{v}" for k, v in sorted(modes.items())) or "—")]
-
-
-def check_shape(n: Note, report: Report) -> None:
-    """What the shared taxonomy promises about any note, whichever skill wrote it."""
-    if not n.type:
-        report.require(False, f"{n.rel}: no type")
-        return
-    if n.type not in TYPES:
-        report.require(False, f"{n.rel}: unknown type '{n.type}'")
-        return
-    spec = TYPES[n.type]
-    if n.status:
-        report.require(n.status in spec["status"],
-                       f"{n.rel}: status '{n.status}' is not valid for '{n.type}' "
-                       f"({' | '.join(spec['status']) or 'this type has no status'})")
-    pattern = spec["id"]
-    if pattern:
-        report.require(bool(n.id) and bool(re.fullmatch(pattern, n.id)),
-                       f"{n.rel}: id {n.id or '(none)'!r} does not match the {n.type} pattern "
-                       f"{pattern}")
-    elif n.id:
-        report.require(False, f"{n.rel}: a '{n.type}' is cited by file name and carries no id, "
-                              f"but this one has id '{n.id}'")
-    if n.id:
-        report.require(n.id in n.aliases, f"{n.rel}: id '{n.id}' is not in aliases")
-    key = spec["group-by"]
-    if key:
-        report.require(bool(str(n.prop(key, "")).strip()),
-                       f"{n.rel}: no '{key}' — a '{n.type}' is grouped by it, and there is no "
-                       f"`tags` property to fall back on")
-    limit = UNLIMITED if spec["body-budget"] is None else spec["body-budget"]
-    lines = len([l for l in n.body.splitlines() if l.strip()])
-    report.require(lines <= limit, f"{n.rel}: body is {lines} lines, budget {limit}")
 
 
 def check_links(n: Note, report: Report, reachable: dict, external: set, by_id: dict) -> None:
@@ -432,13 +249,13 @@ def moc(vault: pathlib.Path, check_only: bool = False) -> tuple[list[str], list[
             continue
         rows = [x for x in by_type.get(spec["type"], [])
                 if x.status not in as_list(spec.get("exclude-status"))]
-        body = _table(rows, spec)
+        body = vaultlib.table(rows, spec)
         text = n.path.read_text(encoding="utf-8")
         m = GEN.search(text)
         if not m:
             findings.append(f"{n.rel}: snapshot spec but no <!-- generated --> markers")
             continue
-        manifest = _manifest(rows)
+        manifest = vaultlib.manifest(rows)
         if m.group(2) == body and str(n.prop("input-manifest-sha256", "")) == manifest:
             continue
         if check_only:
@@ -446,94 +263,10 @@ def moc(vault: pathlib.Path, check_only: bool = False) -> tuple[list[str], list[
             findings.append(f"{n.rel}: the generated block is stale — {why}")
             continue
         new = GEN.sub(lambda mm: f"{m.group(1)}{body}{mm.group(3)}", text, count=1)
-        new = _stamp(new, {
-            "generator": "story.py moc",
-            "generated": _today(),
-            "input-paths": sorted({str(pathlib.PurePosixPath(r.rel).parent) + "/" for r in rows}),
-            "input-manifest-sha256": manifest,
-            "managed-block-sha256": hashlib.sha256(body.encode("utf-8")).hexdigest(),
-        })
+        new = vaultlib.stamp(new, vaultlib.provenance("story.py moc", rows, body))
         n.path.write_text(new, encoding="utf-8")
         written.append(f"{n.rel}: {len(rows)} rows")
     return findings, written + skipped
-
-
-def _table(rows, spec) -> str:
-    columns = as_list(spec.get("columns")) or ["id", "title", "status"]
-    out = ["| " + " | ".join(_header(c) for c in columns) + " |", "|" + "---|" * len(columns)]
-    for r in sorted(rows, key=lambda x: _idkey(x.id)):
-        out.append("| " + " | ".join(_cell(r, c) for c in columns) + " |")
-    return "\n".join(out).rstrip() + "\n"
-
-
-def _header(column: str) -> str:
-    return "ID" if column == "id" else column.replace("-", " ").capitalize()
-
-
-def _cell(note: Note, column: str) -> str:
-    """Byte-for-byte what `agentic-prd`'s `prd.py moc` writes for the same column.
-
-    `moc/backlog.md` has two possible owners — this skill writes stories, and `agentic-prd` writes
-    them too when a whole backlog is decomposed at once — so a project with both installed must not
-    get a different index depending on which tool last ran. The repo's `check-vault-tools.py`
-    asserts each generator reports the other's block as current.
-    """
-    if column == "title":
-        return re.sub(r"\s+", " ", note.title.replace("|", "\\|")).strip()
-    if column == "id":
-        # The file name as target, the id as display text. A generator that emitted `[[US-03]]`
-        # would plant the one link form Obsidian cannot follow, once per row.
-        return f"[[{note.stem}\\|{note.id}]]" if note.id else f"[[{note.stem}]]"
-    value = note.prop(column, "")
-    if isinstance(value, list):
-        return " · ".join(str(v) for v in value) or "—"
-    return str(value).replace("|", "\\|") or "—"
-
-
-def _idkey(ident: str):
-    m = re.match(r"([A-Za-z]+)-(\d+)", ident or "")
-    return (m.group(1), int(m.group(2))) if m else (ident or "", 0)
-
-
-def _manifest(rows) -> str:
-    """A hash over the input notes: the generated view's claim to be reproducible from them."""
-    h = hashlib.sha256()
-    for r in sorted(rows, key=lambda x: str(x.rel)):
-        h.update(str(r.rel).encode("utf-8"))
-        h.update(r.path.read_bytes())
-    return h.hexdigest()
-
-
-def _today() -> str:
-    import datetime
-    return datetime.date.today().isoformat()
-
-
-def _stamp(text: str, fields: dict) -> str:
-    """Set each field in the front matter, inserting what is not there yet."""
-    end = text.find("\n---", 4)
-    if not text.startswith("---\n") or end == -1:
-        return text
-    lines, tail = text[4:end].splitlines(), text[end:]
-    for key, value in fields.items():
-        rendered = ("[" + ", ".join(str(v) for v in value) + "]"
-                    if isinstance(value, list) else str(value))
-        line = f"{key}: {rendered}"
-        for i, existing in enumerate(lines):
-            if existing.split(":", 1)[0].strip() == key and not existing[:1].isspace():
-                lines[i] = line
-                break
-        else:
-            lines.append(line)
-    return "---\n" + "\n".join(lines) + tail
-
-
-def _new_only(findings: list[str], baseline: pathlib.Path | None) -> list[str]:
-    """Only what is not already in the baseline, so a change is judged by what it broke."""
-    if not baseline or not baseline.exists():
-        return findings
-    known = {l.strip() for l in baseline.read_text(encoding="utf-8").splitlines() if l.strip()}
-    return [f for f in findings if f.strip() not in known]
 
 
 def main() -> int:
@@ -566,8 +299,8 @@ def main() -> int:
     report = Report()
     summary = check(args.vault.resolve(), report, args.knowledge.resolve()
                     if args.knowledge else None)
-    errors = _new_only(report.errors, args.baseline)
-    warnings = _new_only(report.warnings, args.baseline)
+    errors = new_only(report.errors, args.baseline)
+    warnings = new_only(report.warnings, args.baseline)
     print(" | ".join(summary))
     for e in errors:
         print(f"ERROR   {e}")

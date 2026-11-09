@@ -34,6 +34,12 @@ import sys
 
 REPO = pathlib.Path(__file__).resolve().parents[1]
 CANON = REPO / "shared" / "vault-taxonomy.json"
+# Every file a skill carries a byte-identical copy of, so that it installs on its own without the
+# shared contract becoming four contracts. `vaultlib.py` joined the registry when three scripts'
+# duplicated parsers, link readers and provenance stampers were extracted into it.
+SHARED = ("vault-taxonomy.json", "vaultlib.py")
+# Where each one is copied to inside a skill.
+COPY_DIR = {"vault-taxonomy.json": "references", "vaultlib.py": "scripts"}
 # A frontmatter block, at the top of a note or inside a fenced skeleton.
 BLOCK = re.compile(r"(?:\A|\n)---\n(.*?)\n---(?:\n|\Z)", re.S)
 # `status: accepted          # draft | accepted | retired`
@@ -47,27 +53,36 @@ def field(block, key):
     return m.group(1).strip().strip("\"'") if m else None
 
 
-def check_copies(tax_text, fix):
+def check_copies(fix):
+    """Each skill's copy of every shared file is byte-identical to the canonical one.
+
+    `vaultlib.py` is only copied into a skill whose scripts import it; a skill with no scripts of
+    its own is not expected to carry one.
+    """
     findings = []
-    for skill in sorted((REPO / "skills").iterdir()):
-        if not (skill / "SKILL.md").exists():
-            continue
-        copy = skill / "references" / "vault-taxonomy.json"
-        if not copy.exists():
-            if fix:
-                copy.parent.mkdir(parents=True, exist_ok=True)
-                copy.write_text(tax_text, encoding="utf-8")
-            else:
-                findings.append(f"{skill.name}: references/vault-taxonomy.json is missing — the "
-                                f"skill cannot be installed on its own without it")
-            continue
-        if copy.read_text(encoding="utf-8") != tax_text:
-            if fix:
-                copy.write_text(tax_text, encoding="utf-8")
-            else:
-                findings.append(f"{skill.name}: references/vault-taxonomy.json has drifted from "
-                                f"shared/vault-taxonomy.json — run --fix, or move the edit into "
-                                f"the canonical file")
+    for name in SHARED:
+        canonical = (REPO / "shared" / name).read_text(encoding="utf-8")
+        where = COPY_DIR[name]
+        for skill in sorted((REPO / "skills").iterdir()):
+            if not (skill / "SKILL.md").exists():
+                continue
+            copy = skill / where / name
+            if not copy.exists():
+                if name == "vaultlib.py" and not list(skill.glob("scripts/*.py")):
+                    continue        # no scripts, so nothing to import it
+                if fix:
+                    copy.parent.mkdir(parents=True, exist_ok=True)
+                    copy.write_text(canonical, encoding="utf-8")
+                else:
+                    findings.append(f"{skill.name}: {where}/{name} is missing — the skill cannot "
+                                    f"be installed on its own without it")
+                continue
+            if copy.read_text(encoding="utf-8") != canonical:
+                if fix:
+                    copy.write_text(canonical, encoding="utf-8")
+                else:
+                    findings.append(f"{skill.name}: {where}/{name} has drifted from shared/{name} "
+                                    f"— run --fix, or move the edit into the canonical file")
     return findings
 
 
@@ -183,7 +198,7 @@ def main():
 
     tax_text = CANON.read_text(encoding="utf-8")
     types = json.loads(tax_text)["types"]
-    findings = check_copies(tax_text, args.fix)
+    findings = check_copies(args.fix)
 
     for path in sorted((REPO / "skills").rglob("*.md")):
         rel = path.relative_to(REPO)
@@ -198,9 +213,9 @@ def main():
 
     for f in sorted(set(findings)):
         print(f"  {f}")
+    copies = sum(len(list((REPO / "skills").glob(f"*/{COPY_DIR[n]}/{n}"))) for n in SHARED)
     print(f"{len(set(findings))} findings." if findings else
-          f"ok — {len(types)} types, one registry, {len(list((REPO / 'skills').glob('*/SKILL.md')))} "
-          f"identical copies.")
+          f"ok — {len(types)} types, {len(SHARED)} shared files, {copies} identical copies.")
     return 1 if findings else 0
 
 

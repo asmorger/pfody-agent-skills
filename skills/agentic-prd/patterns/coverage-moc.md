@@ -24,7 +24,7 @@ results, not failures.
 | Requirement | Pri | Verify | Story | Coverage |
 |---|---|---|---|---|
 | [[create-a-label-on-order-confirmation|R-001]] | P0 | Auto | [[create-a-label-for-a-confirmed-order|US-01]] | covered |
-| [[void-a-printed-label|R-012]] | P1 | Auto | [[who-may-void-a-printed-label|Q-03]] | blocked |
+| [[void-a-printed-label|R-012]] | P1 | Auto | [[who-may-void-a-printed-label|Q-0003]] | blocked |
 | [[print-labels-in-one-job|R-014]] | P3 | Manual | None | skipped-p3 |
 | [[record-every-label-action|X-002]] | P0 | Manual | [[create-a-label-for-a-confirmed-order|US-01]] | covered |
 

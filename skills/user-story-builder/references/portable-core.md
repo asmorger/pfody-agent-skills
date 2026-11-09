@@ -204,9 +204,6 @@ Return the note only, no commentary before or after: YAML front matter, then the
 **Acceptance Criteria**
 1. AC-1 [<source tag>] Given <precondition>, when <trigger>, then <observable result>.
 
-**Tags**
-- <required tag(s) from config, e.g. Review Required>
-- <PRD-001, EPIC-01, FEAT-01, P0, when the source has them>
 ```
 
 # Backlog File Layout

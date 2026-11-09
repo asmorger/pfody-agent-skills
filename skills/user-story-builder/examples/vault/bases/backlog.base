@@ -1,0 +1,32 @@
+filters:
+  and:
+    - note.type == "user-story"
+views:
+  - type: table
+    name: Backlog
+    order:
+      - note.id
+      - file.name
+      - note.parent
+      - note.source-mode
+      - note.status
+      - note.tracker-id
+    groupBy:
+      property: note.source-mode
+      direction: ASC
+  - type: table
+    name: Unpublished
+    filters:
+      - 'note.tracker-id == ""'
+    order:
+      - note.id
+      - file.name
+      - note.review-required
+  - type: table
+    name: Still needs a person
+    filters:
+      - 'note.review-required == true'
+    order:
+      - note.id
+      - file.name
+      - note.status

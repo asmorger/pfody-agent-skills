@@ -1,6 +1,6 @@
 ---
-id: SRC-01
-aliases: [SRC-01]
+id: SRC-0002
+aliases: [SRC-0002]
 type: source
 status: registered
 source-type: transcript

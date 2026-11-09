@@ -12,7 +12,7 @@ publishing, not to these nineteen items with these parents, which is the thing t
 caught.
 
 **Instead.** Show the full set — every item with its level, title and parent — and get a clear yes in
-the current conversation, with the status `Accepted` and Gate 3 approved. Create parents before
+the current conversation, with the status `accepted` and Gate 3 approved. Create parents before
 children, read the items back, and record their ids. If no tracker tool is available, hand over the
 backlog file and stop rather than improvising an import
 ([`../principles/only-a-person-crosses-a-gate.md`](../principles/only-a-person-crosses-a-gate.md),

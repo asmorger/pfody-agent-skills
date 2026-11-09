@@ -8,7 +8,7 @@ snapshot:
 generator: vault.py moc
 generated: 2026-11-09
 input-paths: [questions/]
-input-manifest-sha256: 5de0ad2750e7fbd6e8202bff8bd75f05f52a0e083fb55b6434107d8f62131dcf
+input-manifest-sha256: 75b70a5752e0f5a3dc5bfcbe3697f41a61430956884c89112a40b6286aba1931
 managed-block-sha256: ce036c33b904fab846fb0569270d6c49f625cd075e4f1764244b00ff690855ae
 ---
 

@@ -3,6 +3,7 @@ id: EPIC-01
 aliases: [EPIC-01]
 type: epic
 status: accepted
+topic: labels
 prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 parent: "[[shipping-labels-at-order-processing|PRD-001]]"
 outcomes: ["[[address-error-rate-on-parcels|OUT-1]]"]

@@ -20,14 +20,19 @@ from __future__ import annotations
 
 import argparse
 import collections
-import hashlib
-import json
-import os
 import pathlib
 import re
 import sys
 
-STATUSES = ("Draft", "In Review", "Accepted", "Superseded")
+import vaultlib
+from vaultlib import (GEN, IDLIKE, PROV, Report, as_list, check_shape, ids_in, load,
+                      norm_anchor, refs)
+
+TAX = vaultlib.Taxonomy(__file__)
+TYPES = TAX.types
+STATUS = TAX.status_order
+STATUSES = STATUS["prd"]
+ID_PATTERN = TAX.id_pattern
 SECTIONS_BY_SIZE = {"Small": (1, 2, 4, 6, 7), "Standard": tuple(range(1, 9)),
                     "Large": tuple(range(1, 9))}
 PRIORITIES = ("P0", "P1", "P2", "P3")
@@ -37,166 +42,39 @@ CHECKS = ("empty-state", "loading-state", "error-state", "permissions",
           "bad-input-and-boundaries", "concurrency", "current-records-and-data-migration")
 METRIC_FIELDS = ("baseline", "target", "owner", "source-system", "population",
                  "denominator", "window")
-LOCATOR = r"(?:@[\d:]+|p\.\d+|L\d+|[A-Z]{2}-\d+|[A-Z][a-z]+)"
-SOURCE_VALUE = re.compile(r"^(SRC-\d+(\s+" + LOCATOR + r")?|DEC-\d+|A-\d+|PROPOSED)$")
+LOCATOR = TAX.raw["locator"]
+# What a requirement's `source:` may be. `SRC-0001 @12:04` with a locator, a bare `A-nn`
+# assumption, `PROPOSED` — and **any id belonging to a citable type**, which is the whole point:
+# this skill's SKILL.md says to draft from `anchored-knowledge` and cite its rule ids, and the old
+# hard-coded alternation rejected every one of them (`LABEL-2`, `K-0001`, `ADR-0004`). A check that
+# forbids the documented workflow teaches people to stop running the check.
+_SOURCE_FORMS = ([r"SRC-\d+(\s+" + LOCATOR + r")?"]
+                 + [p.strip("^$") for p in TAX.citable_id]
+                 + [p.strip("^$") for p in TAX.raw["requirement-source"]["patterns"]]
+                 + [re.escape(lit) for lit in TAX.raw["requirement-source"]["literals"]])
+SOURCE_VALUE = re.compile(r"^(" + "|".join(_SOURCE_FORMS) + r")$")
+SOURCE_HELP = ("SRC-nnnn with a locator, a citable record id (a rule, fact or ADR id), A-nn or "
+               "PROPOSED")
 PATTERN_START = re.compile(r"^(The system shall|When |While |If |Where )")
 VAGUE = re.compile(r"\b(fast|quick|simple|easy|appropriate|intuitive|user-friendly|robust|"
                    r"seamless)\b", re.I)
 STORY_LABELS = ("**Expected Output**", "**Details**", "**Assumptions**", "**Testing Strategy**",
-                "**Open Questions**", "**Technical Notes**", "**Acceptance Criteria**", "**Tags**")
-WIKILINK = re.compile(r"(!?)\[\[([^\]|#]+)(#[^\]|]*)?(?:\|([^\]]*))?\]\]")
-GEN = re.compile(r"(<!-- generated:[^\n]*-->\n)(.*?)(<!-- /generated -->)", re.S)
-HEADING = re.compile(r"^#{1,6}\s+(.+?)\s*#*\s*$", re.M)
-BLOCK_ID = re.compile(r"(?:^|\s)\^([A-Za-z0-9-]+)\s*$", re.M)
-FENCED = re.compile(r"```.*?```", re.S)
-IDLIKE = re.compile(r"^[A-Z][A-Za-z]*-\d+$")
-PROV = ("generator", "generated", "input-paths", "input-manifest-sha256", "managed-block-sha256")
-LEVELS = {"epic": "EPIC", "feature": "FEAT", "user-story": "US"}
-
-
-def refs(text: str) -> list[dict]:
-    """Every wikilink, with its anchor and display text. `\\|` is a table cell's escaped pipe."""
-    out = []
-    for m in WIKILINK.finditer(FENCED.sub("", text).replace("\\|", "|")):
-        embed, target, anchor, display = m.groups()
-        out.append({"embed": bool(embed), "target": target.strip(),
-                    "anchor": (anchor or "")[1:].strip(),
-                    "display": (display or "").strip()})
-    return out
-
-
-def norm_anchor(text: str) -> str:
-    return re.sub(r"\s+", " ", re.sub(r"[#|^:\[\]]|%%", " ", text)).strip().lower()
+                "**Open Questions**", "**Technical Notes**", "**Acceptance Criteria**")
+# A label that restated `parent`. Every value it held -- the PRD, Epic and Feature ids, the
+# priority, the config's required tags -- is already in front matter, so it was a hand-kept copy
+# of two fields, which is the same reason there is no `tags` property. Forbidden, not optional:
+# the old shape had it in the required list, so a story written to that shape still has one.
+FORBIDDEN_LABELS = ("**Tags**",)
+LEVELS = {name: ID_PATTERN[name].strip("^$").split("-")[0]
+          for name, spec in TYPES.items() if spec["layer"] == "backlog"}
 
 
 # ---------------------------------------------------------------------------- #
 # Notes
 # ---------------------------------------------------------------------------- #
-class Note:
-    def __init__(self, path: pathlib.Path, vault: pathlib.Path):
-        self.path, self.rel = path, path.relative_to(vault)
-        text = path.read_text(encoding="utf-8")
-        self.has_fm = text.startswith("---\n")
-        self.meta, self.body = split_front_matter(text)
-        self.id = str(self.meta.get("id", "") or "")
-        self.type = str(self.meta.get("type", "") or "")
-        self.status = str(self.meta.get("status", "") or "")
-        self.stem = path.stem
-        self.aliases = as_list(self.meta.get("aliases"))
-        self.refs = refs(text)
-        self.links = {r["target"] for r in self.refs}
-        prose = FENCED.sub("", self.body)
-        self.headings = {norm_anchor(h) for h in HEADING.findall(prose)}
-        self.blocks = {b.lower() for b in BLOCK_ID.findall(prose)}
-
-    @property
-    def title(self) -> str:
-        for line in self.body.splitlines():
-            if line.startswith("# "):
-                head = line[2:].strip()
-                if self.id and head.startswith(self.id):
-                    head = head[len(self.id):].lstrip(" -—–:")
-                return head or self.stem.replace("-", " ")
-        return self.stem.replace("-", " ")
-
-    def prop(self, key, default=""):
-        return self.meta.get(key, default)
-
-
-def split_front_matter(text: str):
-    """Front matter as a flat dict: scalars, inline lists, and one level of nesting."""
-    meta, body = {}, text
-    if text.startswith("---\n"):
-        end = text.find("\n---", 4)
-        if end != -1:
-            raw, body = text[4:end], text[end + 4:].lstrip("\n")
-            parent = None
-            for line in raw.splitlines():
-                if not line.strip() or line.lstrip().startswith("#") or ":" not in line:
-                    continue
-                indented = line[0] in " \t"
-                key, _, val = line.strip().partition(":")
-                key, val = key.strip(), val.strip()
-                if indented and parent is not None and isinstance(meta.get(parent), dict):
-                    meta[parent][key] = scalar(val)
-                    continue
-                if val == "":
-                    parent, meta[key] = key, {}
-                else:
-                    parent, meta[key] = None, scalar(val)
-            # `key:` with nothing under it is an empty value, not an empty mapping. Left as {} it
-            # reads as truthy, and every "is this field filled in?" check silently passes.
-            for key, value in list(meta.items()):
-                if value == {}:
-                    meta[key] = ""
-    return meta, body
-
-
-def scalar(val: str):
-    val = val.strip()
-    if val.startswith("[") and val.endswith("]"):
-        inner = val[1:-1].strip()
-        return [p.strip().strip("\"'") for p in inner.split(",") if p.strip()] if inner else []
-    return val.strip("\"'")
-
-
-def as_list(val):
-    if val is None or val == "":
-        return []
-    return val if isinstance(val, list) else [val]
-
-
-def ids_in(val) -> list[str]:
-    """Every id named in a property, whether written as a wikilink or bare.
-
-    Under the `[[stem|ID]]` convention the id is the link's *display* text, not its target, so read
-    the display first and fall back to the target for a link that carries no id.
-    """
-    out = []
-    for item in as_list(val):
-        text = str(item)
-        found = [(r["display"] if IDLIKE.match(r["display"]) else r["target"])
-                 for r in refs(text)]
-        out += found or [t for t in re.findall(r"[A-Z]+-\d+", text)]
-    return out
-
-
-def load(vault: pathlib.Path):
-    notes, others = [], set()
-    for dirpath, dirnames, filenames in os.walk(vault):
-        dirnames[:] = [d for d in dirnames if not d.startswith(".")]
-        for name in sorted(filenames):
-            path = pathlib.Path(dirpath) / name
-            if name.endswith(".md"):
-                note = Note(path, vault)
-                if note.has_fm:
-                    notes.append(note)
-                else:
-                    # No front matter: not a PRD note, and not this script's business. The vault
-                    # may share its folder with the repo's other docs.
-                    others.update({name, path.stem})
-            elif not name.startswith("."):
-                others.update({name, path.stem})
-    return notes, others
-
-
 # ---------------------------------------------------------------------------- #
 # Report
 # ---------------------------------------------------------------------------- #
-class Report:
-    def __init__(self):
-        self.errors, self.warnings, self.checks = [], [], 0
-
-    def require(self, ok, message):
-        self.checks += 1
-        if not ok:
-            self.errors.append(message)
-        return ok
-
-    def warn(self, message):
-        self.warnings.append(message)
-
-
 # ---------------------------------------------------------------------------- #
 # Checks
 # ---------------------------------------------------------------------------- #
@@ -210,8 +88,7 @@ def check(vault: pathlib.Path, report: Report, want_prd: str | None, sources: di
     # opens a new empty note.
     resolvable = set(others)
     for n in notes:
-        rel = str(n.rel).replace(os.sep, "/")
-        resolvable |= {n.stem, rel, rel[:-3] if rel.endswith(".md") else rel}
+        resolvable |= vaultlib.link_targets(n)
     by_id = {n.id: n for n in notes if n.id}
     by_stem = collections.defaultdict(list)
     for n in notes:
@@ -229,7 +106,8 @@ def check(vault: pathlib.Path, report: Report, want_prd: str | None, sources: di
         status, size = str(prd.prop("status")), str(prd.prop("size"))
         report.require(status in STATUSES, f"{prd.rel}: invalid status {status!r}")
         report.require(size in SECTIONS_BY_SIZE, f"{prd.rel}: invalid size {size!r}")
-        report.require(bool(re.fullmatch(r"PRD-\d+", prd.id)), f"{prd.rel}: invalid id {prd.id!r}")
+        report.require(bool(re.fullmatch(ID_PATTERN["prd"], prd.id)),
+                       f"{prd.rel}: invalid id {prd.id!r}")
         hub = prd.body.split("## Agent protocol")[0]
         report.require(not re.search(r"\bCAP-\d+", hub),
                        f"{prd.rel}: uses an old CAP id. Use EPIC-01 and FEAT-01.")
@@ -239,7 +117,7 @@ def check(vault: pathlib.Path, report: Report, want_prd: str | None, sources: di
         owner = str(prd.prop("owner", "")).strip()
         if owner.lower() in ("", "unknown") or owner.startswith("<"):
             report.warn(f"{prd.rel}: the PRD has no named owner")
-    lenient = status != "Accepted"
+    lenient = status != "accepted"
 
     # ---- duplicate ids, dangling links
     seen = collections.defaultdict(list)
@@ -283,6 +161,7 @@ def check(vault: pathlib.Path, report: Report, want_prd: str | None, sources: di
             missing = [k for k in PROV if not str(n.prop(k, ""))]
             report.require(not missing,
                            f"{n.rel}: generated note is missing {', '.join(missing)}")
+        check_shape(n, TAX, report.require)
 
     reqs = check_requirements(by_type["requirement"], report, status, lenient)
     questions = check_questions(by_type["open-question"], report, lenient)
@@ -292,8 +171,13 @@ def check(vault: pathlib.Path, report: Report, want_prd: str | None, sources: di
 
     for q, blocks in questions.items():
         for rid in blocks:
-            if rid not in reqs and not rid.startswith(("FEAT", "EPIC", "US", "OUT")):
-                report.require(False, f"{q} blocks unknown requirement {rid}")
+            # Anything in the vault, not only a requirement. A PRD vault and a knowledge vault share
+            # one `questions/` folder by design, so one question legitimately blocks a business rule
+            # (`ORDER-5`) and a requirement at once. The old prefix list knew only this skill's ids
+            # and reported the knowledge base's as unknown — which is the two-registers failure
+            # arriving as a false positive instead of a missing note.
+            if rid not in reqs and rid not in by_id:
+                report.require(False, f"{q} blocks {rid}, which has no note in this vault")
             if reqs.get(rid, {}).get("priority") == "P0":
                 report.warn(f"{rid} is P0 and {q} blocks it")
 
@@ -302,9 +186,9 @@ def check(vault: pathlib.Path, report: Report, want_prd: str | None, sources: di
         print(f"Locators checked: {check_locators(notes, sources, report)}")
 
     proposed = sorted(r for r, v in reqs.items() if str(v["source"]) == "PROPOSED")
-    if status == "Accepted":
+    if status == "accepted":
         for rid in proposed:
-            report.require(False, f"{rid} is PROPOSED in an Accepted PRD")
+            report.require(False, f"{rid} is PROPOSED in an accepted PRD")
     elif proposed:
         report.warn(f"PROPOSED requirements need a decision: {', '.join(proposed)}")
     active = [v["priority"] for v in reqs.values() if v["coverage"] != "retired"]
@@ -321,8 +205,9 @@ def check_requirements(notes, report, status, lenient) -> dict:
     out = {}
     for n in notes:
         rel = n.rel
-        report.require(bool(re.fullmatch(r"(R|X)-\d+", n.id)),
-                       f"{rel}: requirement id {n.id!r} is not R-NNN or X-NNN")
+        report.require(bool(re.fullmatch(ID_PATTERN["requirement"], n.id)),
+                       f"{rel}: requirement id {n.id!r} does not match "
+                       f"{ID_PATTERN['requirement']}")
         statement = n.title
         coverage = str(n.prop("coverage", ""))
         retired = coverage == "retired" or statement.lower().startswith("retired")
@@ -335,8 +220,7 @@ def check_requirements(notes, report, status, lenient) -> dict:
                 report.warn(f"{n.id}: vague word {vague.group(0)!r} in the statement")
         source = str(n.prop("source", ""))
         report.require(SOURCE_VALUE.match(source) is not None,
-                       f"{n.id}: source {source!r} is not SRC-nn with a locator, DEC-nn, A-nn or "
-                       f"PROPOSED")
+                       f"{n.id}: source {source!r} is not {SOURCE_HELP}")
         report.require(str(n.prop("priority", "")) in PRIORITIES,
                        f"{n.id}: priority {n.prop('priority')!r} is not one of {PRIORITIES}")
         report.require(str(n.prop("verify", "")) in VERIFY,
@@ -362,8 +246,9 @@ def check_requirements(notes, report, status, lenient) -> dict:
 def check_questions(notes, report, lenient) -> dict:
     out = {}
     for n in notes:
-        report.require(bool(re.fullmatch(r"Q-\d+", n.id)), f"{n.rel}: question id {n.id!r} is not "
-                                                           f"Q-NN")
+        report.require(bool(re.fullmatch(ID_PATTERN["open-question"], n.id)),
+                       f"{n.rel}: question id {n.id!r} does not match "
+                       f"{ID_PATTERN['open-question']}")
         owner = str(n.prop("owner", "")).strip()
         report.require(bool(owner) and not owner.startswith("<"),
                        f"{n.id}: a question with no owner cannot close")
@@ -376,8 +261,9 @@ def check_questions(notes, report, lenient) -> dict:
 
 def check_metrics(notes, report) -> None:
     for n in notes:
-        report.require(bool(re.fullmatch(r"OUT-\d+", n.id)),
-                       f"{n.rel}: metric id {n.id!r} is not OUT-N")
+        report.require(bool(re.fullmatch(ID_PATTERN["outcome-metric"], n.id)),
+                       f"{n.rel}: metric id {n.id!r} does not match "
+                       f"{ID_PATTERN['outcome-metric']}")
         for field in METRIC_FIELDS:
             value = str(n.prop(field, "")).strip()
             report.require(bool(value) and not value.startswith("<"),
@@ -415,8 +301,9 @@ def check_backlog(by_type, reqs, report, status, by_id):
     stories = by_type["user-story"]
     for level, prefix in LEVELS.items():
         for n in by_type[level]:
-            report.require(bool(re.fullmatch(prefix + r"-\d{2,}", n.id)),
-                           f"{n.rel}: {level} id {n.id!r} is not {prefix}-NN")
+            report.require(bool(re.fullmatch(ID_PATTERN[level], n.id)),
+                           f"{n.rel}: {level} id {n.id!r} does not match "
+                           f"{ID_PATTERN[level]}")
             parent = ids_in(n.prop("parent"))
             if level == "epic":
                 report.require(bool(parent) and parent[0].startswith("PRD-"),
@@ -430,14 +317,19 @@ def check_backlog(by_type, reqs, report, status, by_id):
     for n in stories:
         missing = [lbl for lbl in STORY_LABELS if lbl not in n.body]
         report.require(not missing, f"{n.id}: missing story labels: {', '.join(missing)}")
+        for lbl in FORBIDDEN_LABELS:
+            report.require(lbl not in n.body,
+                           f"{n.id}: {lbl} restates `parent` and `priority`, which the publish\n"
+                           f"step reads from front matter — drop the label")
         tagged = re.findall(r"^\s*\d+\.\s*AC-\d+\s*\[([^\]]+)\]", n.body, flags=re.M)
         report.require(bool(tagged), f"{n.id}: no acceptance criterion carries a source tag")
         for tag in tagged:
             for rid in re.findall(r"(?:R|X)-\d+", tag):
                 report.require(rid in reqs, f"{n.id}: a criterion cites unknown requirement {rid}")
-        if status != "Accepted":
+        if status != "accepted":
             report.require("PREVIEW" in n.body[:400] or "preview" in str(n.prop("status", "")),
-                           f"{n.id}: the PRD is not Accepted, so the story must be marked PREVIEW")
+                           f"{n.id}: the PRD is not accepted, so the story must be marked "
+                           f"PREVIEW")
     covered = sum(1 for v in reqs.values() if v["coverage"] == "covered")
     for v in reqs.values():
         for sid in v["stories"]:
@@ -447,7 +339,7 @@ def check_backlog(by_type, reqs, report, status, by_id):
     # invisible once the backlog is published.
     for n in stories:
         parent = (ids_in(n.prop("parent")) or [""])[0]
-        for rid in ids_in(n.prop("requirements")):
+        for rid in ids_in(n.prop("sources")):
             if rid.startswith("X-") or rid not in reqs:
                 continue
             owner = (ids_in(reqs[rid]["note"].prop("feature")) or [""])[0]
@@ -507,13 +399,13 @@ def moc(vault: pathlib.Path, check_only: bool = False) -> tuple[list[str], list[
         else:
             rows = [x for x in by_type.get(kind, [])
                     if x.status not in as_list(spec.get("exclude-status"))]
-            body = _table(rows, spec)
+            body = vaultlib.table(rows, spec, "Cross-cutting")
         text = n.path.read_text(encoding="utf-8")
         m = GEN.search(text)
         if not m:
             findings.append(f"{n.rel}: snapshot spec but no <!-- generated --> markers")
             continue
-        manifest = _manifest(rows)
+        manifest = vaultlib.manifest(rows)
         if m.group(2) == body and str(n.prop("input-manifest-sha256", "")) == manifest:
             continue
         if check_only:
@@ -521,13 +413,7 @@ def moc(vault: pathlib.Path, check_only: bool = False) -> tuple[list[str], list[
             findings.append(f"{n.rel}: the generated block is stale — {why}")
             continue
         new = GEN.sub(lambda mm: f"{m.group(1)}{body}{mm.group(3)}", text, count=1)
-        new = _stamp(new, {
-            "generator": "prd.py moc",
-            "generated": _today(),
-            "input-paths": sorted({str(pathlib.PurePosixPath(r.rel).parent) + "/" for r in rows}),
-            "input-manifest-sha256": manifest,
-            "managed-block-sha256": hashlib.sha256(body.encode("utf-8")).hexdigest(),
-        })
+        new = vaultlib.stamp(new, vaultlib.provenance("prd.py moc", rows, body))
         n.path.write_text(new, encoding="utf-8")
         written.append(f"{n.rel}: {len(rows)} rows")
     return findings, written
@@ -553,7 +439,7 @@ def render(vault: pathlib.Path, out: pathlib.Path, want_prd: str | None,
     prd = prds[0]
 
     body = _resolve(prd.body, by_stem, depth=0)
-    manifest = _manifest([n for n in notes if n.type != "moc"])
+    manifest = vaultlib.manifest([n for n in notes if n.type != "moc"])
     text = (
         "<!-- generated by prd.py render — do not edit; change the notes and re-render -->\n"
         f"<!-- source: {prd.rel} · inputs: {manifest[:16]} -->\n\n"
@@ -600,69 +486,12 @@ def _flatten(text: str) -> str:
     return re.sub(r"(!?)\[\[([^\]\n|#]+)(#[^\]\n|]*)?(?:\|([^\]\n]*))?\]\]", sub, text)
 
 
-def _manifest(rows) -> str:
-    """A hash over the input notes: the generated view's claim to be reproducible from them."""
-    h = hashlib.sha256()
-    for r in sorted(rows, key=lambda x: str(x.rel)):
-        h.update(str(r.rel).encode("utf-8"))
-        h.update(r.path.read_bytes())
-    return h.hexdigest()
-
-
-def _today() -> str:
-    import datetime
-    return datetime.date.today().isoformat()
-
-
-def _stamp(text: str, fields: dict) -> str:
-    """Set each field in the front matter, inserting what is not there yet.
-
-    A generated note has to say what produced it, from what, and at which version of the inputs.
-    Without that, "is this index current?" is answered by re-reading everything it indexes.
-    """
-    end = text.find("\n---", 4)
-    if not text.startswith("---\n") or end == -1:
-        return text
-    lines = text[4:end].splitlines()
-    tail = text[end:]
-    for key, value in fields.items():
-        rendered = ("[" + ", ".join(str(v) for v in value) + "]"
-                    if isinstance(value, list) else str(value))
-        line = f"{key}: {rendered}"
-        for i, existing in enumerate(lines):
-            if existing.split(":", 1)[0].strip() == key and not existing[:1].isspace():
-                lines[i] = line
-                break
-        else:
-            lines.append(line)
-    return "---\n" + "\n".join(lines) + tail
-
-
-def _table(rows, spec) -> str:
-    columns = as_list(spec.get("columns")) or ["id", "title", "status"]
-    group = spec.get("group-by")
-    groups = collections.defaultdict(list)
-    for r in rows:
-        groups[str(r.prop(group, "")) if group else ""].append(r)
-    fallback = str(spec.get("group-fallback", "Cross-cutting"))
-    out = []
-    for key in sorted(groups, key=lambda k: (k == "", k)):
-        if group:
-            out.append(f"### {key or fallback}\n")
-        out.append("| " + " | ".join(_header(c) for c in columns) + " |")
-        out.append("|" + "---|" * len(columns))
-        for r in sorted(groups[key], key=lambda x: _idkey(x.id)):
-            out.append("| " + " | ".join(_cell(r, c) for c in columns) + " |")
-        out.append("")
-    return "\n".join(out).rstrip() + "\n"
-
-
 def _coverage_table(requirements, by_id) -> str:
     """One row per requirement, including the cross-cutting ones. Coverage is read from each
     requirement note, so it cannot disagree with the notes the way a hand-kept table does."""
     out = ["| Requirement | Pri | Verify | Story | Coverage |", "|---|---|---|---|---|"]
     counts = collections.Counter()
-    for r in sorted(requirements, key=lambda x: _idkey(x.id)):
+    for r in sorted(requirements, key=lambda x: vaultlib.idkey(x.id)):
         coverage = str(r.prop("coverage", "")) or "—"
         counts[coverage] += 1
         stories = ids_in(r.prop("stories")) or ids_in(r.prop("questions"))
@@ -682,26 +511,6 @@ def _cite(ident: str, by_id) -> str:
     """
     note = by_id.get(ident)
     return f"[[{note.stem}\\|{ident}]]" if note else ident
-
-
-def _header(column: str) -> str:
-    return "ID" if column == "id" else column.replace("-", " ").capitalize()
-
-
-def _cell(note: Note, column: str) -> str:
-    if column == "title":
-        return re.sub(r"\s+", " ", note.title.replace("|", "\\|")).strip()
-    if column == "id":
-        return f"[[{note.stem}\\|{note.id}]]" if note.id else f"[[{note.stem}]]"
-    value = note.prop(column, "")
-    if isinstance(value, list):
-        return " · ".join(str(v) for v in value) or "—"
-    return str(value).replace("|", "\\|") or "—"
-
-
-def _idkey(ident: str):
-    m = re.match(r"([A-Za-z-]*)(\d*)", ident or "")
-    return (m.group(1), int(m.group(2) or 0))
 
 
 # ---------------------------------------------------------------------------- #
@@ -756,14 +565,10 @@ def main() -> int:
 
     report = Report()
     summary = check(args.vault.resolve(), report, args.prd, sources)
-    if args.baseline:
-        # Judge a change by what it broke. The first run on an adopted vault reports everything at
-        # once, and a list nobody has time to read is a checker nobody runs.
-        known = {line.strip().lstrip("- ").strip()
-                 for line in pathlib.Path(args.baseline).read_text(encoding="utf-8").splitlines()
-                 if line.strip()}
-        report.errors = [e for e in report.errors if e not in known]
-        report.warnings = [w for w in report.warnings if w not in known]
+    # Judge a change by what it broke. The first run on an adopted vault reports everything at
+    # once, and a list nobody has time to read is a checker nobody runs.
+    report.errors = vaultlib.new_only(report.errors, args.baseline)
+    report.warnings = vaultlib.new_only(report.warnings, args.baseline)
     print(" | ".join(summary))
     for message in report.warnings:
         print("WARNING", message)

@@ -254,6 +254,7 @@ id: Q-NNNN
 aliases: [Q-NNNN]
 type: open-question
 status: open | partial | answered | blocked | dropped
+topic: <topic>
 owner: <name or role>          # mandatory
 needed-by: YYYY-MM-DD          # mandatory
 blocks: ["[[<kebab-title>|PREFIX-N]]"]
@@ -285,6 +286,7 @@ id: SW-NNNN
 aliases: [SW-NNNN]
 type: scope-watch
 status: watch | clarify | in-scope | deferred | change-request | closed
+topic: <topic>
 owner: <name or role>
 baseline: ["[[baseline-source]]"]
 requested: ["[[newer-source]]"]
@@ -314,6 +316,7 @@ id: CH-NNNN
 aliases: [CH-NNNN]
 type: knowledge-change
 status: proposed | accepted | needs-review | closed
+topic: <topic>
 change-type: contradiction | scope-refinement | terminology-shift | decision-update | requirement-update | source-correction
 identified: YYYY-MM-DD
 older: ["[[older-source]]", "[[<kebab-title>|PREFIX-N]]"]

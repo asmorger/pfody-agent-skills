@@ -3,6 +3,7 @@ id: US-03
 aliases: [US-03]
 type: user-story
 status: draft
+topic: labels
 parent: "[[void-a-label|FEAT-02]]"
 source-mode: A
 sources: ["[[a-printed-label-may-be-voided|LABEL-2]]", "[[bulk-printing-across-orders|LABEL-3]]", "[[enforce-credit-hold-at-label-creation|ADR-0004]]"]
@@ -49,6 +50,3 @@ collected by the carrier.
    order returns to the unlabelled state.
 2. AC-2 [LABEL-3] Given a collected parcel, when a clerk attempts to void its label, then the system
    refuses and says why.
-
-**Tags**
-- Review Required, EPIC-01, FEAT-02

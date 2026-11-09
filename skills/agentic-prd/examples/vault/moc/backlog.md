@@ -3,12 +3,12 @@ type: moc
 updated: 2026-11-05
 snapshot:
   type: user-story
-  columns: [id, title, parent, testing-complexity]
+  columns: [id, title, parent, source-mode, status, testing-complexity, tracker-id]
 generator: prd.py moc
 generated: 2026-11-09
 input-paths: [backlog/]
-input-manifest-sha256: 9590d69adc661d8aa7215d7cedd9e6f2e01aeba29828e28801cc7aa637bffc03
-managed-block-sha256: 6b33f3ef2485658b147f56f86d9cfd1602cad3772076fde787a4cf83f9210555
+input-manifest-sha256: 6a7428016d4e5d39ef0801f79268c4ba07895c6223566b75e3e4e2408e3bb4cf
+managed-block-sha256: 5b5ce9b258eafe6b91aa6562e8954eb0d53068020d3f1ea66214dcf3d37a057f
 ---
 
 # Backlog
@@ -26,7 +26,7 @@ owns why and what; the tracker owns state. Nothing here carries a task or an est
 ![[backlog.base]]
 
 <!-- generated: do not edit -->
-| ID | Title | Parent | Testing complexity |
-|---|---|---|---|
-| [[create-a-label-for-a-confirmed-order\|US-01]] | Create a label for a confirmed order | [[create-and-print-a-label\|FEAT-01]] | Medium |
+| ID | Title | Parent | Source mode | Status | Testing complexity | Tracker id |
+|---|---|---|---|---|---|---|
+| [[create-a-label-for-a-confirmed-order\|US-01]] | Create a label for a confirmed order | [[create-and-print-a-label\|FEAT-01]] | A | ready | Medium | — |
 <!-- /generated -->

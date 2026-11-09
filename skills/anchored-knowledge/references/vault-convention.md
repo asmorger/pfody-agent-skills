@@ -6,6 +6,14 @@ contract. A project that already has an Obsidian vault keeps its own conventions
 the config; this file is what the skill proposes when there is nothing to adopt
 ([`../principles/match-the-projects-voice.md`](../principles/match-the-projects-voice.md)).
 
+**Every type, id pattern, status vocabulary and grouping key in this file is declared once in**
+[`vault-taxonomy.json`](vault-taxonomy.json), which this skill's scripts read and which the repo's
+`check-taxonomy.py` compares against this file, against every skeleton in `patterns/`, and against
+the worked example. The copy here is byte-identical to the repo's canonical one, so the skill still
+installs on its own. Before it existed the same three shared types carried two id widths and two
+status casings across two skills, each documented in prose, each checker seeing only its own.
+
+
 ## 1. One note, one fact, one id
 
 The record is a graph of small notes, not a set of documents. Each business rule, glossary term,
@@ -78,6 +86,16 @@ basename — `rules/credit-hold-blocks-labelling.md` and `decisions/credit-hold-
 make the same link text resolve differently depending on which note it is written in, and under §6
 one of the two becomes uncitable outright. The lint reports it.
 
+**Resolving a collision: the record layer keeps the plain name, and the later layer takes its level
+as a suffix.** A PRD's requirement and a business rule often want the same phrase, because they are
+the same behaviour at two altitudes — so the rule stays `rules/one-label-per-order.md` and the
+requirement becomes `requirements/one-label-per-order-requirement.md`; a story over that requirement
+is `backlog/void-a-printed-label-story.md`. The record layer wins because everything else cites it
+rather than the reverse. This is not a style preference: a bare `[[one-label-per-order]]` written in
+a vault holding both resolves by proximity, so the *same* citation means different notes in
+different folders, every link still works, and nothing looks wrong. The repo's
+`check-vault-tools.py` composes the two worked examples into one vault precisely to catch it.
+
 A project already numbering its files — `adr/0004-credit-hold-blocks-labelling.md` — keeps that form.
 The config's file map wins.
 
@@ -94,6 +112,7 @@ id: ORDER-1                 # omit on MOC and reference notes
 aliases: [ORDER-1]          # omit where there is no id
 type: business-rule         # closed vocabulary, §5
 status: confirmed           # closed vocabulary per type, §5
+topic: labels
 created: 2026-10-02         # written once, never rewritten
 updated: 2026-11-08         # checkable against git: `vault.py lint . --git`
 ---

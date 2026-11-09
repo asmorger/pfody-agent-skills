@@ -1,7 +1,7 @@
 # Every requirement cites a source
 
-**Rule.** Each requirement row carries exactly one value in its Source column: a `SRC-xx` with a
-locator, a `DEC-xx`, an `A-xx`, or `PROPOSED`. A `SRC-xx` without a locator — a time, a page, a line
+**Rule.** Each requirement row carries exactly one value in its Source column: a `SRC-xxxx` with a
+locator, a `ADR-xxxx`, an `A-xx`, or `PROPOSED`. A `SRC-xxxx` without a locator — a time, a page, a line
 — is not a citation. Compare the locator against the source at the moment you write it.
 
 **Why.** The citation is what lets a reader disagree with a requirement cheaply. Without a locator a
@@ -11,13 +11,13 @@ verify mechanically ([`../practices/run-the-checks.md`](../practices/run-the-che
 part of citation discipline that does not depend on anyone's diligence.
 
 **In the PRD.**
-- A time in a transcript: `SRC-07 @1:13:06`. A page in a document: `SRC-02 p.4`. A line in plain
-  notes: `SRC-03 L12`.
-- Every `SRC-xx` has a source note with its authority, location and date
+- A time in a transcript: `SRC-0007 @1:13:06`. A page in a document: `SRC-0002 p.4`. A line in plain
+  notes: `SRC-0003 L12`.
+- Every `SRC-xxxx` has a source note with its authority, location and date
   ([`../patterns/knowledge-ledger.md`](../patterns/knowledge-ledger.md)).
-- `DEC-xx` needs no locator: the decision row cites its own source.
+- `ADR-xxxx` needs no locator: the decision row cites its own source.
 - `A-xx` names an assumption or inference the approver accepts the risk on.
-- `PROPOSED` means nobody has sourced it yet. An Accepted PRD contains none
+- `PROPOSED` means nobody has sourced it yet. An `accepted` PRD contains none
   ([`../anti-patterns/accepted-with-proposed-left-in.md`](../anti-patterns/accepted-with-proposed-left-in.md)).
 
 **Breaks when.** A behaviour a source only implies is written as sourced →

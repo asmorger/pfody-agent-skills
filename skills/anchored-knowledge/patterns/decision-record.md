@@ -13,6 +13,7 @@ id: ADR-0004
 aliases: [ADR-0004]
 type: decision
 status: accepted
+topic: labels
 summary: An order on credit hold cannot be labelled; the hold is enforced at label creation.
 decided: 2026-10-21
 deciders: [operations lead, architect]

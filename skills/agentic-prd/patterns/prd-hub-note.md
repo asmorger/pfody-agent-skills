@@ -11,7 +11,8 @@ fill it — do not retype it from here.
 id: PRD-001
 aliases: [PRD-001]
 type: prd
-status: Accepted           # Draft | In Review | Accepted | Superseded
+status: accepted           # draft | in-review | accepted | superseded
+topic: labels
 size: Standard             # Small | Standard | Large
 owner: <role>
 approvers: [<business approver>, <architect>, <QA lead>]
@@ -29,7 +30,7 @@ updated: 2026-11-05
 ## 4. Epics, Features and requirements      ![[carrier-labels-on-the-order-screen]], then [[requirements]] and [[coverage]]
 ## 5. Cross-cutting requirements            ![[record-every-label-action]]
 ## 6. Agent boundaries                      always / ask first / never / stop conditions
-## 7. Knowledge ledger                      sources, decisions, [[who-may-void-a-printed-label|Q-03]]
+## 7. Knowledge ledger                      sources, decisions, [[who-may-void-a-printed-label|Q-0003]]
 ## 8. Rollout and measurement               flags, phases, rollback, telemetry
 ## Agent protocol                           kept verbatim in every PRD
 ```

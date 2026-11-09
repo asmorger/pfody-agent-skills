@@ -7,7 +7,7 @@ snapshot:
 generator: vault.py moc
 generated: 2026-11-09
 input-paths: [decisions/]
-input-manifest-sha256: 3d87dd44954d0e01543edc1261547aefcb8182126dff3b08a025c6c8f29c8ced
+input-manifest-sha256: 80908e892e91a4f5b5a86d1801a00a2cdea745c9b993d7896d46323a1c7333c1
 managed-block-sha256: 0d3a3d2e0276c20e2c09d299ec0cda872dc2c73a8b901389875f3aa2150e2e88
 ---
 

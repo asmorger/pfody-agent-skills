@@ -122,7 +122,8 @@ az boards work-item update --id <id> --fields "<description_ref>=<html>"
 az boards work-item update --id <id> --fields "<acceptance_criteria_ref>=<html>"   # skip if folded in
 
 # Tags (only if tags mapping is a real field)
-az boards work-item update --id <id> --fields "System.Tags=<required tags from config>; <PRD, EPIC, FEAT, and priority tags from the story>"
+az boards work-item update --id <id> --fields "System.Tags=<required tags from config, when `review-required: true`>; <the PRD, EPIC and FEAT ids reached by walking `parent`, plus `priority`>"
+# Derived from front matter, never read from a `**Tags**` body label: there is none.
 
 # Parent link under the Feature. Find the tracker ID in the PRD work item map, or ask the user. Never guess it.
 az boards work-item relation add --id <id> --relation-type parent --target-id <feature-id>

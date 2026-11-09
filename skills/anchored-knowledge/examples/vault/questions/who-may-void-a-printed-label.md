@@ -3,6 +3,7 @@ id: Q-0003
 aliases: [Q-0003]
 type: open-question
 status: open
+topic: labels
 owner: operations lead
 needed-by: 2026-11-20
 blocks: ["[[a-printed-label-may-be-voided|LABEL-2]]"]

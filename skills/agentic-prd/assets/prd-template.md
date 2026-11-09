@@ -2,7 +2,8 @@
 id: PRD-000
 aliases: [PRD-000]
 type: prd
-status: Draft            # Draft | In Review | Accepted | Superseded
+status: draft            # draft | in-review | accepted | superseded
+topic: <topic>
 size: Standard           # Small | Standard | Large
 owner: <TPO or TPM>
 approvers: [<business approver>, <architect>, <QA lead>]
@@ -66,7 +67,7 @@ This PRD is the source of record for **why** and **what**. Azure DevOps (ADO) is
 
 **Narrative.** <Three sentences or fewer. Who gets what outcome, and why it matters.>
 
-**Problem.** <The user or business problem. Do not name a solution.> Evidence: <SRC-xx>
+**Problem.** <The user or business problem. Do not name a solution.> Evidence: <SRC-xxxx>
 
 **Users.**
 
@@ -147,10 +148,10 @@ If no stakeholder assigned a priority, record the priority as an inference in Se
 | Optional | Where <option is on>, the system shall <behavior>. |
 
 **Source column.** Every requirement has one value:
-- `SRC-xx`: verified evidence or stakeholder input in the source register. Add a locator: a time (`SRC-xx @12:34`), a page (`SRC-xx p.4`), or a line in plain notes (`SRC-xx L12`).
-- `DEC-xx`: a recorded decision. The decision row cites its source, so do not repeat the source here.
+- `SRC-xxxx`: verified evidence or stakeholder input in the source register. Add a locator: a time (`SRC-xxxx @12:34`), a page (`SRC-xxxx p.4`), or a line in plain notes (`SRC-xxxx L12`).
+- `ADR-xxxx`: a recorded decision. The decision row cites its source, so do not repeat the source here.
 - `A-xx`: an inference or assumption. The approver accepts the risk.
-- `PROPOSED`: no source. An agent or a person suggested it. **An Accepted PRD has no `PROPOSED` values.**
+- `PROPOSED`: no source. An agent or a person suggested it. **An `accepted` PRD has no `PROPOSED` values.**
 
 **Verify column.** `Auto` (a test that a build can run), `Manual` (UAT or exploratory test), `Eval` (a scored data set, Module M1), or `Telemetry`.
 
@@ -232,13 +233,13 @@ Guidance: Remove the examples that do not apply. Add project rules. Link to `AGE
 
 | ID | Source | Type | Link | Date |
 |---|---|---|---|---|
-| SRC-01 | | Verified or Stakeholder | | |
+| SRC-0002 | | Verified or Stakeholder | | |
 
 **Decisions.**
 
 | ID | Decision | Owner | Date | Reason | Rejected options | Revisit when |
 |---|---|---|---|---|---|---|
-| DEC-01 | | | | | | |
+| ADR-0001 | | | | | | |
 
 **Assumptions and inferences.**
 
@@ -250,7 +251,7 @@ Guidance: Remove the examples that do not apply. Add project rules. Link to `AGE
 
 | ID | Question | Owner | Needed by | Blocks | Status |
 |---|---|---|---|---|---|
-| Q-01 | | | | | Open |
+| Q-0001 | | | | | Open |
 
 ## 8. Rollout and measurement
 
@@ -323,7 +324,7 @@ Report findings as a list. Do not change the PRD. Find these items:
 
 ### Mode: DECOMPOSE
 
-**Preconditions.** The status is Accepted. No `PROPOSED` value remains.
+**Preconditions.** The status is `accepted`. No `PROPOSED` value remains.
 
 **Preview.** A person can ask for a preview before acceptance. Say PREVIEW in the first lines of every User Story note. Skip each `PROPOSED` requirement and report it. Do not publish a preview.
 
@@ -335,7 +336,7 @@ Report findings as a list. Do not change the PRD. Find these items:
 6. Convert each requirement to one or more acceptance criteria in this form: `AC-n [R-001] Given <precondition>, when <trigger>, then <result>.`
 7. Do not add behavior. Leave a new gap out of the User Story and report it. A person decides whether to use Mode: CHANGE.
 8. Do not add tasks or estimates.
-9. Write one note per work item in `backlog/`. Each has `type` (epic, feature or user-story), an `id`, a matching `aliases`, and a `parent` wikilink: an Epic's parent is the PRD, a Feature's is an Epic, a User Story's is a Feature. Each User Story has these labels in this order: the "As a" sentence, Expected Output, Details (with `Source grounding:`), Assumptions, Testing Strategy, Open Questions, Technical Notes, Acceptance Criteria, Tags. Put each "All" requirement in a Definition of Done in `moc/backlog.md`.
+9. Write one note per work item in `backlog/`. Each has `type` (epic, feature or user-story), an `id`, a matching `aliases`, and a `parent` wikilink: an Epic's parent is the PRD, a Feature's is an Epic, a User Story's is a Feature. Each User Story has these labels in this order: the "As a" sentence, Expected Output, Details (with `Source grounding:`), Assumptions, Testing Strategy, Open Questions, Technical Notes, Acceptance Criteria. Put each "All" requirement in a Definition of Done in `moc/backlog.md`.
 10. Set each requirement note's `coverage` to covered, blocked, skipped-proposed, skipped-p3 or retired, and its `stories` or `questions` to match. Do not write a coverage table: run `python3 scripts/prd.py moc <vault>` and it is generated from the notes. Report the counts of Epics, Features and User Stories.
 
 ### Mode: CHANGE

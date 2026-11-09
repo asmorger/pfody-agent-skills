@@ -9,7 +9,7 @@ all.
 **Steps.**
 
 1. **Check all three preconditions**: the person asked in this conversation, the PRD status is
-   `Accepted`, and a person approved the backlog at Gate 3. Any one missing → stop and say which
+   `accepted`, and a person approved the backlog at Gate 3. Any one missing → stop and say which
    ([`../principles/only-a-person-crosses-a-gate.md`](../principles/only-a-person-crosses-a-gate.md)).
 2. **Find the tracker tools.** None available → hand over the backlog file and stop. Do not improvise
    an export.

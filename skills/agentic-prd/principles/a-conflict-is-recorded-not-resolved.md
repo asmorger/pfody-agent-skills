@@ -16,7 +16,7 @@ not exist. Recorded, the same conflict costs one question.
 - Read long transcripts whole. A later meeting overturning an earlier one is the normal case, and a
   skimmed transcript is where that reversal hides
   ([`../practices/draft-a-prd.md`](../practices/draft-a-prd.md)).
-- A reversal that a source states becomes a `DEC-xx` row with its reason and the option it rejected.
+- A reversal that a source states becomes a `ADR-xxxx` row with its reason and the option it rejected.
 - Report what you were not allowed to read. An excluded source is exactly where a settling decision
   tends to live.
 

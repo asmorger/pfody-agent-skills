@@ -11,6 +11,10 @@ description: >
   already recorded; whenever a question is answered, a decision reversed, or scope may have grown; and
   whenever a knowledge base or vault needs standing up, adopting or health-checking. Not for parsing
   transcripts, which `transcript-knowledge-base` does, nor for the stories or PRDs that cite it.
+allowed-tools: Read, Write, Edit, Glob, Grep, Skill, Bash(python3 *), Bash(git rev-parse *)
+metadata:
+  requires: [transcript-knowledge-base, git-guide]
+  related: [agentic-prd, user-story-builder]
 ---
 
 # anchored-knowledge
@@ -78,7 +82,7 @@ note. Then find your task below and read only the files it names.
     principles/  the rules and why each holds · patterns/  the note shapes, as skeletons
     practices/   procedures with a done-when · anti-patterns/  knowledge-keeping that fails
     references/  the vault convention, the Bases definitions, templates, the config template
-    scripts/     `vault.py lint`, `vault.py moc`, `vault.py narrative` — the derived things
+    scripts/     `vault.py lint`, `vault.py moc`, `vault.py narrative`, and `vaultlib.py`
     examples/ evals/   a worked vault to open in Obsidian, and the trigger prompts
 
 ## Conventions this skill assumes

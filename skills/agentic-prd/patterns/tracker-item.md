@@ -13,8 +13,10 @@ any item back to the requirement that caused it.
         Story    US-03 Void a printed label                          tag: PRD-001, P0
 
 The story's description carries the backlog's story body verbatim: the *As a* sentence, Expected
-Output, Details, Assumptions, Testing Strategy, Open Questions, Technical Notes, Acceptance Criteria,
-Tags.
+Output, Details, Assumptions, Testing Strategy, Open Questions, Technical Notes and Acceptance
+Criteria. The tracker's tags are **derived at publish time** from `parent` — walked up to its
+Feature, Epic and PRD — plus `priority`. There is no `**Tags**` label in the body to read them
+from, because a label restating two front-matter fields is the copy nobody updates.
 
 **Notes.**
 - The level id opens the title, so the tracker and the backlog can be read against each other with

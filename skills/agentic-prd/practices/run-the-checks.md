@@ -14,7 +14,7 @@ transfers confidence it never earned.
 
        python3 <skill-folder>/scripts/prd.py check <vault>
        python3 <skill-folder>/scripts/prd.py check <vault> --prd PRD-001
-       python3 <skill-folder>/scripts/prd.py check <vault> --source SRC-07=<transcript.txt>
+       python3 <skill-folder>/scripts/prd.py check <vault> --source SRC-0007=<transcript.txt>
        python3 <skill-folder>/scripts/prd.py moc   <vault>
 
 2. **Regenerate the MOCs before reporting.** The coverage table is built from the requirement notes,

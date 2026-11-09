@@ -8,8 +8,8 @@ than tabulating them.
 
 ```markdown
 ---
-id: SRC-01
-aliases: [SRC-01]
+id: SRC-0002
+aliases: [SRC-0002]
 type: source
 source-type: transcript        # transcript | sow | requirements | stakeholder-answer | vendor-doc
 authority: 3-client-clarification
@@ -25,7 +25,7 @@ citable: false
 from here.
 ```
 
-A decision, `sources/credit-hold-blocks-labelling.md`, is `type: decision` with `summary`,
+A decision, `sources/enforce-credit-hold-at-label-creation.md`, is `type: decision` with `summary`,
 `decided`, `deciders`, `requirements`, and an `## Alternatives` section naming **how each rejected
 option fails**. An assumption is `type: source` with `source-type: inference`, `authority:
 5-internal-interpretation`, and a body saying **what would make it false**.
@@ -35,7 +35,7 @@ option fails**. An assumption is `type: source` with `source-type: inference`, `
   note's backlinks are that list, always current.
 - `authority` replaces the old Verified/Stakeholder column and carries more: it is what a reviewer
   weighs a conflict with ([`../practices/cite-a-source.md`](../practices/cite-a-source.md)).
-- A requirement citing `DEC-nn` needs no locator, because the decision note carries its own reasoning.
+- A requirement citing `ADR-nnnn` needs no locator, because the decision note carries its own reasoning.
 - **Rejected options are the most valuable part of a decision note.** Each names how it fails, not
   that it lost — which is what stops it being re-proposed next quarter.
 - "What makes it false" turns an assumption into something testable. An assumption nothing could

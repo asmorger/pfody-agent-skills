@@ -2,11 +2,16 @@
 id: US-01
 aliases: [US-01]
 type: user-story
-status: accepted
+status: ready
+topic: labels
 prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 parent: "[[create-and-print-a-label|FEAT-01]]"
-requirements: ["[[create-a-label-on-order-confirmation|R-001]]", "[[show-the-carrier-rejection-reason|R-002]]", "[[refuse-a-label-on-credit-hold|R-003]]", "[[record-every-label-action|X-002]]"]
+source-mode: A
+review-required: true
+sources: ["[[create-a-label-on-order-confirmation|R-001]]", "[[show-the-carrier-rejection-reason|R-002]]", "[[refuse-a-label-on-credit-hold|R-003]]", "[[record-every-label-action|X-002]]"]
 testing-complexity: Medium
+tracker-id:
+tracker-url:
 created: 2026-10-02
 updated: 2026-11-05
 ---
@@ -50,6 +55,3 @@ leaves without the address being typed again.
    and says why.
 4. AC-4 [X-002] Given any label action, when it completes, then the order records the acting user
    and a timestamp.
-
-**Tags**
-- EPIC-01, FEAT-01

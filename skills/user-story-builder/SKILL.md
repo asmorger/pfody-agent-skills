@@ -8,10 +8,14 @@ description: >
   become stories with acceptance criteria grounded in named sources; whenever an existing story needs
   auditing for unsourced or pattern-matched scope; whenever stories must be pushed to a tracker with
   their parents and tags intact; and whenever someone asks "are these acceptance criteria actually
-  sourced?" Works on any project: a per-project config declares where the sources live, what id
+  sourced?" Works on any project: a per-project config says where the sources live, what id
   conventions exist and where to publish, and the skill degrades honestly to sparse-source or
-  conversational mode. Not for writing the PRD itself, which `agentic-prd` does, nor for building the
-  knowledge base, which `anchored-knowledge` does.
+  conversational mode. Not for the PRD itself, which `agentic-prd` does, nor for the knowledge base,
+  which `anchored-knowledge` does.
+allowed-tools: Read, Write, Edit, Glob, Grep, Skill, Bash(python3 *), Bash(az *)
+metadata:
+  requires: []
+  related: [anchored-knowledge, agentic-prd]
 ---
 
 # user-story-builder
@@ -68,6 +72,7 @@ in [`references/portable-core.md`](references/portable-core.md), which the patte
 | Auditing a story — "are these criteria sourced?" | `practices/review-an-existing-story.md` |
 | Publishing to a tracker | `practices/publish-to-a-tracker.md`, `references/adapters/azure-devops.md` |
 | Publishing for the first time, or adding a tracker with no adapter | `practices/resolve-the-tracker-fields.md`, `patterns/tracker-field-map.md`, `practices/add-a-tracker-adapter.md` |
+| Running the checks on a backlog, or regenerating its index | `practices/run-the-checks.md` |
 | Looking at a failed publish or a surprising run | `practices/diagnose-a-failed-run.md` |
 | Reviewing a story, or your own draft | `anti-patterns/` — scan the names; open what matches |
 
@@ -78,7 +83,8 @@ in [`references/portable-core.md`](references/portable-core.md), which the patte
     practices/      step-by-step procedures with a done-when checklist
     anti-patterns/  stories that fail — what they look like, why, what to do instead
     references/     the portable core, the vault convention, the config template, the adapters
-    examples/ evals/   a Mode A and a Mode C story note, and the trigger prompts
+    scripts/        `story.py check`, `story.py moc`, and the shared `vaultlib.py`
+    examples/ evals/   a Mode A and a Mode C story in a vault, and the trigger prompts
 
 ## Conventions this skill assumes
 
@@ -86,10 +92,10 @@ in [`references/portable-core.md`](references/portable-core.md), which the patte
     docs/backlog/<kebab-title>.md            one note per story; `stories_dir` in the config
     docs/moc/backlog.md                      the index, when there is more than one story
 
-Everything else — source paths, id schemes, roles, tenancy term, tags, the vault's folders and
-property names, the publishing target — is declared in that config and the config wins. Publishing
-to Azure DevOps needs `az` with the `azure-devops` extension; the MOC's Bases embed needs Obsidian
-1.9+, and a vault without it reads the generated snapshot.
+Everything else — source paths, id schemes, roles, tenancy term, the vault's folders and property
+names, the publishing target — is declared in that config and the config wins. `story.py` needs
+Python 3.10+; publishing to Azure DevOps needs `az` with the `azure-devops` extension; the MOC's
+Bases embed needs Obsidian 1.9+, and a vault without it reads the generated snapshot.
 
 ## Related skills
 

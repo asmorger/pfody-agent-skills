@@ -1,8 +1,9 @@
 ---
-id: Q-03
-aliases: [Q-03]
+id: Q-0003
+aliases: [Q-0003]
 type: open-question
 status: open
+topic: labels
 owner: Example Operations Lead
 needed-by: 2026-11-20
 blocks: ["[[void-a-printed-label|R-012]]", "[[void-a-label|FEAT-02]]"]
@@ -11,9 +12,9 @@ created: 2026-10-21
 updated: 2026-11-05
 ---
 
-# Q-03 — Who may void a printed label — any clerk, or a supervisor?
+# Q-0003 — Who may void a printed label — any clerk, or a supervisor?
 
-**Best answer so far.** [[label-workflow-walkthrough|SRC-04]] says voiding exists and stops at collection, but not who may do
+**Best answer so far.** [[label-workflow-walkthrough|SRC-0003]] says voiding exists and stops at collection, but not who may do
 it. The carrier portal allows any authenticated account, which is not an authority statement about
 our users.
 

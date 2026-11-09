@@ -3,6 +3,7 @@ id: Q-0004
 aliases: [Q-0004]
 type: open-question
 status: blocked
+topic: orders
 owner: delivery lead
 needed-by: 2026-11-30
 blocks: ["[[confirmed-order-may-split-across-parcels|ORDER-5]]"]

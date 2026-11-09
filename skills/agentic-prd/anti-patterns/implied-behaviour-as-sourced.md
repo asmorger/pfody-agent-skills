@@ -1,6 +1,6 @@
 # Implied behaviour as sourced
 
-**Smell.** A requirement with a clean `SRC-07 @14:02` whose source, at 14:02, does not say it. The
+**Smell.** A requirement with a clean `SRC-0007 @14:02` whose source, at 14:02, does not say it. The
 source mentions a void button; the requirement specifies who may void. The source names a report; the
 requirement specifies its columns. Every step is reasonable and the citation is real — it just does
 not cover the sentence it is attached to.

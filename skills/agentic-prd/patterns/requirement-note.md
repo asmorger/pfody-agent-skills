@@ -11,11 +11,12 @@ id: R-001
 aliases: [R-001]
 type: requirement
 status: accepted           # draft | accepted | retired
+topic: labels
 prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 feature: "[[create-and-print-a-label|FEAT-01]]"
 priority: P0               # P0 | P1 | P2 | P3
 verify: Auto               # Auto | Manual | Eval | Telemetry
-source: SRC-01 @12:04      # SRC-nn + locator | DEC-nn | A-nn | PROPOSED
+source: SRC-0002 @12:04      # SRC-nnnn + locator | ADR-nnnn | A-nn | PROPOSED
 outcomes: ["[[address-error-rate-on-parcels|OUT-1]]"]
 coverage: covered          # covered | blocked | skipped-proposed | skipped-p3 | retired
 stories: ["[[create-a-label-for-a-confirmed-order|US-01]]"]

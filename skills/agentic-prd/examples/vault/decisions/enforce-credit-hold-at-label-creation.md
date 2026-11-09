@@ -1,8 +1,9 @@
 ---
-id: DEC-02
-aliases: [DEC-02]
+id: ADR-0004
+aliases: [ADR-0004]
 type: decision
 status: accepted
+topic: labels
 summary: An order on credit hold cannot be labelled; the hold is enforced at label creation.
 decided: 2026-10-21
 deciders: [Example Operations Lead, Example Architect]
@@ -12,7 +13,7 @@ created: 2026-10-21
 updated: 2026-10-21
 ---
 
-# DEC-02 — A credit hold blocks labelling
+# ADR-0004 — A credit hold blocks labelling
 
 **Illustrative example only.** Invented.
 

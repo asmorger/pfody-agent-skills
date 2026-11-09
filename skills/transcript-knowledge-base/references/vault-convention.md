@@ -10,6 +10,14 @@ contract for the shared parts: frontmatter as the query surface, wikilinks as th
 callout vocabulary, the MOC's `<!-- generated -->` markers. This file is the part specific to a
 transcript index.
 
+**Every type, id pattern, status vocabulary and grouping key in this file is declared once in**
+[`vault-taxonomy.json`](vault-taxonomy.json), which this skill's scripts read and which the repo's
+`check-taxonomy.py` compares against this file, against every skeleton in `patterns/`, and against
+the worked example. The copy here is byte-identical to the repo's canonical one, so the skill still
+installs on its own. Before it existed the same three shared types carried two id widths and two
+status casings across two skills, each documented in prose, each checker seeing only its own.
+
+
 ## 1. The folder
 
     <vault_path>/                     default `transcript-knowledge/`

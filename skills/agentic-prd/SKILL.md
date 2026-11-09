@@ -12,6 +12,10 @@ description: >
   publishing a backlog to a tracker. Also for "spec-driven development", "AI-ready spec" and
   "convert this PRD to stories". Not for a single bug, one small story, a sprint status report,
   design documents, task breakdowns or estimates.
+allowed-tools: Read, Write, Edit, Glob, Grep, Skill, Bash(python3 *), Bash(az *)
+metadata:
+  requires: []
+  related: [anchored-knowledge, transcript-knowledge-base, user-story-builder]
 ---
 
 # agentic-prd
@@ -77,7 +81,7 @@ Pick the earliest mode the files need; name two and they run in order.
     practices/   procedures with a done-when · anti-patterns/  specs that fail, and why
     assets/ references/   the PRD hub template, and the vault convention
     examples/ evals/      a worked PRD vault to open in Obsidian, and trigger queries
-    scripts/     `prd.py check`, `prd.py moc`, `prd.py render`, and the text extractor
+    scripts/     `prd.py check`, `prd.py moc`, `prd.py render`, the text extractor, `vaultlib.py`
 
 ## Conventions this skill assumes
 

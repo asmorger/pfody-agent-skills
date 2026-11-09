@@ -7,7 +7,7 @@ snapshot:
 generator: vault.py moc
 generated: 2026-11-09
 input-paths: [scope-watch/]
-input-manifest-sha256: e61b2b5ab71c6c80c69f89bb10b527eb6d6ebe21e013b98e008b0b833690ccd7
+input-manifest-sha256: 3da7556171a20317f1192d64bcb0e02bcd69e75197f4cbfb24998a35089018c0
 managed-block-sha256: 3b00274d126d9ee3b79f4e1c884b52ef912cd5ee4ed92e854a40b002999b0254
 ---
 

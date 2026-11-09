@@ -73,9 +73,9 @@ being a skeleton. Worked examples say in their first lines that their content is
 
 ## Checks
 
-    python3 scripts/check-skill-layout.py                  # links resolve, labels match, sizes hold
-    python3 scripts/measure-skill-triggers.py fixture       # build the trigger fixture
-    python3 scripts/measure-skill-triggers.py run 4         # one `claude -p` per eval query
+    python3 scripts/check-skill-layout.py                    # links resolve, labels match, sizes hold
+    python3 scripts/measure-skill-triggers.py fixture        # build the trigger fixture
+    python3 scripts/measure-skill-triggers.py run 2 "" 5     # 5 samples per eval query
 
 `check-skill-layout.py` enforces the contract above and is cheap to run on every change.
 
@@ -83,5 +83,12 @@ Each skill keeps `evals/trigger-queries.json`: prompts that should and should no
 measurement runs each one as a single-turn `claude -p` inside a fixture holding the skills and
 nothing else, so a skill can only be reached through its own description — a false negative means the
 description does not reach the task, a false positive means it reaches past it, usually into a
-sibling skill's territory. One sample per query, so treat ±1 as noise, and each query is billed like
-any other call.
+sibling skill's territory. Each query is billed like any other call.
+
+**Two things to know before reading a number.** Run it from a plain terminal, not from inside a
+Claude Code session: a nested run inherits `CLAUDECODE=1` and triggers both less often and far more
+erratically than a real session. And triggering is probabilistic, so one sample per query is a coin
+flip, not a measurement — two identical 56-query runs here disagreed on 19% of their positives. Use
+`reps=5` or more and read the per-query rates the summary prints; a 1/5 and a 4/5 mean different
+things, and neither is a pass or a fail. Precision is the number that survives the noise, because a
+false positive is a real finding whenever it appears.

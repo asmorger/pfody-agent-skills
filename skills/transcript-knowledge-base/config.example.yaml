@@ -4,8 +4,10 @@
 title: "Knowledge Index"
 intro: "Durable rules and decisions distilled from project transcripts, each cited to its source meeting."
 
-# Output deliverable + lightweight state cache (NOT a database — plain files).
-index_path: "knowledge-index.md"
+# The vault this renders, plus a lightweight state cache (NOT a database — plain files).
+# vault_path MUST be somewhere that belongs to this skill: every note in it is generated,
+# and a note that is no longer generated is deleted on the next run.
+vault_path: "transcript-knowledge"
 state_path: "knowledge-index.state.json"
 workdir: ".knowledge-index.work"
 

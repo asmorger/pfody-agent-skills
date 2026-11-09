@@ -21,7 +21,7 @@ loses every batch's hashes if the run is interrupted.
    ([`../patterns/category-taxonomy.md`](../patterns/category-taxonomy.md)).
 6. **Watch the dropped count per batch.** It is a better signal than a single count at the end,
    because it points at which batch's extraction went wrong.
-7. **Render once, at the end** ([`render-the-index.md`](render-the-index.md)).
+7. **Render once, at the end** ([`render-the-vault.md`](render-the-vault.md)).
 8. **Expect to curate afterwards** on a corpus this size
    ([`curate-a-large-corpus.md`](curate-a-large-corpus.md)).
 

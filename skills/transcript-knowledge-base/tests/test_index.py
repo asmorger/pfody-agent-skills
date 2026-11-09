@@ -1,10 +1,12 @@
-"""Tests for the knowledge index: id assignment, dedup/merge, provenance, render."""
+"""Tests for the knowledge index: id assignment, dedup/merge, provenance, vault render."""
 
+import os
 import unittest
 
 from helpers import ROOT, temp_dir  # noqa: F401
 
 from tkb.index import KnowledgeIndex, Source, derive_prefix
+from tkb.vault import render_vault
 
 
 def src(meeting="Kickoff", date="2026-01-05", speaker="Maya", ts="0:12", quote="...", turn="t0001"):
@@ -61,7 +63,7 @@ class TestIndexMerge(unittest.TestCase):
         self.assertIn("no provenance (sources empty)", item.validate())
 
 
-class TestRender(unittest.TestCase):
+class TestVaultRender(unittest.TestCase):
     def _idx(self):
         idx = KnowledgeIndex(title="Acme Rules", intro="Rules from discovery.")
         idx.merge_item("Authentication & Access", "Users authenticate via SSO through Acme ID.",
@@ -73,56 +75,132 @@ class TestRender(unittest.TestCase):
                        prefix="BID", status="confirmed")
         return idx
 
-    def test_markdown_structure(self):
-        md = self._idx().render_markdown()
-        self.assertIn("# Acme Rules", md)
-        self.assertIn("## Authentication & Access", md)
-        self.assertIn("| ID | Rule | Sources |", md)
-        self.assertIn("| AUTH-1 |", md)
-        self.assertIn("Users authenticate via SSO through Acme ID.", md)
-        # Provenance is in the sources cell: meeting (date; speaker).
-        self.assertIn("Alignment (2026-01-15; Jason)", md)
-        # The verbatim appendix is intentionally NOT rendered (kept in state).
-        self.assertNotIn("## Evidence", md)
-        self.assertNotIn("we go through Acme ID for sign on", md)
-
-    def test_verbatim_quote_retained_in_state_not_in_markdown(self):
-        import os
-        idx = self._idx()
-        md = idx.render_markdown()
-        self.assertNotIn("0:12:04", md)               # timestamp not in the doc
+    def _render(self, idx=None):
         d = temp_dir()
-        state = os.path.join(d, "s.json")
+        summary = render_vault(idx or self._idx(), d)
+        return d, summary
+
+    def read(self, d, rel):
+        with open(os.path.join(d, rel), encoding="utf-8") as fh:
+            return fh.read()
+
+    def test_one_note_per_item_and_per_meeting(self):
+        d, summary = self._render()
+        self.assertEqual(summary["items"], 2)
+        self.assertEqual(summary["meetings"], 2)
+        self.assertEqual(sorted(os.listdir(os.path.join(d, "items"))),
+                         ["all-bidding-is-blind-bidders-cannot-see-other-bids.md",
+                          "users-authenticate-via-sso-through-acme-id.md"])
+        self.assertEqual(sorted(os.listdir(os.path.join(d, "meetings"))),
+                         ["2026-01-15-alignment.md", "2026-01-21-scope.md"])
+
+    def test_item_note_shape(self):
+        d, _ = self._render()
+        note = self.read(d, "items/users-authenticate-via-sso-through-acme-id.md")
+        self.assertTrue(note.startswith("---\n"))
+        self.assertIn("id: AUTH-1", note)
+        self.assertIn("aliases: [AUTH-1]", note)
+        self.assertIn("type: transcript-item", note)
+        self.assertIn("status: confirmed", note)
+        self.assertIn("citable: false", note)
+        self.assertIn('tags: [transcript-item/authentication-access]', note)
+        # the source is a quoted wikilink to the meeting note, so Obsidian reads it as a link
+        self.assertIn('sources: ["[[2026-01-15-alignment]]"]', note)
+        self.assertIn("# AUTH-1 — Users authenticate via SSO through Acme ID.", note)
+
+    def test_verbatim_quote_is_on_the_note(self):
+        """The quote moved out of the state file and onto the statement it anchors."""
+        d, _ = self._render()
+        note = self.read(d, "items/users-authenticate-via-sso-through-acme-id.md")
+        self.assertIn("> [!quote] Evidence", note)
+        self.assertIn('> "we go through Acme ID for sign on"', note)
+        self.assertIn("> — Jason, [[2026-01-15-alignment]] 0:12:04", note)
+
+    def test_quote_also_survives_in_the_state_cache(self):
+        d, _ = self._render()
+        idx = self._idx()
+        state = os.path.join(temp_dir(), "s.json")
         idx.save(state)
         reloaded = KnowledgeIndex.load(state)
-        # ...but the full quote + timestamp survive in the state file.
-        src = reloaded.items["AUTH-1"].sources[0]
-        self.assertEqual(src.quote, "we go through Acme ID for sign on")
-        self.assertEqual(src.timestamp, "0:12:04")
+        s = reloaded.items["AUTH-1"].sources[0]
+        self.assertEqual(s.quote, "we go through Acme ID for sign on")
+        self.assertEqual(s.timestamp, "0:12:04")
 
-    def test_status_folded_inline(self):
+    def test_moc_has_embed_and_generated_snapshot(self):
+        d, summary = self._render()
+        moc = self.read(d, summary["moc"])
+        self.assertIn("type: moc", moc)
+        self.assertIn("![[acme-rules.base]]", moc)
+        self.assertIn("<!-- generated: do not edit", moc)
+        self.assertIn("<!-- /generated -->", moc)
+        self.assertIn("### Authentication & Access", moc)
+        self.assertIn("| [[AUTH-1]] |", moc)
+        self.assertIn("[[2026-01-15-alignment]]", moc)
+        self.assertTrue(os.path.exists(os.path.join(d, "bases/acme-rules.base")))
+
+    def test_status_is_a_property_and_a_callout_not_prose(self):
         idx = KnowledgeIndex()
         idx.merge_item("Scope", "Buy Now is deferred to a future phase.",
                        [src(quote="buy now later")], status="deferred", note="not Phase 1")
-        md = idx.render_markdown()
-        self.assertIn("Deferred", md)
-        self.assertIn("not Phase 1", md)
+        d, _ = self._render(idx)
+        note = self.read(d, "items/buy-now-is-deferred-to-a-future-phase.md")
+        self.assertIn("status: deferred", note)
+        self.assertIn("> [!failure] Deferred", note)
+        self.assertIn("> not Phase 1", note)
+        # the statement itself stays clean
+        self.assertIn("# SCO-1 — Buy Now is deferred to a future phase.", note)
 
-    def test_table_cell_escaping(self):
+    def test_pipe_escaped_in_the_moc_table_only(self):
         idx = KnowledgeIndex()
-        idx.merge_item("X", "A rule with a | pipe and a break.", [src()])
-        md = idx.render_markdown()
-        self.assertIn("\\|", md)  # pipe escaped so the table is not broken
+        idx.merge_item("X", "A rule with a | pipe.", [src()])
+        d, summary = self._render(idx)
+        self.assertIn("\\|", self.read(d, summary["moc"]))
+        # the note's own heading needs no escaping, because it is not a table
+        self.assertIn("# X-1 — A rule with a | pipe.", self.read(d, "items/a-rule-with-a-pipe.md"))
 
-    def test_round_trip_state(self):
-        import os
-        idx = self._idx()
-        d = temp_dir()
-        state = os.path.join(d, "state.json")
-        idx.save(state)
-        idx2 = KnowledgeIndex.load(state)
-        self.assertEqual(len(idx2.items), 2)
-        self.assertEqual(idx2.items["AUTH-1"].sources[0].quote, "we go through Acme ID for sign on")
+    def test_rerun_is_idempotent_and_preserves_created(self):
+        d, _ = self._render()
+        rel = "items/users-authenticate-via-sso-through-acme-id.md"
+        before = self.read(d, rel)
+        with open(os.path.join(d, rel), "w", encoding="utf-8") as fh:
+            fh.write(before.replace("created: " + before.split("created: ")[1].split("\n")[0],
+                                    "created: 2020-01-01"))
+        render_vault(self._idx(), d)
+        after = self.read(d, rel)
+        self.assertIn("created: 2020-01-01", after)   # original creation date kept
+        render_vault(self._idx(), d)
+        self.assertEqual(after, self.read(d, rel))    # second re-run changes nothing
+
+    def test_a_renamed_statement_removes_its_old_note(self):
+        d, _ = self._render()
+        idx = KnowledgeIndex(title="Acme Rules")
+        idx.merge_item("Bidding", "All bidding is blind; bidders cannot see other bids.",
+                       [src(meeting="Scope", date="2026-01-21", quote="bidding is blind")],
+                       prefix="BID")
+        summary = render_vault(idx, d)
+        self.assertFalse(os.path.exists(
+            os.path.join(d, "items/users-authenticate-via-sso-through-acme-id.md")))
+        self.assertGreaterEqual(summary["files_removed"], 1)
+
+    def test_a_hand_added_note_is_never_deleted(self):
+        d, _ = self._render()
+        mine = os.path.join(d, "items", "my-own-note.md")
+        with open(mine, "w", encoding="utf-8") as fh:
+            fh.write("---\ntype: note\n---\n\n# Mine\n")
+        render_vault(KnowledgeIndex(title="Acme Rules"), d)
+        self.assertTrue(os.path.exists(mine))
+
+    def test_long_statement_is_truncated_at_a_word_boundary(self):
+        idx = KnowledgeIndex()
+        idx.merge_item("X", "A very long canonical statement that keeps going well past any "
+                            "reasonable filename length and must be cut somewhere sensible.",
+                       [src()])
+        d, _ = self._render(idx)
+        names = os.listdir(os.path.join(d, "items"))
+        self.assertEqual(len(names), 1)
+        stem = names[0][:-3]
+        self.assertLessEqual(len(stem), 72)
+        self.assertFalse(stem.endswith("-"))
 
 
 class TestPrefix(unittest.TestCase):

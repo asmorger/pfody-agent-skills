@@ -3,8 +3,9 @@
 Build a curated, categorized **knowledge index** from a folder of conversation
 transcripts. Each item is a clean, canonical statement (a rule / decision /
 requirement / fact) with stable id and provenance back to the meeting, speaker,
-timestamp, and quote it came from. Output is a single markdown file plus a small
-JSON state cache for incremental re-runs — no database.
+timestamp, and quote it came from. Output is an Obsidian vault of small linked
+notes — one per statement, one per meeting, one MOC — plus a small JSON state
+cache for incremental re-runs. No database.
 
 Layers:
     parsers/  ->  prepare (scan, change-detect, citation-tag)

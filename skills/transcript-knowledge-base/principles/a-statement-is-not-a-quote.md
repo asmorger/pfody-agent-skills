@@ -15,7 +15,7 @@ spec while every line stays checkable.
 - Good: "A voided label cannot be reused; a new label must be created."
 - Bad: "Dana said they'd probably do labels per parcel I think." Bad: "Per parcel, not per order."
 - Self-contained means no "this", "that one" or "as above". The statement will be read on its own, in
-  a table row ([`../patterns/rendered-index.md`](../patterns/rendered-index.md)).
+  a table row ([`../patterns/vault-notes.md`](../patterns/vault-notes.md)).
 - Use roles, not names, in the statement. Names belong in the source's speaker field.
 - Present tense even for a future decision: the index describes the system as agreed, not the meeting.
 

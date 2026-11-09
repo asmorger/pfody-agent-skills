@@ -35,5 +35,5 @@ After the merge, `LABEL-1` keeps its text, its id and its January sources, and i
   would not have matched them.
 - Use `note` to say in one clause what changed, for a reader scanning the rendered table.
 
-**Related.** [`knowledge-item.md`](knowledge-item.md), [`rendered-index.md`](rendered-index.md),
+**Related.** [`knowledge-item.md`](knowledge-item.md), [`vault-notes.md`](vault-notes.md),
 [`../anti-patterns/deleting-a-superseded-item.md`](../anti-patterns/deleting-a-superseded-item.md).

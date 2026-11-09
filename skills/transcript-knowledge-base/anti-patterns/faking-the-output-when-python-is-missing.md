@@ -1,6 +1,6 @@
 # Faking the output when Python is missing
 
-**Smell.** No interpreter on PATH, or one at 3.8, and a `knowledge-index.md` produced anyway — read
+**Smell.** No interpreter on PATH, or one at 3.8, and a folder of notes produced anyway — read
 from the transcripts and written by hand, with citations that look right. Sometimes a state file
 invented alongside it so the next run "works".
 

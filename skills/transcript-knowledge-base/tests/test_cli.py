@@ -1,4 +1,4 @@
-"""End-to-end CLI test: prepare -> merge -> render, including incremental re-run."""
+"""End-to-end CLI test: prepare -> merge -> render a vault, including incremental re-run."""
 
 import io
 import json
@@ -22,6 +22,11 @@ REVIEW = (
 )
 
 
+def _read(vault, rel):
+    with open(os.path.join(vault, rel), encoding="utf-8") as fh:
+        return fh.read()
+
+
 def run(argv):
     buf = io.StringIO()
     with redirect_stdout(buf):
@@ -36,7 +41,7 @@ class TestCliEndToEnd(unittest.TestCase):
         os.makedirs(self.folder)
         self.state = os.path.join(self.d, "state.json")
         self.work = os.path.join(self.d, "work")
-        self.index = os.path.join(self.d, "knowledge-index.md")
+        self.vault = os.path.join(self.d, "transcript-knowledge")
 
     def _merge_from_manifest(self, manifest_path, items):
         """Helper: build an items.json the way the agent would, then merge."""
@@ -73,13 +78,16 @@ class TestCliEndToEnd(unittest.TestCase):
         ])
         self.assertEqual(res["created"], 2)
 
-        # 4. render
-        rnd = run(["render", "--out", self.index, "--state", self.state])
+        # 4. render the vault
+        rnd = run(["render", "--out", self.vault, "--state", self.state])
         self.assertEqual(rnd["items"], 2)
-        md = open(self.index, encoding="utf-8").read()
-        self.assertIn("| AUT-1 |", md)
-        self.assertIn("Maya", md)              # speaker rendered in the sources cell
-        self.assertNotIn("## Evidence", md)    # verbatim appendix removed
+        self.assertEqual(rnd["meetings"], 1)
+        note = _read(self.vault, "items/users-authenticate-via-sso-through-the-in-portal.md")
+        self.assertIn("id: AUT-1", note)
+        self.assertIn('sources: ["[[2026-01-05-project-kickoff]]"]', note)
+        self.assertIn("> — Maya, [[2026-01-05-project-kickoff]] 00:00:05", note)
+        moc = _read(self.vault, rnd["moc"])
+        self.assertIn("| [[AUT-1]] |", moc)
 
         # --- Incremental: add a second transcript, re-run ---
         write(self.folder, "review.txt", REVIEW)
@@ -106,6 +114,14 @@ class TestCliEndToEnd(unittest.TestCase):
         from tkb.index import KnowledgeIndex
         idx = KnowledgeIndex.load(self.state)
         self.assertEqual(len(idx.items["AUT-1"].sources), 2)
+
+        # Re-rendering folds the second meeting in: one note per meeting, and the merged
+        # statement's note now cites both — which is the whole point of the incremental run.
+        rnd2 = run(["render", "--out", self.vault, "--state", self.state])
+        self.assertEqual((rnd2["items"], rnd2["meetings"]), (3, 2))
+        note = _read(self.vault, "items/users-authenticate-via-sso-through-the-in-portal.md")
+        self.assertIn('sources: ["[[2026-01-05-project-kickoff]]", "[[2026-02-02-review]]"]', note)
+        self.assertEqual(note.count("> [!quote] Evidence"), 2)
 
     def test_merge_drops_items_without_provenance(self):
         write(self.folder, "kickoff.txt", KICKOFF)

@@ -27,4 +27,4 @@ orders the sections by first appearance.
 - Emergent is right for a one-off exploration of a domain you do not know yet — and only then.
 - Ids are per category, so a category added later does not disturb the numbering of the others.
 
-**Related.** [`tool-config.md`](tool-config.md), [`rendered-index.md`](rendered-index.md).
+**Related.** [`tool-config.md`](tool-config.md), [`vault-notes.md`](vault-notes.md).

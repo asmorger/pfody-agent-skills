@@ -28,6 +28,6 @@ writes `tracker-id`, `tracker-url` and `status: published` back into the note �
 later run update rather than duplicate, and lets a reviewer in the tracker get back to the sourced
 note ([`../practices/publish-to-a-tracker.md`](../practices/publish-to-a-tracker.md)).
 
-Before anything is sent, the wikilink brackets are stripped — `[[LABEL-2]]` becomes `LABEL-2` — and
+Before anything is sent, the wikilink brackets are stripped — `[[a-printed-label-may-be-voided|LABEL-2]]` becomes `LABEL-2` — and
 then the whole field is normalised to pure ASCII. In that order
 ([`../principles/tracker-text-is-ascii.md`](../principles/tracker-text-is-ascii.md)).

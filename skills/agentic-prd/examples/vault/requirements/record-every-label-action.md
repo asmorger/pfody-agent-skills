@@ -3,13 +3,13 @@ id: X-002
 aliases: [X-002]
 type: requirement
 status: accepted
-prd: "[[PRD-001]]"
+prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 applies-to: [All]
 priority: P0
 verify: Manual
 source: DEC-02
 coverage: covered
-stories: ["[[US-01]]"]
+stories: ["[[create-a-label-for-a-confirmed-order|US-01]]"]
 created: 2026-10-21
 updated: 2026-11-05
 tags: [requirement/cross-cutting]

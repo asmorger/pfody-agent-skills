@@ -18,9 +18,10 @@ fix and silent until something is built on it.
    source note, and every source note carries an `authority`.
 3. **Separation.** Rules, decisions and open questions live in separate homes. Possible added scope is
    separate from confirmed in-scope knowledge. No fact has two homes.
-4. **Ids.** Immutable, gap-tolerant, never reused, and present in `aliases` so `[[PREFIX-N]]`
-   resolves. Deprecated rules deprecated in place, never deleted. Every wikilink resolves to a real
-   note.
+4. **Ids.** Immutable, gap-tolerant, never reused, and present in `aliases` for search. Every
+   citation is `[[<kebab-title>|PREFIX-N]]` — filename as target, id as display text — never a bare
+   `[[PREFIX-N]]`, which Obsidian does not resolve. Deprecated rules deprecated in place, never
+   deleted. Every wikilink resolves to a real note.
 5. **Vault shape.** Run `python3 scripts/vault.py lint <vault>`: it reports dangling wikilinks,
    orphans, values outside the vocabularies, a confirmed note with no source, oversized notes and
    duplicate ids. Then check what it cannot — whether each note holds one idea, and whether the

@@ -14,8 +14,8 @@ status: clarify
 owner: delivery lead
 baseline: ["[[order-fulfilment-sow-v3]]"]
 requested: ["[[operations-lead-on-split-orders]]"]
-affects: ["[[ORDER-5]]", "[[LABEL-3]]"]
-questions: ["[[Q-0004]]"]
+affects: ["[[confirmed-order-may-split-across-parcels|ORDER-5]]", "[[bulk-printing-across-orders|LABEL-3]]"]
+questions: ["[[partial-despatch-of-a-split-order|Q-0004]]"]
 disposition:
 created: 2026-11-08
 updated: 2026-11-08

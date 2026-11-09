@@ -30,14 +30,14 @@ What this system does, as agreed. Each rule is a note in `rules/`; this note ind
 
 | ID | Rule | Status | Sources |
 |---|---|---|---|
-| [[ORDER-1]] | Order address frozen on confirmation | confirmed | [[order-fulfilment-sow-v3]] |
-| [[ORDER-5]] | Confirmed order may split across parcels | draft | [[operations-lead-on-split-orders]] |
+| [[order-address-frozen-on-confirmation|ORDER-1]] | Order address frozen on confirmation | confirmed | [[order-fulfilment-sow-v3]] |
+| [[confirmed-order-may-split-across-parcels|ORDER-5]] | Confirmed order may split across parcels | draft | [[operations-lead-on-split-orders]] |
 
 ### labels
 
 | ID | Rule | Status | Sources |
 |---|---|---|---|
-| [[LABEL-3]] | Bulk printing across orders | out-of-scope | [[order-fulfilment-sow-v3]] |
+| [[bulk-printing-across-orders|LABEL-3]] | Bulk printing across orders | out-of-scope | [[order-fulfilment-sow-v3]] |
 <!-- /generated -->
 ```
 

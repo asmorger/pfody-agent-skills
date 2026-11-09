@@ -20,8 +20,10 @@ tags: [prd]
 > Delete the guidance blocks that start with "Guidance". Keep the section numbers and all ID formats.
 >
 > **This is the hub.** It keeps prose a reader needs end to end, and **embeds** the notes that are
-> cited individually: `![[OUT-1]]` for each outcome, `![[EPIC-01]]` in section 4, `![[X-002]]` in
-> section 5. Requirements, questions, metrics, decisions and work items are their own notes, in
+> cited individually — an outcome metric in section 1, the Epic in section 4, each cross-cutting
+> requirement in section 5. **An embed targets the note's file name and takes no display text:**
+> `![[address-error-rate-on-parcels]]`, not `![[OUT-1]]`, which Obsidian cannot resolve.
+> Requirements, questions, metrics, decisions and work items are their own notes, in
 > `requirements/`, `questions/`, `metrics/`, `sources/` and `backlog/`. The full contract is in the
 > skill's `references/vault-convention.md`.
 

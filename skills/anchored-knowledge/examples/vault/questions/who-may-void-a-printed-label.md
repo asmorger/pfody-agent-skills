@@ -5,7 +5,7 @@ type: open-question
 status: open
 owner: operations lead
 needed-by: 2026-11-20
-blocks: ["[[LABEL-2]]"]
+blocks: ["[[a-printed-label-may-be-voided|LABEL-2]]"]
 sources: ["[[operations-lead-on-label-voiding]]"]
 created: 2026-10-21
 updated: 2026-11-08
@@ -21,4 +21,4 @@ it. The carrier portal allows it for any authenticated account, which is not an 
 about our users.
 
 **Next.** Operations lead to confirm at the 2026-11-18 review; the answer becomes a clause on
-[[LABEL-2]].
+[[a-printed-label-may-be-voided|LABEL-2]].

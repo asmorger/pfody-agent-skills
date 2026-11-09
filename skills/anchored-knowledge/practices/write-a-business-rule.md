@@ -16,7 +16,7 @@ own.
    order-address-frozen-on-confirmation.md`. The H1 is `# <ID> — <Title>`
    ([`../patterns/business-rule-note.md`](../patterns/business-rule-note.md)).
 3. **Take the next free number for its topic**, and put it in `id` with a matching `aliases` entry so
-   `[[ORDER-5]]` resolves. One prefix per topic, from the config; a rule that fits no topic means a
+   `[[confirmed-order-may-split-across-parcels|ORDER-5]]` resolves. One prefix per topic, from the config; a rule that fits no topic means a
    new topic, which is a config decision
    ([`../principles/ids-are-immutable.md`](../principles/ids-are-immutable.md)).
 4. **Fill the frontmatter.** `type`, `status`, `topic`, `authority`, `sources`, the dates, and the

@@ -11,9 +11,9 @@ id: US-03
 aliases: [US-03]
 type: user-story
 status: accepted
-prd: "[[PRD-001]]"
-parent: "[[FEAT-02]]"
-requirements: ["[[R-012]]", "[[X-002]]"]
+prd: "[[shipping-labels-at-order-processing|PRD-001]]"
+parent: "[[void-a-label|FEAT-02]]"
+requirements: ["[[void-a-printed-label|R-012]]", "[[record-every-label-action|X-002]]"]
 testing-complexity: Medium
 tags: [backlog/user-story]
 ---
@@ -28,10 +28,10 @@ collected by the carrier.
 - The order returns to the unlabelled state and can be labelled again.
 
 **Details**
-- Source grounding: [[R-012]], [[X-002]]. A label may be voided only until collection.
+- Source grounding: [[void-a-printed-label|R-012]], [[record-every-label-action|X-002]]. A label may be voided only until collection.
 
 **Assumptions** · **Testing Strategy** · **Open Questions** · **Technical Notes**
-- `- None identified.` where a section is empty; Testing Complexity and a UAT approach; [[Q-03]]
+- `- None identified.` where a section is empty; Testing Complexity and a UAT approach; [[who-may-void-a-printed-label|Q-03]]
   under Open Questions; permission, feature flag and design assets under Technical Notes.
 
 **Acceptance Criteria**

@@ -134,7 +134,8 @@ class TestVaultRender(unittest.TestCase):
         self.assertIn("<!-- generated: do not edit", moc)
         self.assertIn("<!-- /generated -->", moc)
         self.assertIn("### Authentication & Access", moc)
-        self.assertIn("| [[AUTH-1]] |", moc)
+        self.assertIn("| [[users-authenticate-via-sso-through-acme-id\\|AUTH-1]] |", moc)
+        self.assertNotIn("| [[AUTH-1]] |", moc)
         self.assertIn("[[2026-01-15-alignment]]", moc)
         self.assertTrue(os.path.exists(os.path.join(d, "bases/acme-rules.base")))
 

@@ -13,7 +13,7 @@ term: Parcel
 aliases: [Parcel, Shipment]
 category: core-concepts
 status: confirmed
-governed-by: ["[[LABEL-1]]"]
+governed-by: ["[[one-label-per-parcel|LABEL-1]]"]
 created: 2026-10-02
 updated: 2026-11-08
 tags: [term/core-concepts]
@@ -21,17 +21,20 @@ tags: [term/core-concepts]
 
 # Parcel
 
-One physical box leaving the warehouse. A split order produces several ([[ORDER-5]]).
+One physical box leaving the warehouse. A split order produces several ([[confirmed-order-may-split-across-parcels|ORDER-5]]).
 
 > [!abstract] Retired name — Shipment, 2026-11-08
-> "Shipment" meant both this and a carrier collection, so it was retired. [[CH-0004]] records the
-> rename. The alias stays, so older notes and code comments still resolve here.
+> "Shipment" meant both this and a carrier collection, so it was retired.
+> [[one-label-per-parcel-not-per-order|CH-0004]] records the rename. The alias stays, so the old
+> word still finds this note in search.
 ```
 
 **Notes.**
-- **Put retired names in `aliases`.** `[[Shipment]]` then lands on this note instead of dangling, and
-  the graph shows one concept rather than two. This is the one case where an alias is not an id
-  ([`note-frontmatter.md`](note-frontmatter.md)).
+- **Put retired names in `aliases`.** The old word then finds this note in search and autocomplete,
+  and the graph shows one concept rather than two. It does **not** make `[[Shipment]]` resolve —
+  nothing does but a file of that name. Renaming the file is what repairs the links that already
+  exist, because Obsidian rewrites all of them; leave a stub note at the old name only if something
+  outside the vault cites it ([`note-frontmatter.md`](note-frontmatter.md)).
 - The definition says what the word means and **links** the governing rule. It never restates the
   rule ([`../principles/one-home-per-fact.md`](../principles/one-home-per-fact.md)).
 - `category` sets the tag's second segment and the MOC's grouping — core concepts, systems and

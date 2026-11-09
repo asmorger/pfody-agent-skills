@@ -14,8 +14,8 @@ that a right one exists. A link cannot go stale this way: it resolves to whateve
   ([`../patterns/reference-note.md`](../patterns/reference-note.md)).
 - Vocabulary is defined once, in a glossary note, and used verbatim everywhere else
   ([`../patterns/glossary-term-note.md`](../patterns/glossary-term-note.md)).
-- Cross-link with wikilinks: `[[ORDER-8]]`, `[[ADR-0004]]`, `[[parcel]]`. **Embedding is not
-  copying** — `![[ORDER-1]]` resolves to whatever that note says now, so a reader gets the words in
+- Cross-link with wikilinks: `[[partial-despatch-is-allowed|ORDER-8]]`, `[[enforce-credit-hold-at-label-creation|ADR-0004]]`, `[[parcel]]`. **Embedding is not
+  copying** — `![[order-address-frozen-on-confirmation]]` resolves to whatever that note says now, so a reader gets the words in
   place and the fact keeps one home
   ([`links-are-the-structure.md`](links-are-the-structure.md)).
 - An index note holds no knowledge, only a query and a derived table

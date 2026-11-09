@@ -19,4 +19,4 @@ tags: [source/stakeholder-answer]
 Answer given 2026-10-21: a printed label may be voided until the parcel is collected, and a voided
 label is refused by the carrier.
 
-**Does not cover** who is permitted to void — raised as [[Q-0003]].
+**Does not cover** who is permitted to void — raised as [[who-may-void-a-printed-label|Q-0003]].

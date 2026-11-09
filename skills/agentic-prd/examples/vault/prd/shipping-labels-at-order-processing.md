@@ -7,8 +7,8 @@ size: Standard
 owner: Example TPO
 approvers: [Example Operations Lead, Example Architect, Example QA Lead]
 version: 1.0
-epics: ["[[EPIC-01]]"]
-outcomes: ["[[OUT-1]]"]
+epics: ["[[carrier-labels-on-the-order-screen|EPIC-01]]"]
+outcomes: ["[[address-error-rate-on-parcels|OUT-1]]"]
 created: 2026-10-02
 updated: 2026-11-05
 tags: [prd]
@@ -33,38 +33,38 @@ behaviour, not a tracker item; `AC-1` numbers restart in each story.
 address again. Parcels leave faster and with fewer address errors.
 
 **Problem.** Clerks copy each address from the order system to the carrier website. The step is slow
-and causes address errors. Evidence: [[SRC-01]] @12:04.
+and causes address errors. Evidence: [[discovery-call-with-the-operations-lead|SRC-01]] @12:04.
 
 **Users.** Warehouse clerk — creates and prints a label during order processing, primary user.
 Warehouse supervisor — voids a label when an order changes.
 
-**Outcomes.** ![[OUT-1]]
+**Outcomes.** ![[address-error-rate-on-parcels]]
 
 ## 2. Scope
 
 **In scope.** Creating, printing and voiding a carrier label from the order screen.
 
 **Non-goals.** Bulk printing across orders — not priced in this phase; revisit when the carrier
-exposes a batch endpoint ([[R-014]] carries the behaviour at P3). Negotiated carrier rates — no
+exposes a batch endpoint ([[print-labels-in-one-job|R-014]] carries the behaviour at P3). Negotiated carrier rates — no
 source addresses them.
 
 ## 3. Context
 
 Labels are created by hand on the carrier's website today. Constraint: the carrier truncates address
 line 1 at 35 characters. Dependency: the finance system's credit-hold flag must be readable
-synchronously ([[DEC-02]]).
+synchronously ([[credit-hold-blocks-labelling|DEC-02]]).
 
 ## 4. Epics, Features and requirements
 
-![[EPIC-01]]
+![[carrier-labels-on-the-order-screen]]
 
 Requirements live in `requirements/` and are indexed by [[requirements|the requirements MOC]]; the
-coverage table is [[coverage]]. The two Features are [[FEAT-01]] and [[FEAT-02]], and each carries
+coverage table is [[coverage]]. The two Features are [[create-and-print-a-label|FEAT-01]] and [[void-a-label|FEAT-02]], and each carries
 its own seven coverage lines in frontmatter.
 
 ## 5. Cross-cutting requirements
 
-![[X-002]]
+![[record-every-label-action]]
 
 ## 6. Agent boundaries
 
@@ -82,12 +82,12 @@ gate crossed.
 ## 7. Knowledge ledger
 
 Sources are notes in `sources/`, each cited by id and locator from the requirement that rests on it.
-Open questions are notes in `questions/` — [[Q-03]] is the one still open. Decisions are `DEC-nn`.
+Open questions are notes in `questions/` — [[who-may-void-a-printed-label|Q-03]] is the one still open. Decisions are `DEC-nn`.
 
 ## 8. Rollout and measurement
 
 Flag `labels.order-screen`, off by default. Phase 1 is one warehouse. Rollback is the flag.
-Telemetry feeds [[OUT-1]] from the carrier returns report.
+Telemetry feeds [[address-error-rate-on-parcels|OUT-1]] from the carrier returns report.
 
 ## Agent protocol
 

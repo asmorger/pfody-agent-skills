@@ -10,7 +10,7 @@ both closed vocabularies are in
 ```yaml
 ---
 id: ORDER-1                 # immutable; omit on MOC and reference notes
-aliases: [ORDER-1]          # makes [[ORDER-1]] resolve; omit where there is no id
+aliases: [ORDER-1]          # autocomplete and search only; links resolve by filename
 type: business-rule         # closed vocabulary
 status: confirmed           # closed vocabulary, per type
 created: 2026-10-02
@@ -31,8 +31,8 @@ topic: labels
 authority: 3-client-clarification
 sources: ["[[operations-lead-on-label-voiding]]"]
 pending-on: operations lead
-questions: ["[[Q-0003]]"]
-decisions: ["[[ADR-0004]]"]
+questions: ["[[who-may-void-a-printed-label|Q-0003]]"]
+decisions: ["[[enforce-credit-hold-at-label-creation|ADR-0004]]"]
 supersedes: []
 created: 2026-10-21
 updated: 2026-11-08

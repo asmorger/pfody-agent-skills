@@ -13,9 +13,9 @@ type: knowledge-change
 status: accepted
 change-type: scope-refinement
 identified: 2026-11-08
-older: ["[[order-fulfilment-sow-v3]]", "[[LABEL-1]]"]
+older: ["[[order-fulfilment-sow-v3]]", "[[one-label-per-parcel|LABEL-1]]"]
 newer: ["[[operations-lead-on-split-orders]]"]
-affects: ["[[LABEL-1]]", "[[ORDER-5]]", "[[SW-0002]]"]
+affects: ["[[one-label-per-parcel|LABEL-1]]", "[[confirmed-order-may-split-across-parcels|ORDER-5]]", "[[order-splitting-across-parcels|SW-0002]]"]
 owner: delivery lead
 created: 2026-11-08
 updated: 2026-11-08
@@ -30,11 +30,11 @@ per order.
 **Now.** The carrier counts per parcel, so a split order needs one label per parcel.
 [[operations-lead-on-split-orders]] states it directly; the SOW does not contemplate splitting.
 
-**Interpretation.** A refinement of [[LABEL-1]], not a contradiction — the SOW's wording held because
-splitting did not exist. Splitting itself is added scope: [[SW-0002]].
+**Interpretation.** A refinement of [[one-label-per-parcel|LABEL-1]], not a contradiction — the SOW's wording held because
+splitting did not exist. Splitting itself is added scope: [[order-splitting-across-parcels|SW-0002]].
 
-**Done.** [[LABEL-1]] rewritten per parcel with a supersession callout · [[ORDER-5]] added, draft ·
-the prior boundary preserved in [[scope/one-parcel-per-order]] · [[Q-0004]] opened.
+**Done.** [[one-label-per-parcel|LABEL-1]] rewritten per parcel with a supersession callout · [[confirmed-order-may-split-across-parcels|ORDER-5]] added, draft ·
+the prior boundary preserved in [[scope/one-parcel-per-order]] · [[partial-despatch-of-a-split-order|Q-0004]] opened.
 ```
 
 **Notes.**

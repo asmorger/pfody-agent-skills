@@ -39,7 +39,7 @@ note. Then find your task below and read only the files it names.
 2. One note, one fact, one id; 25 lines of body → `principles/one-note-one-fact.md`
 3. Every durable statement is anchored in `sources`, or carries `status: draft` / `needs-review` → `principles/anchor-or-flag.md`
 4. One home per fact; link or embed, never copy → `principles/one-home-per-fact.md`
-5. Every reference is a wikilink, and frontmatter is the query surface; prose restates neither → `principles/links-are-the-structure.md`, `principles/properties-are-the-query-surface.md`
+5. Every reference is a wikilink **targeting a filename** — `[[kebab-title|ID]]`, never a bare `[[ID]]`; frontmatter is the query surface, and prose restates neither → `principles/a-link-targets-a-filename.md`, `principles/links-are-the-structure.md`, `principles/properties-are-the-query-surface.md`
 6. Only the Reference Layer may be cited as source of record → `principles/only-the-reference-layer-is-citable.md`
 7. Ids are immutable and never reused; a note is deprecated in place, never deleted — titles may be reworded freely → `principles/ids-are-immutable.md`, `principles/deprecate-never-delete.md`
 8. Draft in the workbench, outside the vault; promote to the record; only the record is committed → `principles/two-directories-promote-to-commit.md`
@@ -61,8 +61,8 @@ note. Then find your task below and read only the files it names.
 | Writing or refining a business rule | `practices/write-a-business-rule.md`, `patterns/business-rule-note.md` |
 | Marking a note draft, superseded, out of scope or partly open | `patterns/status-callouts.md` |
 | Moving approved knowledge into the vault | `practices/promote-to-the-record.md` |
-
 | Writing or refreshing an index note, the home note or a Bases view | `patterns/moc-note.md`, `patterns/home-note.md`, `references/bases.md`, `practices/regenerate-the-mocs.md` |
+| Asked to explain the vault in prose, onboard someone, or write "the why" | `practices/render-a-narrative.md`, `patterns/narrative-note.md` |
 | Answering a question, or recording a decision | `practices/answer-an-open-question.md`, `patterns/open-question.md`, `practices/record-a-decision.md`, `patterns/decision-record.md` |
 | Handling a newer source that contradicts the record | `practices/log-a-knowledge-shift.md`, `patterns/knowledge-change-entry.md` |
 | Knowledge that may exceed the baseline, or two sources that disagree | `patterns/scope-watch-item.md`, `patterns/authority-ladder.md` |
@@ -78,7 +78,7 @@ note. Then find your task below and read only the files it names.
     practices/      step-by-step procedures with a done-when checklist
     anti-patterns/  knowledge-keeping that fails — what it looks like, why, what to do instead
     references/     the vault convention, the Bases definitions, templates, the config template
-    scripts/        `vault.py lint` and `vault.py moc` — the only generated thing in the vault
+    scripts/        `vault.py lint`, `vault.py moc`, `vault.py narrative` — the derived things
     examples/ evals/   a worked vault to open in Obsidian, and the trigger prompts
 
 ## Conventions this skill assumes

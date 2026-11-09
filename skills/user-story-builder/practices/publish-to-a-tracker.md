@@ -20,7 +20,7 @@ a wrong set costs more to unpick than it cost to create.
 4. **Resolve the fields** if `fields_resolved` is false, or the org or project changed
    ([`resolve-the-tracker-fields.md`](resolve-the-tracker-fields.md)).
 5. **Show the item set** — every item with its level, title and parent — and get a clear yes.
-6. **Strip the wikilink brackets first**: `[[LABEL-2]]` → `LABEL-2`, `[[ORDER-1|the freeze]]` → `the
+6. **Strip the wikilink brackets first**: `[[a-printed-label-may-be-voided|LABEL-2]]` → `LABEL-2`, `[[order-address-frozen-on-confirmation|the freeze]]` → `the
    freeze`. A tracker renders `[[…]]` literally, so an un-stripped link shows a reader a reference
    that goes nowhere ([`../references/vault-convention.md`](../references/vault-convention.md)).
 7. **Normalise all rich text to pure ASCII**, then convert the markdown to the tracker's markup. The

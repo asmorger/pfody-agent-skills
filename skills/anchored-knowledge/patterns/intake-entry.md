@@ -22,7 +22,7 @@ Raw notes:
 - Unclear whether a split order can be despatched partially.
 
 Triage destination:
-- Record: new rule for splitting · [[LABEL-1]] refined to per-parcel
+- Record: new rule for splitting · [[one-label-per-parcel|LABEL-1]] refined to per-parcel
 - Question: partial despatch of a split order
 - Scope watch: splitting may exceed SOW §4.5
 - Change: supersedes one-label-per-order

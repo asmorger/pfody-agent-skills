@@ -3,9 +3,9 @@ id: US-03
 aliases: [US-03]
 type: user-story
 status: draft
-parent: "[[FEAT-02]]"
+parent: "[[void-a-label|FEAT-02]]"
 source-mode: A
-sources: ["[[LABEL-2]]", "[[LABEL-3]]", "[[ADR-0004]]"]
+sources: ["[[a-printed-label-may-be-voided|LABEL-2]]", "[[bulk-printing-across-orders|LABEL-3]]", "[[enforce-credit-hold-at-label-creation|ADR-0004]]"]
 testing-complexity: Medium
 tracker-id:
 tracker-url:
@@ -25,8 +25,8 @@ collected by the carrier.
 - The order returns to the unlabelled state and can be labelled again.
 
 **Details**
-- A label may be voided only while the parcel has not been collected ([[LABEL-3]]).
-- Source grounding: [[LABEL-2]], [[LABEL-3]], [[ADR-0004]].
+- A label may be voided only while the parcel has not been collected ([[bulk-printing-across-orders|LABEL-3]]).
+- Source grounding: [[a-printed-label-may-be-voided|LABEL-2]], [[bulk-printing-across-orders|LABEL-3]], [[enforce-credit-hold-at-label-creation|ADR-0004]].
 
 **Assumptions**
 - Any shipping clerk may void a label; the source does not restrict it to the creator.

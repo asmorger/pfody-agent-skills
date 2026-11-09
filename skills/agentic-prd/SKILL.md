@@ -68,17 +68,16 @@ Pick the earliest mode the files need; name two and they run in order.
 | Recording a question, or bounding the build | `patterns/open-question.md`, `patterns/agent-boundaries.md` |
 | Slicing a Feature into Stories, and laying out the backlog | `practices/slice-a-feature.md`, `patterns/user-story.md`, `patterns/acceptance-criterion.md`, `patterns/backlog-notes.md`, `patterns/coverage-moc.md` |
 | Running the check, regenerating the MOCs, and reporting the result | `practices/run-the-checks.md`, `practices/report-the-result.md` |
+| Asked for the PRD somewhere Obsidian is not — GitHub, a diff, a pasted brief | `practices/render-a-readable-prd.md` |
 | Reviewing a PRD, a backlog or your own draft | `anti-patterns/` — scan the names; open what matches |
 
 ## Folders
 
-    principles/     the rules and why each one holds
-    patterns/       the note shapes, as fill-in skeletons (neutral Order / shipping-label domain)
-    practices/      step-by-step procedures with a done-when checklist
-    anti-patterns/  specs that fail — what they look like, why, what to do instead
+    principles/  the rules and why each holds · patterns/  the note shapes, as skeletons
+    practices/   procedures with a done-when · anti-patterns/  specs that fail, and why
     assets/ references/   the PRD hub template, and the vault convention
     examples/ evals/      a worked PRD vault to open in Obsidian, and trigger queries
-    scripts/              `prd.py check`, `prd.py moc`, and the text extractor
+    scripts/     `prd.py check`, `prd.py moc`, `prd.py render`, and the text extractor
 
 ## Conventions this skill assumes
 

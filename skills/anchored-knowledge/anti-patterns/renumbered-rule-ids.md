@@ -13,7 +13,8 @@ its internal cross-links were updated in the same pass.
 **Instead.** Take the next free number for the topic — position, ordering and number are unrelated.
 Leave gaps where rules were deprecated; a gap is information. And note what immutability does *not*
 cover: the **title and filename** may be reworded whenever a better wording is found, because the id
-lives in frontmatter and `aliases` keeps `[[ORDER-5]]` resolving. Refine wording aggressively, never
-the id
+lives in frontmatter and Obsidian rewrites the filename half of every
+`[[confirmed-order-may-split-across-parcels|ORDER-5]]` that points at it. Refine wording
+aggressively, never the id
 ([`../principles/ids-are-immutable.md`](../principles/ids-are-immutable.md),
 [`../practices/write-a-business-rule.md`](../practices/write-a-business-rule.md)).

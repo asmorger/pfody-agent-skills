@@ -11,7 +11,7 @@ both exist: the list tells a developer what to read before starting, and the tag
 readable link from one test back to one rule. Mixing them turns both into decoration.
 
 **In the story.**
-- `Details`: `Source grounding: [[LABEL-1]], [[LABEL-3]], [[ADR-0004]].`
+- `Details`: `Source grounding: [[one-label-per-parcel|LABEL-1]], [[bulk-printing-across-orders|LABEL-3]], [[enforce-credit-hold-at-label-creation|ADR-0004]].`
 - The same ids go in the `sources` property as wikilinks. That is the one sanctioned duplication:
   the property is what queries and the publish step read, the sentence is what reaches the tracker's
   description, and the audit checks they agree

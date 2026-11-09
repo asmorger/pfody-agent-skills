@@ -11,9 +11,9 @@ id: US-03
 aliases: [US-03]
 type: user-story
 status: draft                  # draft | ready | published
-parent: "[[FEAT-02]]"          # copied from the source, never invented
+parent: "[[void-a-label|FEAT-02]]"          # copied from the source, never invented
 source-mode: A
-sources: ["[[LABEL-2]]", "[[LABEL-3]]", "[[ADR-0004]]"]
+sources: ["[[a-printed-label-may-be-voided|LABEL-2]]", "[[bulk-printing-across-orders|LABEL-3]]", "[[enforce-credit-hold-at-label-creation|ADR-0004]]"]
 testing-complexity: Medium
 tracker-id:                    # filled by the publish step, never by hand
 tags: [backlog/user-story, review-required]
@@ -29,7 +29,7 @@ collected by the carrier.
 - The order returns to the unlabelled state and can be labelled again.
 
 **Details**
-- Source grounding: [[LABEL-2]], [[LABEL-3]], [[ADR-0004]]. Voiding stops at collection.
+- Source grounding: [[a-printed-label-may-be-voided|LABEL-2]], [[bulk-printing-across-orders|LABEL-3]], [[enforce-credit-hold-at-label-creation|ADR-0004]]. Voiding stops at collection.
 
 **Assumptions** · **Testing Strategy** · **Open Questions** · **Technical Notes**
 - "Any shipping clerk may void a label; the source does not restrict it to the creator."; Testing

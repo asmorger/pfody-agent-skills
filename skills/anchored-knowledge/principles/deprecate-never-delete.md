@@ -22,7 +22,8 @@ deprecated rule answers in one read and costs one line.
   ([`../patterns/knowledge-change-entry.md`](../patterns/knowledge-change-entry.md)).
 - A decision is superseded by a later decision, never overwritten. A refinement that reverses nothing
   gets a dated addendum ([`../patterns/decision-record.md`](../patterns/decision-record.md)).
-- A retired term stays in the replacement note's `aliases`, so `[[Shipment]]` still resolves
+- A retired term stays in the replacement note's `aliases`, so the old word still finds the note in
+  search; a link written to the old name resolves only while a file carries that name
   ([`../patterns/glossary-term-note.md`](../patterns/glossary-term-note.md)).
 - Deprecated notes stay out of the way without leaving the record: the MOC's snapshot excludes them
   and a Bases view collects them ([`../references/bases.md`](../references/bases.md)).

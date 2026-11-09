@@ -16,27 +16,27 @@ size: Standard             # Small | Standard | Large
 owner: <role>
 approvers: [<business approver>, <architect>, <QA lead>]
 version: 1.0
-epics: ["[[EPIC-01]]"]
-outcomes: ["[[OUT-1]]"]
+epics: ["[[carrier-labels-on-the-order-screen|EPIC-01]]"]
+outcomes: ["[[address-error-rate-on-parcels|OUT-1]]"]
 updated: 2026-11-05
 tags: [prd]
 ---
 
 # PRD-001 — Shipping labels at order processing
 
-## 1. Intent      narrative, problem with evidence, users, then ![[OUT-1]]
+## 1. Intent      narrative, problem with evidence, users, then ![[address-error-rate-on-parcels]]
 ## 2. Scope       in scope; non-goals with a reason and a revisit-when
 ## 3. Context     current behaviour, constraints, dependencies
-## 4. Epics, Features and requirements      ![[EPIC-01]], then [[requirements]] and [[coverage]]
-## 5. Cross-cutting requirements            ![[X-002]]
+## 4. Epics, Features and requirements      ![[carrier-labels-on-the-order-screen]], then [[requirements]] and [[coverage]]
+## 5. Cross-cutting requirements            ![[record-every-label-action]]
 ## 6. Agent boundaries                      always / ask first / never / stop conditions
-## 7. Knowledge ledger                      sources, decisions, [[Q-03]]
+## 7. Knowledge ledger                      sources, decisions, [[who-may-void-a-printed-label|Q-03]]
 ## 8. Rollout and measurement               flags, phases, rollback, telemetry
 ## Agent protocol                           kept verbatim in every PRD
 ```
 
 **Notes.**
-- **Embed, do not summarise.** `![[OUT-1]]` resolves to whatever that note says now, so the hub
+- **Embed, do not summarise.** `![[address-error-rate-on-parcels]]` resolves to whatever that note says now, so the hub
   cannot go stale; a summary beside the note is two answers to one question
   ([`../principles/the-prd-owns-why-and-what.md`](../principles/the-prd-owns-why-and-what.md)).
 - The size decides which sections are required, and the check enforces it

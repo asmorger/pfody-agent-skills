@@ -11,8 +11,8 @@ and the designated home for everything a rule note must not carry.
 type: reference
 topic: api
 status: confirmed
-governs: ["[[LABEL-2]]"]
-decisions: ["[[ADR-0003]]"]
+governs: ["[[a-printed-label-may-be-voided|LABEL-2]]"]
+decisions: ["[[keep-a-void-window-on-printed-labels|ADR-0003]]"]
 created: 2026-10-02
 updated: 2026-11-08
 tags: [reference/api]
@@ -26,11 +26,11 @@ How this project shapes its HTTP surface, so a reviewer and an agent reach the s
 Resources are plural nouns; actions are verbs on a sub-path.
 
 ## Error responses
-Every failure returns the carrier's own reason text where one exists ([[LABEL-2]]).
+Every failure returns the carrier's own reason text where one exists ([[a-printed-label-may-be-voided|LABEL-2]]).
 ```
 
 `docs/reference/order-data-mapping.md` is the same shape holding a field map, a state machine or a message
-contract — the mechanics that [[LABEL-1]] links to rather than stating.
+contract — the mechanics that [[one-label-per-parcel|LABEL-1]] links to rather than stating.
 
 **Notes.**
 - **No id, and cited by name**: `[[api-conventions]]`. These notes are Reference Layer and citable,

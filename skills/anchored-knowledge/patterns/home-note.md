@@ -35,13 +35,13 @@ and the transcript index: evidence, not record.
 
 ## Now
 
-- Decisions in flight: [[ADR-0004]] · Scope watch: [[SW-0002]]
-- Questions needing answers: [[Q-0003]] (needed 2026-11-20), [[Q-0004]]
+- Decisions in flight: [[enforce-credit-hold-at-label-creation|ADR-0004]] · Scope watch: [[order-splitting-across-parcels|SW-0002]]
+- Questions needing answers: [[who-may-void-a-printed-label|Q-0003]] (needed 2026-11-20), [[partial-despatch-of-a-split-order|Q-0004]]
 - Ingestion backlog: two transcripts from the November reviews
 
 ## Recently changed
 
-- 2026-11-08 — [[CH-0003]] one label per parcel, not per order
+- 2026-11-08 — [[one-label-per-parcel-not-per-order|CH-0003]] one label per parcel, not per order
 ```
 
 **Notes.**

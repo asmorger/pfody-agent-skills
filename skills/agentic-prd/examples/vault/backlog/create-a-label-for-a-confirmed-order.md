@@ -3,9 +3,9 @@ id: US-01
 aliases: [US-01]
 type: user-story
 status: accepted
-prd: "[[PRD-001]]"
-parent: "[[FEAT-01]]"
-requirements: ["[[R-001]]", "[[R-002]]", "[[R-003]]", "[[X-002]]"]
+prd: "[[shipping-labels-at-order-processing|PRD-001]]"
+parent: "[[create-and-print-a-label|FEAT-01]]"
+requirements: ["[[create-a-label-on-order-confirmation|R-001]]", "[[show-the-carrier-rejection-reason|R-002]]", "[[refuse-a-label-on-credit-hold|R-003]]", "[[record-every-label-action|X-002]]"]
 testing-complexity: Medium
 created: 2026-10-02
 updated: 2026-11-05
@@ -23,8 +23,8 @@ leaves without the address being typed again.
 - An order on credit hold cannot be labelled.
 
 **Details**
-- The address comes from the order at confirmation ([[R-001]]).
-- Source grounding: [[R-001]], [[R-002]], [[R-003]], [[X-002]].
+- The address comes from the order at confirmation ([[create-a-label-on-order-confirmation|R-001]]).
+- Source grounding: [[create-a-label-on-order-confirmation|R-001]], [[show-the-carrier-rejection-reason|R-002]], [[refuse-a-label-on-credit-hold|R-003]], [[record-every-label-action|X-002]].
 
 **Assumptions**
 - None identified.

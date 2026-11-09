@@ -18,13 +18,13 @@ tags: [moc]
 
 # Backlog
 
-Stories for [[PRD-001]], one note each in `backlog/`. Source mode A throughout; nothing here was
+Stories for [[shipping-labels-at-order-processing|PRD-001]], one note each in `backlog/`. Source mode A throughout; nothing here was
 pattern-matched.
 
 > [!warning] PREVIEW — do not publish
 > The source PRD is not Accepted. (Only while that is true.)
 
-**Epics** [[EPIC-01]] · **Features** [[FEAT-02]]
+**Epics** [[carrier-labels-on-the-order-screen|EPIC-01]] · **Features** [[void-a-label|FEAT-02]]
 
 ## Definition of Done for all User Stories
 
@@ -36,7 +36,7 @@ pattern-matched.
 <!-- generated: do not edit -->
 | ID | Title | Parent | Source mode | Status | Tracker id |
 |---|---|---|---|---|---|
-| [[US-03]] | Void a printed label | [[FEAT-02]] | A | draft | — |
+| [[void-a-printed-label-story|US-03]] | Void a printed label | [[void-a-label|FEAT-02]] | A | draft | — |
 <!-- /generated -->
 ```
 

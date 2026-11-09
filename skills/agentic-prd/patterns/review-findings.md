@@ -9,33 +9,33 @@ questions to ask in order. Findings cite notes by id, so each is one click from 
 ```markdown
 ---
 type: prd-review
-prd: "[[PRD-001]]"
+prd: "[[shipping-labels-at-order-processing|PRD-001]]"
 version: 0.4
 checked: 2026-11-08
 errors: 0           # and warnings: 4
 verdict: not-ready
 tags: [prd-review]
 ---
-# Review of [[PRD-001]], version 0.4
+# Review of [[shipping-labels-at-order-processing|PRD-001]], version 0.4
 
 **Check.** `prd.py check` — 0 errors, 4 warnings. The script does not judge whether a citation
 supports its requirement, whether a slice is sound, or whether a criterion is faithful.
 
 ## Conflicts
-- **[[R-003]] against [[DEC-02]].** R-003 refuses a label on credit hold; DEC-02 says the hold is
+- **[[refuse-a-label-on-credit-hold|R-003]] against [[credit-hold-blocks-labelling|DEC-02]].** R-003 refuses a label on credit hold; DEC-02 says the hold is
   advisory. Neither source settles precedence. → Raise as an open question; do not pick a side.
-- **Scope against the SOW.** [[FEAT-02]] is not in [[SRC-02]] rev C. → Confirm: in scope, or a
+- **Scope against the SOW.** [[void-a-label|FEAT-02]] is not in [[order-fulfilment-sow-v3|SRC-02]] rev C. → Confirm: in scope, or a
   change request?
 
 ## Requirement quality
 
-- **[[R-006]]** states two behaviours. → Split; R-006 keeps printing.
-- **[[R-011]]** is `PROPOSED`. An Accepted PRD cannot hold one. → Source it, or retire it in place.
+- **[[retry-a-carrier-timeout|R-006]]** states two behaviours. → Split; R-006 keeps printing.
+- **[[notify-on-carrier-outage|R-011]]** is `PROPOSED`. An Accepted PRD cannot hold one. → Source it, or retire it in place.
 
 ## Coverage
 
-- **[[FEAT-01]]** `checks.permissions` is blank. → Answer with requirement links, `N/A` with a
-  reason, or `Gap:` naming a question note. **[[OUT-2]]** has no requirement serving it.
+- **[[create-and-print-a-label|FEAT-01]]** `checks.permissions` is blank. → Answer with requirement links, `N/A` with a
+  reason, or `Gap:` naming a question note. **[[labels-printed-per-shift|OUT-2]]** has no requirement serving it.
 
 ## Readiness
 
@@ -44,7 +44,7 @@ Not ready for Gate 2: one conflict, one `PROPOSED` requirement, one blank covera
 ## Questions, in order
 
 1. Is voiding a label in scope? (Changes one Feature and three stories.)
-2. Does a credit hold block labelling? (Changes [[R-003]] and its coverage.)
+2. Does a credit hold block labelling? (Changes [[refuse-a-label-on-credit-hold|R-003]] and its coverage.)
 ```
 
 **Notes.**

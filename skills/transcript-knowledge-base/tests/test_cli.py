@@ -87,7 +87,10 @@ class TestCliEndToEnd(unittest.TestCase):
         self.assertIn('sources: ["[[2026-01-05-project-kickoff]]"]', note)
         self.assertIn("> — Maya, [[2026-01-05-project-kickoff]] 00:00:05", note)
         moc = _read(self.vault, rnd["moc"])
-        self.assertIn("| [[AUT-1]] |", moc)
+        # The citable form: filename as target, id as display text, pipe escaped for the cell.
+        # A bare [[AUT-1]] would resolve to nothing, because Obsidian never matches an alias.
+        self.assertIn("| [[users-authenticate-via-sso-through-the-in-portal\\|AUT-1]] |", moc)
+        self.assertNotIn("[[AUT-1]]", moc)
 
         # --- Incremental: add a second transcript, re-run ---
         write(self.folder, "review.txt", REVIEW)

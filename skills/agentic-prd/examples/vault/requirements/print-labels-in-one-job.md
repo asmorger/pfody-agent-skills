@@ -3,8 +3,8 @@ id: R-014
 aliases: [R-014]
 type: requirement
 status: accepted
-prd: "[[PRD-001]]"
-feature: "[[FEAT-02]]"
+prd: "[[shipping-labels-at-order-processing|PRD-001]]"
+feature: "[[void-a-label|FEAT-02]]"
 priority: P3
 verify: Manual
 source: A-01

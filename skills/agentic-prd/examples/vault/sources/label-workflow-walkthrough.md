@@ -18,4 +18,4 @@ tags: [source/transcript]
 
 **Illustrative example only.** Invented.
 
-**Does not cover** who is permitted to void — raised as [[Q-03]].
+**Does not cover** who is permitted to void — raised as [[who-may-void-a-printed-label|Q-03]].

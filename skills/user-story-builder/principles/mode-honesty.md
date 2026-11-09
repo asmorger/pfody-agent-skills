@@ -19,8 +19,11 @@ grounded is a liability.
   lean harder on Assumptions and Open Questions.
 - Mode C: transcribe exactly what the user said. Everything beyond it is an Assumption or an Open
   Question, and the story stays deliberately narrow.
-- Omit the coverage table in B and C — there are no requirement ids to trace
-  ([`../patterns/backlog-file.md`](../patterns/backlog-file.md)).
+- Record the mode in each note's `source-mode`, so a B or C story is visibly not A in every view and
+  not only in the sentence that announced it
+  ([`../references/vault-convention.md`](../references/vault-convention.md))
+- Omit a coverage table in B and C — there are no requirement ids to trace
+  ([`../patterns/backlog-notes.md`](../patterns/backlog-notes.md)).
 - Factuality over completeness governs all three equally
   ([`factuality-over-completeness.md`](factuality-over-completeness.md)).
 

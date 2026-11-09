@@ -11,8 +11,9 @@ than a missing one, because it still reads as instructions. The failure is also 
 so it passes every test on the author's machine and appears on someone else's.
 
 **In the story.**
-- Normalise after the markdown is final and before the conversion to the tracker's markup, so nothing
-  reintroduces a character afterwards
+- The order is fixed: **strip wikilink brackets, then normalise to ASCII, then convert to the
+  tracker's markup.** Stripping first matters because an embed pulls in text that needs normalising
+  too, and normalising last would miss it
   ([`../references/adapters/azure-devops.md`](../references/adapters/azure-devops.md)).
 - It applies to every rich-text field, not only the description: criteria, notes, assumptions, the
   demo scenario.

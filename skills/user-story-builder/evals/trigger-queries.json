@@ -20,7 +20,7 @@
     "should_trigger": true
   },
   {
-    "query": "audit US-04 — I think half the expected output was invented",
+    "query": "audit US-04 \u2014 I think half the expected output was invented",
     "should_trigger": true
   },
   {
@@ -33,6 +33,14 @@
   },
   {
     "query": "break FEAT-03 into stories one person could demo in a sprint",
+    "should_trigger": true
+  },
+  {
+    "query": "write these stories as Obsidian notes with the rule ids in front matter",
+    "should_trigger": true
+  },
+  {
+    "query": "publish US-03 to Azure DevOps and put the work item id back in the note",
     "should_trigger": true
   },
   {
@@ -53,6 +61,10 @@
   },
   {
     "query": "implement the label voiding endpoint and its tests",
+    "should_trigger": false
+  },
+  {
+    "query": "set up a Bases view for my reading list",
     "should_trigger": false
   }
 ]

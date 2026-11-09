@@ -26,8 +26,8 @@ business-rule category produces stories that each document a rule and none that 
 7. **Copy the parent ids** from the source, unchanged. Where the source has none, leave them out of
    the tags and name any parent the user gave in `Details`
    ([`../anti-patterns/an-invented-parent-id.md`](../anti-patterns/an-invented-parent-id.md)).
-8. **Write them to one file** when there is more than one
-   ([`../patterns/backlog-file.md`](../patterns/backlog-file.md)).
+8. **Write one note each**, with a MOC indexing them when there is more than one
+   ([`../patterns/backlog-notes.md`](../patterns/backlog-notes.md)).
 
 **Done when** every slice is an outcome one person could demo in a sprint, none is a prerequisite for
 another, the `US-` ids are free, and no Epic or Feature was created, merged or renamed.

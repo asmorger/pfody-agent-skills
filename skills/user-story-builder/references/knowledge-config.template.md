@@ -1,7 +1,7 @@
 # user-story-builder — Project Knowledge Config
 
 ```
-config_version: 1
+config_version: 2
 ```
 
 Saved per project at `Knowledge/user-story-builder.config.md` (default) or `.claude/user-story-builder.config.md` (fallback). The skill provisions this file on first run via discovery-assisted intake — you normally don't create it by hand, but you can edit it anytime. Everything the `user-story-builder` skill needs to adapt to *this* project lives here. Leave a field blank or `None` when it does not apply — a blank field changes the skill's behavior (it drops to a lower mode or omits a section), it does not make the skill guess. To regenerate from scratch, tell the skill to "reconfigure."
@@ -28,6 +28,20 @@ authoritative_sources:
   # - <add your project's files>
 ```
 
+
+## Where the stories go
+One note per story, Epic and Feature, in a flat folder; a MOC indexes them. **If the project already
+has an Obsidian vault, record its real folders and property names here** — the skill uses them
+verbatim and renames nothing, because a renamed property silently empties every Bases view the team
+already had.
+
+```
+stories_dir:   docs/backlog/          # one note per story; level in `type`
+moc:           docs/moc/backlog.md    # the index: prose, a Bases embed, a generated snapshot
+bases:         docs/bases/            # the Bases definition the MOC embeds
+link_style:    wikilink               # wikilink | markdown
+write_back:    true                   # publish writes tracker-id and tracker-url into each note
+```
 ## 3. Supplemental sources (inform only — never cited as record)
 These shape scope but are not citable as the source of record, except under the discrepancy rule (§5).
 

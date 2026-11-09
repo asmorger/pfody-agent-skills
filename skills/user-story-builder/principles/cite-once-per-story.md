@@ -11,7 +11,11 @@ both exist: the list tells a developer what to read before starting, and the tag
 readable link from one test back to one rule. Mixing them turns both into decoration.
 
 **In the story.**
-- `Details`: `Source grounding: docs/business-rules.md LABEL-1, LABEL-3; ADR-0004.`
+- `Details`: `Source grounding: [[LABEL-1]], [[LABEL-3]], [[ADR-0004]].`
+- The same ids go in the `sources` property as wikilinks. That is the one sanctioned duplication:
+  the property is what queries and the publish step read, the sentence is what reaches the tracker's
+  description, and the audit checks they agree
+  ([`../references/vault-convention.md`](../references/vault-convention.md)).
 - Criterion: `AC-1 [LABEL-1] Given …, when …, then …` — the behaviour is embedded, so the criterion
   reads correctly with the source closed
   ([`../patterns/acceptance-criterion.md`](../patterns/acceptance-criterion.md)).

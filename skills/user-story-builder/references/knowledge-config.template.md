@@ -96,7 +96,7 @@ design_asset_source:   # e.g. Figma project link, wireframe location, or None
 ```
 
 ## 11. Publishing target
-Set only if stories should be pushed to a tracker. The skill loads the matching adapter under `reference/adapters/`. **Field mappings are resolved by the adapter, not filled in by hand** — the adapter scans the tracker for available fields/work-item types, prompts you for anything that doesn't match the expected names, and writes the resolved map back here (setting `fields_resolved: true`). Leave the mapping blank on a fresh project and let first-publish resolution populate it.
+Set only if stories should be pushed to a tracker. The skill loads the matching adapter under `references/adapters/`. **Field mappings are resolved by the adapter, not filled in by hand** — the adapter scans the tracker for available fields/work-item types, prompts you for anything that doesn't match the expected names, and writes the resolved map back here (setting `fields_resolved: true`). Leave the mapping blank on a fresh project and let first-publish resolution populate it.
 
 ```
 publishing:

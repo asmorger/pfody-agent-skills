@@ -1,0 +1,58 @@
+[
+  {
+    "query": "write user stories with acceptance criteria for label voiding from the docs in ./Knowledge",
+    "should_trigger": true
+  },
+  {
+    "query": "are these acceptance criteria actually sourced, or did you pattern-match them?",
+    "should_trigger": true
+  },
+  {
+    "query": "turn this SOW section into developer-ready stories",
+    "should_trigger": true
+  },
+  {
+    "query": "write a story for X from these docs",
+    "should_trigger": true
+  },
+  {
+    "query": "push these three stories to Azure DevOps under FEAT-02",
+    "should_trigger": true
+  },
+  {
+    "query": "audit US-04 — I think half the expected output was invented",
+    "should_trigger": true
+  },
+  {
+    "query": "this story says 'as a user' and the so-that just repeats the ask. fix it",
+    "should_trigger": true
+  },
+  {
+    "query": "the field prompt comes up every single time I publish to the tracker",
+    "should_trigger": true
+  },
+  {
+    "query": "break FEAT-03 into stories one person could demo in a sprint",
+    "should_trigger": true
+  },
+  {
+    "query": "draft the PRD for shipping labels from the SOW and these transcripts",
+    "should_trigger": false
+  },
+  {
+    "query": "build a sourced knowledge base from our scattered notes and meeting exports",
+    "should_trigger": false
+  },
+  {
+    "query": "write an ADR for choosing the carrier's REST API",
+    "should_trigger": false
+  },
+  {
+    "query": "what's in the sprint and who is it assigned to?",
+    "should_trigger": false
+  },
+  {
+    "query": "implement the label voiding endpoint and its tests",
+    "should_trigger": false
+  }
+]

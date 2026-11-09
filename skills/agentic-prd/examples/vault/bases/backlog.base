@@ -1,0 +1,23 @@
+filters:
+  and:
+    - file.hasTag("backlog")
+views:
+  - type: table
+    name: Work items
+    order:
+      - note.id
+      - file.name
+      - note.type
+      - note.parent
+    groupBy:
+      property: note.type
+      direction: ASC
+  - type: table
+    name: Stories
+    filters:
+      - 'note.type == "user-story"'
+    order:
+      - note.id
+      - file.name
+      - note.parent
+      - note.testing-complexity

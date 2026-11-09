@@ -20,7 +20,7 @@
     "should_trigger": true
   },
   {
-    "query": "the stakeholders disagree about whether a credit hold blocks labelling — one call says yes, a later email implies no. how should the requirement read?",
+    "query": "the stakeholders disagree about whether a credit hold blocks labelling \u2014 one call says yes, a later email implies no. how should the requirement read?",
     "should_trigger": true
   },
   {
@@ -32,7 +32,15 @@
     "should_trigger": true
   },
   {
-    "query": "I want to do spec-driven development on this project — what should the spec look like so claude can build from it?",
+    "query": "I want to do spec-driven development on this project \u2014 what should the spec look like so claude can build from it?",
+    "should_trigger": true
+  },
+  {
+    "query": "turn this PRD into linked Obsidian notes with one note per requirement",
+    "should_trigger": true
+  },
+  {
+    "query": "regenerate the coverage table from the requirement notes",
     "should_trigger": true
   },
   {

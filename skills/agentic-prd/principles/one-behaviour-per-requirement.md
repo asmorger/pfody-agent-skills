@@ -12,7 +12,7 @@ cannot be accepted or refused.
 
 **In the PRD.**
 - The patterns are *Always*, *Event*, *State*, *Unwanted* and *Optional*
-  ([`../patterns/requirement-row.md`](../patterns/requirement-row.md)). Start each requirement with
+  ([`../patterns/requirement-note.md`](../patterns/requirement-note.md)). Start each requirement with
   the pattern's words — the check script looks for them.
 - Describe what the system does, not how. Name a technology only where a constraint fixes it.
 - No vague adjective without a threshold beside it: "fast", "simple", "appropriate", "robust".

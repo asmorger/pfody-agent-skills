@@ -26,7 +26,7 @@ never arrives.
    role, a need rather than a screen, and a *so that* clause that gives a business reason instead of
    restating the need.
 8. **Place every requirement exactly once** across the Feature's stories, and record it in the
-   coverage table ([`../patterns/backlog-file.md`](../patterns/backlog-file.md)).
+   requirement's `coverage` and `stories` ([`../patterns/backlog-notes.md`](../patterns/backlog-notes.md)).
 
 **Done when** every story names a role and an outcome, each would survive a demo, no requirement of
 the Feature is unplaced or placed twice, and any failure-path judgement is stated.

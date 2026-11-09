@@ -1,6 +1,6 @@
 # The check is not a reviewer
 
-**Rule.** Run `check_prd.py` after every mode that writes a file, and report its result together with
+**Rule.** Run `prd.py` after every mode that writes a file, and report its result together with
 what it cannot judge. Exit code 0 means the structure and the traceability hold — nothing more. Never
 report a passing check as a ready PRD.
 

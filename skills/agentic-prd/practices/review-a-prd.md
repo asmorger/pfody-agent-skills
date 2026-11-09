@@ -12,7 +12,7 @@ cheap now and expensive once code exists.
 1. **Run the checks** and put the result in the review, including what the script cannot judge
    ([`run-the-checks.md`](run-the-checks.md)). **Change nothing**, even if a check fails — not one
    word of the PRD ([`../principles/the-prd-changes-before-the-backlog.md`](../principles/the-prd-changes-before-the-backlog.md)).
-2. **Write to `<prd-name>.review.md`**, in the shape of
+2. **Write to `prd/<prd-slug>.review.md`**, in the shape of
    [`../patterns/review-findings.md`](../patterns/review-findings.md).
 3. **Compare against the contract** and any earlier requirements, where they exist. Scope drift
    against a SOW is routinely the largest finding, and nobody is looking for it.

@@ -1,30 +1,51 @@
 # Open question
 
-**Use when** the sources do not answer something the PRD needs. The one shape a gap is allowed to
-take.
+**Use when** the sources do not answer something the PRD needs. One note per question in
+`questions/` — the one shape a gap is allowed to take. Same note type and folder as
+`anchored-knowledge` uses, because a PRD's gap is a question the project needs answered, and two
+question registers is the failure the one-home rule exists to prevent.
 
-**Skeleton.**
+**Skeleton.** `questions/who-may-void-a-printed-label.md`
 
 ```markdown
-**Open questions.**
+---
+id: Q-03
+aliases: [Q-03]
+type: open-question
+status: open               # open | partial | answered | blocked | dropped
+owner: Operations lead     # mandatory
+needed-by: 2026-11-20      # mandatory — a date, or a gate name in a draft
+blocks: ["[[R-012]]", "[[FEAT-02]]"]
+prd: "[[PRD-001]]"
+answered-by: []
+tags: [question]
+---
 
-| ID | Question | Owner | Needed by | Blocks | Status |
-|---|---|---|---|---|---|
-| Q-03 | Who may void a printed label — any clerk, or a supervisor? | Operations lead | 2026-11-20 | R-012, FEAT-02 coverage: permissions | Open |
-| Q-04 | What is today's address-error rate, and where is it read from? | Operations lead | Gate 2 | OUT-1 baseline | Open |
-| Q-05 | Does the carrier charge for a voided label? | Account manager | 2026-11-20 | R-014 | Answered — see DEC-05 |
+# Q-03 — Who may void a printed label — any clerk, or a supervisor?
+
+**Best answer so far.** [[SRC-04]] says voiding exists and stops at collection, but not who may do
+it. The carrier portal allows any authenticated account, which is not an authority statement about
+our users.
+
+**Next.** Operations lead to confirm at the 2026-11-18 review; the answer becomes a clause on
+[[R-012]] and closes the `permissions` coverage line on [[FEAT-02]].
 ```
 
 **Notes.**
-- *Blocks* is what makes a question operational: decomposition skips a blocked requirement and
-  reports it, so the gap reaches the person who can close it rather than becoming an invented
-  behaviour ([`../practices/decompose-a-prd.md`](../practices/decompose-a-prd.md)).
-- A blocked requirement may read `<behaviour not known>` and keep its id, priority and verify method.
-- *Needed by* is a date. A draft may use a gate name until there is a schedule — `Gate 2` above —
-  but never nothing.
-- Answering a question does not leave the answer here. Promote it into a requirement or a `DEC-xx`
-  row and point back, so the ledger stays a queue rather than a second place to look for behaviour.
-- A question with no owner is a review finding, not a question.
+- **`blocks` is what makes a question operational**: the blocked requirement names it in
+  `questions`, decomposition skips it and reports it, and the gap reaches the person who can close
+  it rather than becoming an invented behaviour
+  ([`../practices/decompose-a-prd.md`](../practices/decompose-a-prd.md)).
+- A blocked requirement may state `<behaviour not known>` and keep its id, priority and verify
+  method.
+- `needed-by` is a date. A draft may use a gate name until there is a schedule — `Gate 2` — but
+  never nothing. The check errors on either field missing, because a question with neither cannot
+  close.
+- Answering does not leave the answer here. Promote it into a requirement or a decision, point
+  `answered-by` at it, and set `status: answered` — so the register stays a queue rather than a
+  second place to look for behaviour.
+- When `anchored-knowledge` is also installed, this is the same note it writes and audits. The `prd`
+  property is what makes it findable from both sides.
 
 **Related.** [`knowledge-ledger.md`](knowledge-ledger.md), [`coverage-check.md`](coverage-check.md),
 [`../principles/a-gap-is-a-question-not-a-guess.md`](../principles/a-gap-is-a-question-not-a-guess.md).

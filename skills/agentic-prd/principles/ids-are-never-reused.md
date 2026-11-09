@@ -12,7 +12,7 @@ history readable: a reader can see that a behaviour was once specified and then 
 usually the question being asked.
 
 **In the PRD.**
-- Retired requirement: keep the row, write `Retired` at the start of the Requirement column, keep the
+- Retired requirement: keep the note, set `status: retired` and `coverage: retired`, keep the
   id.
 - `CHANGE` keeps every existing `EPIC`, `FEAT`, `US` and `R` id and regenerates only affected stories
   ([`../practices/change-a-requirement.md`](../practices/change-a-requirement.md)).

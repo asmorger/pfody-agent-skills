@@ -31,5 +31,5 @@ brief for a cross-release programme leaves agents to invent the parts nobody wro
 **Done when** the front matter names a size, every section that size requires is present and filled,
 and no section is present only because the template had it.
 
-**Related.** [`../patterns/prd-document.md`](../patterns/prd-document.md),
+**Related.** [`../patterns/prd-hub-note.md`](../patterns/prd-hub-note.md),
 [`draft-a-prd.md`](draft-a-prd.md).

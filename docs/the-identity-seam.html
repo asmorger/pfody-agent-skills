@@ -1,0 +1,463 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>The Identity Seam</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: reading column, with full-width rails for the seam diagram, the question triage and the file excerpts. */
+  :root {
+    --paper: #eef0ef; --paper-2: #f8f9f8; --ink: #19222a; --ink-2: #5b6b74;
+    --rule: #cfd7d7; --accent: #126e63; --ochre: #8a5f0c;
+    --font-head: "IBM Plex Sans Condensed", "Helvetica Neue", Arial, sans-serif;
+    --font-body: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #11161a; --paper-2: #171e23; --ink: #e2e8e6; --ink-2: #93a3ab;
+      --rule: #2a343a; --accent: #4cc0ad; --ochre: #d8a243; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #11161a; --paper-2: #171e23; --ink: #e2e8e6; --ink-2: #93a3ab;
+    --rule: #2a343a; --accent: #4cc0ad; --ochre: #d8a243; color-scheme: dark;
+  }
+
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 40px 72px;
+  }
+  main { max-width: 1010px; margin: 0 auto; display: flex; flex-direction: column; gap: 44px; }
+  .col { max-width: 66ch; display: flex; flex-direction: column; gap: 16px; }
+  .col > * { margin: 0; }
+
+  .eyebrow { font-family: var(--font-head); font-weight: 600; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-family: var(--font-head); font-weight: 700; font-size: clamp(30px, 6vw, 46px); line-height: 1.04; letter-spacing: -.01em; text-wrap: balance; margin: 0; }
+  h2 { font-family: var(--font-head); font-weight: 600; font-size: clamp(21px, 3.6vw, 27px); line-height: 1.16; text-wrap: balance; margin: 0; }
+  h3 { font-family: var(--font-head); font-weight: 600; font-size: 16px; letter-spacing: .02em; margin: 0; }
+  .lede { font-size: 18px; line-height: 1.55; }
+  .muted { color: var(--ink-2); }
+  code { font-family: var(--font-mono); font-size: .86em; }
+  .hr { height: 1px; background: var(--rule); border: 0; }
+  .path { font-family: var(--font-mono); font-size: 12px; color: var(--ink-2); }
+
+  /* Headline finding */
+  .finding { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 24px; }
+  .fig-n { min-width: 0; display: flex; flex-direction: column; gap: 5px; padding-top: 13px; border-top: 2px solid var(--accent); }
+  .fig-n .n { font-family: var(--font-head); font-weight: 700; font-size: 30px; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .fig-n .w { font-family: var(--font-head); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; color: var(--accent); }
+  .fig-n p { margin: 0; font-size: 14px; line-height: 1.45; color: var(--ink-2); }
+  .fig-n.warn { border-top-color: var(--ochre); }
+  .fig-n.warn .w { color: var(--ochre); }
+
+  /* Figures */
+  .rail { overflow-x: auto; max-width: 100%; }
+  figure { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  figcaption { max-width: 72ch; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+  figcaption b { color: var(--ink); font-weight: 600; }
+  svg.fig { display: block; width: 100%; height: auto; min-width: 900px; max-width: 960px; }
+  .fig .bx { font-family: var(--font-head); font-size: 12px; font-weight: 600; }
+  .fig .mono { font-family: var(--font-mono); font-size: 10px; }
+  .fig .tag { font-family: var(--font-head); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
+  .fig .note { font-family: var(--font-head); font-size: 11.5px; }
+
+  /* Question triage */
+  .triage { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+  .bucket { min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+  .bucket-head { display: flex; flex-direction: column; gap: 4px; padding-bottom: 11px; border-bottom: 2px solid var(--accent); }
+  .bucket.spec .bucket-head { border-bottom-color: var(--ink-2); }
+  .bucket.ours .bucket-head { border-bottom-style: dashed; border-bottom-width: 1.4px; border-bottom-color: var(--ink-2); }
+  .bucket-head .w { font-family: var(--font-head); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; color: var(--accent); }
+  .bucket.spec .bucket-head .w, .bucket.ours .bucket-head .w { color: var(--ink-2); }
+  .bucket-head p { margin: 0; font-size: 13.5px; line-height: 1.45; color: var(--ink-2); }
+  .qa { display: flex; flex-direction: column; gap: 5px; }
+  .qa-top { display: flex; gap: 10px; align-items: baseline; }
+  .qa-id { font-family: var(--font-mono); font-size: 11px; color: var(--accent); flex: none; padding-top: .2em; }
+  .bucket.spec .qa-id, .bucket.ours .qa-id { color: var(--ink-2); }
+  .qa-q { font-size: 15px; line-height: 1.48; }
+  .qa-why { font-size: 13.5px; line-height: 1.45; color: var(--ink-2); padding-left: 31px; }
+  .miss { display: inline-block; font-family: var(--font-head); font-size: 9.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ochre); border: 1px solid var(--ochre); border-radius: 2px; padding: 1px 6px; white-space: nowrap; }
+
+  /* Excerpts */
+  pre {
+    margin: 0; font-family: var(--font-mono); font-size: 11.5px; line-height: 1.62;
+    background: var(--paper-2); color: var(--ink);
+    border: 1px solid var(--rule); border-left: 2px solid var(--accent);
+    border-radius: 2px; padding: 14px 16px; overflow-x: auto; tab-size: 2;
+  }
+  pre.derived { border-left-style: dashed; border-left-color: var(--ink-2); }
+  .ex { display: flex; flex-direction: column; gap: 11px; min-width: 0; }
+  .ex > * { margin: 0; }
+  .ex-head { display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline; justify-content: space-between; }
+  .ex-head .stamp { font-family: var(--font-head); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
+  .ex.derived .stamp { color: var(--ink-2); }
+  .ex.decided .stamp { color: var(--accent); }
+
+  /* Ladder table */
+  table { border-collapse: collapse; min-width: 700px; font-size: 14.5px; }
+  caption { text-align: left; font-size: 14px; color: var(--ink-2); padding-bottom: 10px; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 20px 10px 0; border-bottom: 1px solid var(--rule); }
+  thead th { font-family: var(--font-head); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); border-bottom: 1.4px solid var(--ink-2); padding-bottom: 7px; }
+  td.sl { font-family: var(--font-mono); font-size: 12px; white-space: nowrap; }
+  td.ct { font-variant-numeric: tabular-nums; text-align: right; padding-right: 26px; }
+  td.gate { color: var(--ink-2); }
+  tbody tr.now td { font-weight: 600; }
+  tbody tr.now td.sl { color: var(--accent); }
+
+  ul.plain { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+  ul.plain li { padding-left: 19px; position: relative; }
+  ul.plain li::before { content: ""; position: absolute; left: 0; top: .65em; width: 9px; height: 1.4px; background: var(--accent); }
+  ul.plain b { font-weight: 600; }
+  ul.warn li::before { background: var(--ochre); }
+  footer { font-size: 14px; color: var(--ink-2); max-width: 66ch; }
+</style>
+
+<main>
+
+  <header>
+    <div class="col">
+      <p class="eyebrow">Worked example &middot; user management</p>
+      <h1>The Identity Seam</h1>
+      <p class="lede">Identity is the hardest thing to slice, because every workflow depends on it and none of it is a workflow. This is one survey and one brief for user management, and the trick that makes the brief shippable while the biggest question is still open.</p>
+      <p class="muted">The artifacts themselves are in the repo at <span class="path">docs/examples/</span>. This page is the reasoning around them: why the slice is drawn where it is, and the full question set the survey produced, sorted by who can actually answer each one.</p>
+    </div>
+  </header>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>Start with the question you can answer without a meeting</h2>
+    <p>&ldquo;We are uncertain what security group controls and whether we still need it&rdquo; sounds like a question for the business. Most of it isn't. The old system already contains the answer, and reading it out took one exhaustive search.</p>
+  </div>
+
+  <div class="finding">
+    <div class="fig-n">
+      <p class="w">groups defined</p>
+      <p class="n">41</p>
+      <p>Rows in <code>USER_GROUP</code>, accumulated over twelve years.</p>
+    </div>
+    <div class="fig-n">
+      <p class="w">referenced in code</p>
+      <p class="n">9</p>
+      <p>Distinct group names appearing as string literals, across 31 call sites. That is the entire authorization model.</p>
+    </div>
+    <div class="fig-n warn">
+      <p class="w">referenced nowhere</p>
+      <p class="n">31</p>
+      <p>Not in client code, reports, or stored procedures. Held by 142 people who gain nothing from them.</p>
+    </div>
+    <div class="fig-n warn">
+      <p class="w">in no group at all</p>
+      <p class="n">87</p>
+      <p>Sign in fine and can read everything in their org, because groups are only checked on writes.</p>
+    </div>
+  </div>
+
+  <div class="col">
+    <p>So your assumption was half right. It is role-shaped, but there is no role: a &ldquo;security group&rdquo; is a name that 31 scattered <code>IsInGroup("WHSE_SUPER")</code> comparisons test against. Nothing maps a group to a capability. The mapping <em>is</em> the 31 call sites, which is why nobody can tell you what a group controls, and why the answer was never going to arrive from a conversation.</p>
+    <p>What remains genuinely a business question is much narrower: can the 31 unreferenced groups be retired, and what do the 9 live ones mean in warehouse terms. The first is a yes/no with evidence attached. The second needs twenty minutes with a specific long-tenured supervisor, not your PM.</p>
+  </div>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>Three things that make this area different</h2>
+    <ul class="plain">
+      <li><b>You cannot slice it by workflow, so slice it by population.</b> Every screen depends on sign-in, so there is no vertical slice of &ldquo;a bit of authentication.&rdquo; There is, however, a perfectly good slice of &ldquo;six people authenticate differently.&rdquo; Smallest and most tolerant population first, by explicit allow-list, with the old path still hot.</li>
+      <li><b>Split authentication from authorization, and move only the first.</b> Entra answers <em>who is this</em>. <code>USER_GROUP</code> keeps answering <em>what may they do</em>. This is the seam, and it is what lets the slice ship while the security group question stays open for another three slices.</li>
+      <li><b>Do not make this your first area.</b> The practice says no schema migration and no shared-code refactor inside a slice, and identity wants both. Get two self-contained workflows shipped first so the team has calibrated its appetite and the comparison harness exists. This sample is numbered 012 on purpose.</li>
+    </ul>
+  </div>
+
+  <figure>
+    <div class="rail">
+      <svg class="fig" viewBox="0 0 960 300" role="img" aria-label="The identity seam. Two sign-in paths on the left: username and password through a SHA-1 check for the other 406 accounts, and an Entra work account through a new ENTRA_OID column for six allow-listed administrators. Both resolve to the same USERS row, which maps to USER_GROUP, whose nine live group names are tested at 31 call sites, which drives the screens. Everything from the USERS row rightward is unchanged by the slice, so the open question of what a security group means does not block it.">
+        <defs>
+          <marker id="sm-ink" viewBox="0 0 9 9" refX="8" refY="4.5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+            <path d="M0 0 L9 4.5 L0 9 z" style="fill: var(--ink-2)"></path>
+          </marker>
+          <marker id="sm-acc" viewBox="0 0 9 9" refX="8" refY="4.5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+            <path d="M0 0 L9 4.5 L0 9 z" style="fill: var(--accent)"></path>
+          </marker>
+        </defs>
+
+        <!-- unchanged region -->
+        <rect x="370" y="108" width="524" height="80" rx="4" fill="none" style="stroke: var(--accent)" stroke-width="1.4" stroke-dasharray="6 4"></rect>
+        <text class="tag" x="374" y="101" style="fill: var(--accent)">not changed by slice 012</text>
+
+        <!-- legacy path -->
+        <rect x="40" y="70" width="170" height="48" rx="3" style="fill: var(--paper-2); stroke: var(--rule)" stroke-width="1.2"></rect>
+        <text class="bx" x="125" y="97" text-anchor="middle" style="fill: var(--ink)">username + password</text>
+        <text class="mono" x="125" y="111" text-anchor="middle" style="fill: var(--ink-2)">the other 406 accounts</text>
+
+        <rect x="240" y="70" width="110" height="48" rx="3" style="fill: var(--paper-2); stroke: var(--rule)" stroke-width="1.2"></rect>
+        <text class="bx" x="295" y="97" text-anchor="middle" style="fill: var(--ink)">SHA-1 check</text>
+        <text class="mono" x="295" y="111" text-anchor="middle" style="fill: var(--ink-2)">unchanged</text>
+
+        <!-- new path -->
+        <rect x="40" y="180" width="170" height="48" rx="3" style="fill: var(--paper-2); stroke: var(--accent)" stroke-width="1.8"></rect>
+        <text class="bx" x="125" y="207" text-anchor="middle" style="fill: var(--ink)">Entra work account</text>
+        <text class="mono" x="125" y="221" text-anchor="middle" style="fill: var(--accent)">6 allow-listed admins</text>
+
+        <rect x="240" y="180" width="110" height="48" rx="3" style="fill: var(--paper-2); stroke: var(--accent)" stroke-width="1.8"></rect>
+        <text class="bx" x="295" y="207" text-anchor="middle" style="fill: var(--ink)">ENTRA_OID</text>
+        <text class="mono" x="295" y="221" text-anchor="middle" style="fill: var(--accent)">new, additive</text>
+
+        <!-- chain -->
+        <rect x="380" y="124" width="130" height="48" rx="3" style="fill: var(--paper-2); stroke: var(--rule)" stroke-width="1.2"></rect>
+        <text class="bx" x="445" y="151" text-anchor="middle" style="fill: var(--ink)">USERS row</text>
+        <text class="mono" x="445" y="165" text-anchor="middle" style="fill: var(--ink-2)">the person</text>
+
+        <rect x="550" y="124" width="180" height="48" rx="3" style="fill: var(--paper-2); stroke: var(--rule)" stroke-width="1.2"></rect>
+        <text class="bx" x="640" y="151" text-anchor="middle" style="fill: var(--ink)">USER_GROUP</text>
+        <text class="mono" x="640" y="165" text-anchor="middle" style="fill: var(--ink-2)">9 live names, 31 call sites</text>
+
+        <rect x="770" y="124" width="112" height="48" rx="3" style="fill: var(--paper-2); stroke: var(--rule)" stroke-width="1.2"></rect>
+        <text class="bx" x="826" y="151" text-anchor="middle" style="fill: var(--ink)">screens</text>
+        <text class="mono" x="826" y="165" text-anchor="middle" style="fill: var(--ink-2)">same checks</text>
+
+        <!-- flows -->
+        <g fill="none" style="stroke: var(--ink-2)" stroke-width="1.2" marker-end="url(#sm-ink)">
+          <line x1="212" y1="94" x2="234" y2="94"></line>
+          <polyline points="352,94 360,94 360,142 374,142"></polyline>
+          <line x1="512" y1="148" x2="544" y2="148"></line>
+          <line x1="732" y1="148" x2="764" y2="148"></line>
+        </g>
+        <g fill="none" style="stroke: var(--accent)" stroke-width="1.6" marker-end="url(#sm-acc)">
+          <line x1="212" y1="204" x2="234" y2="204"></line>
+          <polyline points="352,204 360,204 360,156 374,156"></polyline>
+        </g>
+
+        <!-- the open question -->
+        <rect x="639" y="190" width="2" height="14" style="fill: var(--ochre)"></rect>
+        <text class="note" x="640" y="220" text-anchor="middle" style="fill: var(--ochre)">what a &ldquo;security group&rdquo; means is still unanswered,</text>
+        <text class="note" x="640" y="235" text-anchor="middle" style="fill: var(--ochre)">and slice 012 ships without the answer</text>
+
+        <text class="tag" x="40" y="268" style="fill: var(--ink-2)">authentication moves &middot; authorization does not</text>
+      </svg>
+    </div>
+    <figcaption><b>The seam, and why the slice fits through it.</b> Only the leftmost hop changes, and it changes for six people. One additive nullable column links an Entra object id to the existing <code>USERS</code> row; everything downstream resolves rights exactly as before, through the same 31 call sites. That is what makes the biggest open question in the area safe to defer rather than a blocker, and it is also why the golden master is recorded for all 412 accounts even though the slice touches six.</figcaption>
+  </figure>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>The question set, sorted by who can answer it</h2>
+    <p>This is the part worth stealing. The survey produced twenty questions, and sending all twenty to one PM is how a markup session turns back into a requirements meeting. They sort into three piles, and only the first pile goes on the markup sheet. Flagged items are the ones teams usually discover too late.</p>
+  </div>
+
+  <div class="triage">
+
+    <div class="bucket">
+      <div class="bucket-head">
+        <p class="w">For the business &middot; 13</p>
+        <p>Goes on the markup sheet. Each is a ruling, not research.</p>
+      </div>
+
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">Q01</span><span class="qa-q">A soft-deleted account can still sign in. It has never happened in 24 months. Fix it, or is someone relying on it?</span></div>
+        <p class="qa-why">The log count is what makes this a thirty-second answer instead of a risk assessment.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">Q02</span><span class="qa-q">31 of 41 groups are referenced nowhere in the software. Do they mean anything to you outside it, or can they be retired?</span></div>
+        <p class="qa-why">Most of your security-group uncertainty resolves here, with evidence rather than opinion.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">Q04</span><span class="qa-q">23 people belong to more than one organization. Real need, or years of data entry?</span></div>
+        <p class="qa-why">Changes the tenancy model. If it is data entry, the new model gets dramatically simpler.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">Q05</span><span class="qa-q">Three reports show data across all of a user's organizations regardless of the one they picked at sign-in. Correct, or a leak?</span></div>
+        <p class="qa-why">If it is a leak it is a live one, today, and it stops being a modernization question.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">Q06</span><span class="qa-q">Four warehouse stations appear to share one login. Does every worker need their own identity now, or do station accounts stay? <span class="miss">easy to miss</span></span></div>
+        <p class="qa-why">Per-user licensing, per-person audit trails, and shop-floor workflow all turn on this. It is also the question most likely to be answered by the warehouse rather than by product.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">Q07</span><span class="qa-q">Entra makes the work email the sign-in identity. Legacy usernames are printed on pick tickets and appear in 24 months of audit rows. Must the old username survive as a visible field? <span class="miss">easy to miss</span></span></div>
+        <p class="qa-why">Cheap to answer now, expensive to retrofit after the identity model is built.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">Q09</span><span class="qa-q">Are the third-party users people, or systems? <span class="miss">easy to miss</span></span></div>
+        <p class="qa-why">If any are systems, they need API credentials rather than user identities and they leave the identity project entirely. Twelve accounts in this survey already look like integrations wearing user accounts.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">Q10</span><span class="qa-q">No password can be migrated, so all 412 accounts re-enroll. Who owns that cutover and the communication to external customers? <span class="miss">easy to miss</span></span></div>
+        <p class="qa-why">Unsalted SHA-1 cannot be handed to any identity provider. This is an unavoidable consequence of a technical finding, and it lands as a change-management cost, not an engineering task.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">Q11</span><span class="qa-q">Do customer administrators need to manage their own users? <span class="miss">easy to miss</span></span></div>
+        <p class="qa-why">Delegated administration constrains the external identity provider more than any technical consideration will. Answer it before the &ldquo;unknown system&rdquo; is chosen, not after.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">Q13</span><span class="qa-q">External identity is licensed per monthly active user. Has that recurring cost been priced against the directive? <span class="miss">easy to miss</span></span></div>
+        <p class="qa-why">A directive issued before anyone counted external users is worth re-examining while it is still cheap to change.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">Q03 Q08 Q12</span><span class="qa-q">87 people in no group with full read access; what an external user must never see, as policy rather than current behavior; and whether ADMIN granting ADMIN unaudited is acceptable to carry forward.</span></div>
+        <p class="qa-why">Three rulings that each turn a discovered accident into a deliberate choice.</p>
+      </div>
+    </div>
+
+    <div class="bucket spec">
+      <div class="bucket-head">
+        <p class="w">For a named specialist &middot; 3</p>
+        <p>Not for the PM. Each needs one particular person for twenty minutes, and getting that time is worth more than a week of guessing.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">S01</span><span class="qa-q">34 tables name a user as the actor on a row. Is there a regulatory requirement that those always resolve to a named person?</span></div>
+        <p class="qa-why">Controller or compliance. Determines whether a user record can ever be retired, which in turn determines whether the new system needs its own permanent user ledger.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">S02</span><span class="qa-q">What does each of the 9 live group names actually gate, in business terms?</span></div>
+        <p class="qa-why">The longest-tenured warehouse supervisor. We can read the 31 call sites; we cannot tell you which of them matter, and the PM cannot either.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">S03</span><span class="qa-q">Which of the 12 integration accounts belong to systems still in use, and where are their credentials stored?</span></div>
+        <p class="qa-why">Integrations owner. These break the moment internal sign-in moves, so this answer gates a later slice.</p>
+      </div>
+    </div>
+
+    <div class="bucket ours">
+      <div class="bucket-head">
+        <p class="w">Still ours to verify &middot; 4</p>
+        <p>Not questions for anyone. Work we owe before the brief is shapeable, listed so it is not mistaken for a blocker on someone else.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">V01</span><span class="qa-q">Does the client cache the resolved permission set after sign-in?</span></div>
+        <p class="qa-why">Determines whether a group change takes effect immediately or at next login, which the new app has to match.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">V02</span><span class="qa-q">Does any stored procedure or report read <code>USER_GROUP</code> directly?</span></div>
+        <p class="qa-why">If so, 31 call sites is an undercount and the headline finding above needs revising. This is exactly the kind of thing that gets regenerated rather than argued about.</p>
+      </div>
+      <div class="qa">
+        <div class="qa-top"><span class="qa-id">V03 V04</span><span class="qa-q">Whether the three cross-org reports are reachable by external users, and whether anything other than the desktop client calls <code>usp_AuthenticateUser</code>.</span></div>
+        <p class="qa-why">Both bound the blast radius. V04 in particular decides whether the slice can be as small as it claims.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>The two artifacts</h2>
+    <p>Excerpts. The complete files are in the repo, in the formats the practice specifies.</p>
+  </div>
+
+  <div class="ex derived">
+    <div class="ex-head">
+      <p class="stamp">Derived &middot; regenerate, never hand-edit</p>
+      <p class="path">docs/examples/survey/user-management.md</p>
+    </div>
+    <pre class="derived">### Security groups
+
+B12  USER_GROUP is many-to-many. 41 distinct groups exist in the table.
+                                             [db]
+B13  There is no permission table. A "security group" is a name that code
+     compares against: `If IsInGroup("WHSE_SUPER")`. 9 distinct group names
+     appear as string literals across 31 call sites. Nothing maps a group to
+     a capability; the mapping is the 31 call sites.
+                                             [code: exhaustive grep IsInGroup]
+B14  31 of the 41 groups are referenced nowhere: not in client code, not in
+     reports, not in stored procedures. 142 users hold at least one of them.
+                                             [code: exhaustive grep + db]
+B15  87 accounts belong to zero groups, can sign in, and can reach every
+     screen. Groups are checked only on write actions, so a user in no group
+     has full read access to their org.       [code + db]
+B16  Any member of ADMIN can grant any group, including ADMIN. The grant is
+     not audited.                             [code: frmUserGroups.vb:233]
+
+## Usage (prod logs and database, 24 months)
+
+sign-ins 184,002 &middot; accounts 412 &middot; interactive in last 90d 298
+accounts by population: HQ admin 6 &middot; internal staff 250 &middot; warehouse 90
+                        &middot; external 54 &middot; integration 12
+multi-org accounts 23 &middot; zero-group accounts 87
+groups defined 41 &middot; groups referenced in code 9
+soft-deleted accounts 61 &middot; sign-ins by soft-deleted accounts 0
+suspected integration accounts 12 &middot; suspected shared station logins 4</pre>
+    <p class="muted">Note what the provenance tags are doing. B13 and B14 say <code>exhaustive grep</code>, which is the one place a ranked search will not do: the claim is about <em>absence</em>, and only a complete sweep can support it. B07, elsewhere in the file, is tagged <code>logs + db</code> because it is an inference from two sources rather than something read directly, and it is phrased as &ldquo;suspected&rdquo; for that reason.</p>
+  </div>
+
+  <div class="ex decided">
+    <div class="ex-head">
+      <p class="stamp">Decided &middot; frozen at build start</p>
+      <p class="path">docs/examples/slices/012-internal-signin-entra.md</p>
+    </div>
+    <pre>---
+slice:    012-internal-signin-entra
+demo:     An HQ administrator signs in with their Entra work account and
+          lands on the same screens with the same rights they have today,
+          while everyone else still signs in with a username and password.
+appetite: 14 judgment-hours &middot; ~2 wks wall clock &middot; tokens order 10^1 USD
+toggle:   auth.entra.internal   (per-user allow-list; legacy sign-in stays hot)
+blast:    one additive nullable column (USERS.ENTRA_OID); no data migration;
+          no change to USER_GROUP or its semantics; no change to any screen's
+          permission check; no change to external sign-in; no password touched
+frozen:   2026-11-13       # amend below, never rewrite above
+---
+
+## What this slice deliberately does not decide
+
+What "security group" should become. Entra supplies identity only. The
+permission set still resolves from USER_GROUP through the same 31 call sites.
+
+This is the seam that lets the slice ship: the open question from the survey
+(Q02, S02) does not need an answer for another three slices, because nothing
+on the authorization side of the seam changes.
+
+## Checks
+
+char/auth_resolves_permission_set.approved
+    Golden master: for all 412 accounts, the permission set resolved from
+    USER_GROUP, recorded by driving the legacy domain layer. Must not change.
+    Covers the whole population even though the slice covers six, because it
+    costs nothing extra and protects everything the slice could break.
+new/entra_signin_resolves_same_rights
+    For each allow-listed admin, rights resolved via ENTRA_OID equal rights
+    resolved via username.
+new/soft_deleted_is_rejected_on_both_paths
+parallel-run
+    5 working days. Every Entra sign-in also resolves the legacy path in
+    shadow and logs a diff. Flip requires 0 diffs and at least 3 sign-ins per
+    allow-listed admin.
+
+## Decisions outstanding: 0</pre>
+    <p class="muted">The <code>Decisions outstanding: 0</code> line is load-bearing. Eight of the twenty survey questions are unanswered when this brief is frozen, and the brief still reads zero, because every one of them became a <code>DEFER</code> row with a reason instead of a dependency. That is the difference between deferring and stalling.</p>
+  </div>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>What the rest of the ladder looks like</h2>
+    <p>Each later slice is gated by a specific answered question rather than by a date. Writing it this way makes the dependency visible to the people who owe the answers.</p>
+  </div>
+
+  <div class="rail">
+    <table>
+      <caption>Populations, not workflows. Only slice 012 is shaped; the rest are a sketch that will change as answers arrive.</caption>
+      <thead>
+        <tr><th scope="col">Slice</th><th scope="col">Population</th><th scope="col" style="text-align:right;padding-right:26px">Accounts</th><th scope="col">Cannot start until</th></tr>
+      </thead>
+      <tbody>
+        <tr class="now"><td class="sl">012</td><td>HQ administrators, by allow-list</td><td class="ct">6</td><td class="gate">nothing &mdash; shaped and frozen</td></tr>
+        <tr><td class="sl">013</td><td>Integration accounts, moved to API credentials</td><td class="ct">12</td><td class="gate">S03 answered. Must precede 014 or these break.</td></tr>
+        <tr><td class="sl">014</td><td>Remaining internal staff</td><td class="ct">250</td><td class="gate">013 shipped, Q10 owner named</td></tr>
+        <tr><td class="sl">015</td><td>Warehouse</td><td class="ct">90</td><td class="gate">Q06 answered &mdash; per-person or per-station</td></tr>
+        <tr><td class="sl">016</td><td>Security group retirement and a real permission model</td><td class="ct">&mdash;</td><td class="gate">Q02 and S02 answered</td></tr>
+        <tr><td class="sl">017</td><td>External third-party users</td><td class="ct">54</td><td class="gate">Q09, Q11, Q13 answered and an IdP chosen</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p class="muted">Two things this ordering buys you. The integration accounts get discovered and fixed before the slice that would have broken them, which is the kind of outage that otherwise happens at 6am on a Monday. And the choice of external identity provider, currently a question mark in the directive, gets made last, by which point you will know how many external users there are, whether any are systems, and whether customers need to administer their own. That is a far better position to choose from than today.</p>
+  </div>
+
+  <footer>Companion to the engineering and product pages on the same practice. The survey and brief here are a worked example on real-sounding numbers, not a record of an actual system: regenerate the survey against your own code before trusting any line in it.</footer>
+
+</main>

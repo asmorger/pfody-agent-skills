@@ -1,0 +1,517 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Survey, Slice, Suite</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: single reading column for prose, full-bleed scroll rails for figures, tables and templates. */
+  :root {
+    --paper: #eef0ef;
+    --paper-2: #f8f9f8;
+    --ink: #19222a;
+    --ink-2: #5b6b74;
+    --rule: #cfd7d7;
+    --accent: #126e63;
+    --ochre: #8a5f0c;
+    --font-head: "IBM Plex Sans Condensed", "Helvetica Neue", Arial, sans-serif;
+    --font-body: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #11161a;
+      --paper-2: #171e23;
+      --ink: #e2e8e6;
+      --ink-2: #93a3ab;
+      --rule: #2a343a;
+      --accent: #4cc0ad;
+      --ochre: #d8a243;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #11161a;
+    --paper-2: #171e23;
+    --ink: #e2e8e6;
+    --ink-2: #93a3ab;
+    --rule: #2a343a;
+    --accent: #4cc0ad;
+    --ochre: #d8a243;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 40px 72px;
+  }
+
+  main { max-width: 1010px; margin: 0 auto; display: flex; flex-direction: column; gap: 44px; }
+  .col { max-width: 66ch; display: flex; flex-direction: column; gap: 16px; }
+  .col > * { margin: 0; }
+
+  .eyebrow {
+    font-family: var(--font-head); font-weight: 600; font-size: 11px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+  }
+  h1 {
+    font-family: var(--font-head); font-weight: 700; font-size: clamp(30px, 6vw, 46px);
+    line-height: 1.04; letter-spacing: -.01em; text-wrap: balance; margin: 0;
+  }
+  h2 {
+    font-family: var(--font-head); font-weight: 600; font-size: clamp(21px, 3.6vw, 27px);
+    line-height: 1.16; text-wrap: balance; margin: 0;
+  }
+  h3 {
+    font-family: var(--font-head); font-weight: 600; font-size: 16px;
+    letter-spacing: .02em; margin: 0;
+  }
+  .lede { font-size: 18px; line-height: 1.55; }
+  .muted { color: var(--ink-2); }
+  em { font-style: italic; }
+  strong { font-weight: 600; }
+  code { font-family: var(--font-mono); font-size: .88em; }
+  .hr { height: 1px; background: var(--rule); border: 0; }
+
+  header .col { gap: 14px; }
+  .trio { display: flex; flex-wrap: wrap; gap: 10px 22px; font-family: var(--font-head); font-size: 13px; }
+  .trio span { display: inline-flex; align-items: baseline; gap: 7px; }
+  .dot { width: 9px; height: 9px; flex: none; border-radius: 2px; transform: translateY(-1px); }
+  .dot.derived { border: 1.4px dashed var(--ink-2); }
+  .dot.decided { background: var(--accent); }
+  .dot.perm { background: var(--accent); border-radius: 50%; }
+
+  /* Scroll rails */
+  .rail { overflow-x: auto; max-width: 100%; }
+  figure { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  figcaption { max-width: 72ch; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+  figcaption b { color: var(--ink); font-weight: 600; }
+  svg.fig { display: block; width: 100%; height: auto; }
+  #fig1 { min-width: 960px; max-width: 1010px; }
+  #fig2 { min-width: 860px; max-width: 920px; }
+  .fig .bx { font-family: var(--font-head); font-weight: 600; font-size: 12px; }
+  .fig .sub, .fig .mono { font-family: var(--font-mono); font-size: 10px; }
+  .fig .lbl { font-family: var(--font-head); font-size: 10.5px; }
+  .fig .tag {
+    font-family: var(--font-head); font-size: 9.5px;
+    letter-spacing: .1em; text-transform: uppercase; font-weight: 600;
+  }
+
+  /* Document specs */
+  .docs { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 28px; }
+  .doc { min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+  .doc > * { margin: 0; }
+  .doc-head { display: flex; flex-direction: column; gap: 4px; padding-bottom: 10px; }
+  .doc.derived .doc-head { border-bottom: 1.4px dashed var(--ink-2); }
+  .doc.decided .doc-head { border-bottom: 2px solid var(--accent); }
+  .stamp { font-family: var(--font-head); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
+  .doc.derived .stamp { color: var(--ink-2); }
+  .doc.decided .stamp { color: var(--accent); }
+  .meta { display: grid; grid-template-columns: max-content 1fr; gap: 3px 14px; font-size: 14px; }
+  .meta dt { font-family: var(--font-head); font-weight: 600; color: var(--ink-2); }
+  .meta dd { margin: 0; }
+  pre {
+    margin: 0; font-family: var(--font-mono); font-size: 11.5px; line-height: 1.62;
+    background: var(--paper-2); color: var(--ink);
+    border: 1px solid var(--rule); border-left: 2px solid var(--rule);
+    border-radius: 2px; padding: 14px 16px; overflow-x: auto; tab-size: 2;
+  }
+  .doc.decided pre { border-left-color: var(--accent); }
+  .rules { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 9px; font-size: 14.5px; line-height: 1.5; }
+  .rules li { padding-left: 17px; position: relative; }
+  .rules li::before { content: ""; position: absolute; left: 0; top: .62em; width: 8px; height: 1.4px; background: var(--accent); }
+
+  /* Routing table */
+  table { border-collapse: collapse; min-width: 720px; font-size: 14.5px; }
+  caption { text-align: left; font-size: 14px; color: var(--ink-2); padding-bottom: 10px; }
+  th, td { text-align: left; vertical-align: top; padding: 11px 18px 11px 0; border-bottom: 1px solid var(--rule); }
+  thead th {
+    font-family: var(--font-head); font-size: 10.5px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink-2); border-bottom: 1.4px solid var(--ink-2); padding-bottom: 7px;
+  }
+  tbody td:first-child { font-weight: 600; width: 32%; }
+  tbody td:nth-child(2) { color: var(--accent); width: 30%; }
+  tbody td:last-child { color: var(--ink-2); padding-right: 0; }
+
+  /* Signals + sequence */
+  .signals { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .signal { min-width: 0; padding: 16px 18px; background: var(--paper-2); border: 1px solid var(--rule); border-top: 2px solid var(--accent); border-radius: 2px; }
+  .signal h3 { margin-bottom: 5px; }
+  .signal p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
+  .signal .arrow { font-family: var(--font-mono); color: var(--accent); }
+
+  ol.seq { list-style: none; counter-reset: s; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+  ol.seq li { counter-increment: s; padding-left: 38px; position: relative; }
+  ol.seq li::before {
+    content: counter(s, decimal-leading-zero); position: absolute; left: 0; top: .1em;
+    font-family: var(--font-mono); font-size: 12px; color: var(--accent);
+  }
+  ul.rot { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 13px; }
+  ul.rot li { padding-left: 20px; position: relative; }
+  ul.rot li::before { content: "\00d7"; position: absolute; left: 0; top: -.02em; font-family: var(--font-mono); color: var(--ochre); }
+  ul.rot b { font-weight: 600; }
+  footer { font-size: 14px; color: var(--ink-2); max-width: 66ch; }
+</style>
+
+<main>
+
+  <header>
+    <div class="col">
+      <p class="eyebrow">Legacy modernization &middot; agentic delivery &middot; XP ethos</p>
+      <h1>Survey, Slice, Suite</h1>
+      <p class="lede">You asked for two documents. There are two you write, and one you accumulate. The one you accumulate is the only one that lasts, and it is the only one that can fail.</p>
+      <p class="muted">A PRD does the damage it does because it is permanent, wide, one-directional, and unfalsifiable. Take away any one of those and it stops being a PRD. Here all four go: the survey is wide but disposable and derived, the brief is authored but narrow and short-lived, and the suite is permanent but executable.</p>
+      <div class="trio">
+        <span><i class="dot derived"></i>Survey &middot; derived, dies</span>
+        <span><i class="dot decided"></i>Slice brief &middot; decided, frozen, dies</span>
+        <span><i class="dot perm"></i>Characterization suite &middot; permanent, grows</span>
+      </div>
+    </div>
+  </header>
+
+  <hr class="hr">
+
+  <figure>
+    <div class="rail">
+      <svg id="fig1" class="fig" viewBox="0 0 1010 400" role="img" aria-label="One slice through the pipeline: seven steps from Survey to Flip. The survey document is generated at step one, marked up at Review, cited at Shape, and deleted at Flip. The slice brief is written at Shape, frozen through Build, and superseded at Flip. The characterization suite is written at Characterize and never deleted.">
+        <defs>
+          <marker id="mk-ink" viewBox="0 0 9 9" refX="8" refY="4.5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+            <path d="M0 0 L9 4.5 L0 9 z" style="fill: var(--ink-2)"></path>
+          </marker>
+          <marker id="mk-acc" viewBox="0 0 9 9" refX="8" refY="4.5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0 0 L9 4.5 L0 9 z" style="fill: var(--accent)"></path>
+          </marker>
+        </defs>
+
+        <!-- Survey lane -->
+        <rect x="40" y="56" width="260" height="44" rx="3" fill="none" style="stroke: var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 4"></rect>
+        <text class="mono" x="53" y="77" style="fill: var(--ink)">survey/invoice-post.md</text>
+        <text class="tag" x="53" y="92" style="fill: var(--ink-2)">derived &middot; never hand-edited</text>
+        <line x1="300" y1="78" x2="912" y2="78" style="stroke: var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 4"></line>
+        <text class="tag" x="934" y="82" style="fill: var(--ink-2)">deleted</text>
+
+        <!-- Suite lane -->
+        <rect x="460" y="128" width="172" height="44" rx="3" style="fill: var(--paper-2); stroke: var(--accent)" stroke-width="1.6"></rect>
+        <text class="mono" x="473" y="149" style="fill: var(--ink)">tests/characterization/</text>
+        <text class="tag" x="473" y="164" style="fill: var(--accent)">permanent &middot; grows</text>
+        <line x1="632" y1="150" x2="898" y2="150" style="stroke: var(--accent)" stroke-width="2" marker-end="url(#mk-acc)"></line>
+        <text class="lbl" x="766" y="141" text-anchor="middle" style="fill: var(--accent)">outlives every slice</text>
+
+        <!-- Spine -->
+        <g style="stroke: var(--rule)" stroke-width="1.2">
+          <rect x="40" y="210" width="112" height="56" rx="3" style="fill: var(--paper-2); stroke: var(--rule)"></rect>
+          <rect x="180" y="210" width="112" height="56" rx="3" style="fill: var(--paper-2); stroke: var(--rule)"></rect>
+          <rect x="320" y="210" width="112" height="56" rx="3" style="fill: var(--paper-2); stroke: var(--rule)"></rect>
+          <rect x="460" y="210" width="112" height="56" rx="3" style="fill: var(--paper-2); stroke: var(--rule)"></rect>
+          <rect x="600" y="210" width="112" height="56" rx="3" style="fill: var(--paper-2); stroke: var(--rule)"></rect>
+          <rect x="740" y="210" width="112" height="56" rx="3" style="fill: var(--paper-2); stroke: var(--rule)"></rect>
+          <rect x="880" y="210" width="112" height="56" rx="3" style="fill: var(--paper-2); stroke: var(--rule)"></rect>
+        </g>
+        <g class="bx" text-anchor="middle" style="fill: var(--ink)">
+          <text x="96" y="235">Survey</text>
+          <text x="236" y="235">Review</text>
+          <text x="376" y="235">Shape</text>
+          <text x="516" y="235">Characterize</text>
+          <text x="656" y="235">Build</text>
+          <text x="796" y="235">Parallel run</text>
+          <text x="936" y="235">Flip</text>
+        </g>
+        <g class="sub" text-anchor="middle" style="fill: var(--ink-2)">
+          <text x="96" y="251">agents</text>
+          <text x="236" y="251">PM &middot; 20 min</text>
+          <text x="376" y="251">you</text>
+          <text x="516" y="251">agents</text>
+          <text x="656" y="251">agents</text>
+          <text x="796" y="251">production</text>
+          <text x="936" y="251">toggle</text>
+        </g>
+        <g style="stroke: var(--ink-2)" stroke-width="1.2" marker-end="url(#mk-ink)">
+          <line x1="154" y1="238" x2="172" y2="238"></line>
+          <line x1="294" y1="238" x2="312" y2="238"></line>
+          <line x1="434" y1="238" x2="452" y2="238"></line>
+          <line x1="574" y1="238" x2="592" y2="238"></line>
+          <line x1="714" y1="238" x2="732" y2="238"></line>
+          <line x1="854" y1="238" x2="872" y2="238"></line>
+        </g>
+
+        <!-- Brief lane -->
+        <rect x="320" y="320" width="180" height="44" rx="3" style="fill: var(--paper-2); stroke: var(--accent)" stroke-width="1.6"></rect>
+        <text class="mono" x="333" y="341" style="fill: var(--ink)">slices/047-invoice.md</text>
+        <text class="tag" x="333" y="356" style="fill: var(--accent)">decided &middot; frozen</text>
+        <line x1="500" y1="342" x2="912" y2="342" style="stroke: var(--accent)" stroke-width="2"></line>
+        <text class="tag" x="934" y="346" style="fill: var(--ink-2)">superseded</text>
+
+        <!-- Artifact flows -->
+        <g style="stroke: var(--ink-2)" stroke-width="1.2" marker-end="url(#mk-ink)">
+          <line x1="96" y1="206" x2="96" y2="104"></line>
+          <line x1="236" y1="104" x2="236" y2="206"></line>
+          <line x1="388" y1="84" x2="388" y2="206"></line>
+          <line x1="924" y1="206" x2="924" y2="86"></line>
+        </g>
+        <g style="stroke: var(--accent)" stroke-width="1.4" marker-end="url(#mk-acc)">
+          <line x1="388" y1="270" x2="388" y2="314"></line>
+          <line x1="520" y1="342" x2="520" y2="272"></line>
+          <line x1="560" y1="206" x2="560" y2="178"></line>
+          <line x1="924" y1="270" x2="924" y2="336"></line>
+        </g>
+        <g class="lbl" style="fill: var(--ink-2)">
+          <text x="103" y="158">generates</text>
+          <text x="243" y="158">marked up</text>
+          <text x="395" y="150">cited row by row</text>
+          <text x="395" y="298" style="fill: var(--accent)">writes</text>
+          <text x="527" y="308" style="fill: var(--accent)">names the checks</text>
+          <text x="567" y="196" style="fill: var(--accent)">captures legacy behavior</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption><b>One slice, and what each artifact is doing during it.</b> Dashed means derived and regenerable; solid means authored and binding. The survey is written by agents before you shape anything, read twice, and then deleted at the flip, because by then its content lives in the suite. The brief is written at Shape and frozen when Build starts. Only the suite crosses the right edge.</figcaption>
+  </figure>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>The two you write</h2>
+    <p>The field names matter less than the two properties that separate them: who is allowed to change them, and when they die. Those are the invariants. Everything else is yours to adjust.</p>
+  </div>
+
+  <div class="docs">
+
+    <article class="doc derived">
+      <div class="doc-head">
+        <p class="stamp">Document 1 &middot; derived</p>
+        <h3>The survey</h3>
+      </div>
+      <dl class="meta">
+        <dt>Path</dt><dd><code>survey/&lt;area&gt;.md</code>, one per legacy surface</dd>
+        <dt>Author</dt><dd>Agents, from the code and the logs</dd>
+        <dt>Born</dt><dd>One area ahead of the slice you are shaping</dd>
+        <dt>Dies</dt><dd>At the flip. Deleted, not archived</dd>
+        <dt>Lifespan</dt><dd>Days to a few weeks</dd>
+      </dl>
+      <pre>---
+area:        Invoice posting (frmInvoicePost)
+entry:       frmInvoicePost.vb:1-2140, cmdPost_Click:412
+generated:   2026-11-09 from legacy@a3f91c2
+disposition: reviewed
+---
+
+## Observed behaviors
+B1  Tax split by customer tax class
+    [code: frmInvoicePost.vb:612]
+B2  Post date forced to period end if locked
+    [code: InvoiceSvc.cls:188]
+B3  Negative lines silently dropped
+    [code: frmInvoicePost.vb:901]
+B4  Audit row written only when amount > 0
+    [db: trigger tr_inv_post]
+B5  Rush flag reprices from a fixed table
+    [told: BA, 2026-10-14]
+B6  Credit hold bypassed for class 7
+    [assumed: unverified]
+
+## Data touched
+INVOICE_HDR, INVOICE_LINE, GL_STAGE, AUDIT_POST
+usp_PostInvoice, tr_inv_post
+
+## Usage (prod logs, 12 mo)
+posts 41,208 &middot; users 23 &middot; rush 118 &middot; negatives 0
+
+## Questions for the business
+Q1 (B3)  Dropped silently. Bug, or intended?
+         Logs say it has never fired.
+Q2 (B5)  Which rush prices are still right?
+         14 rows attached.
+Q3 (B6)  Does customer class 7 still exist?</pre>
+      <ul class="rules">
+        <li><strong>Every line carries provenance.</strong> <code>[code:]</code>, <code>[db:]</code>, <code>[told:]</code>, <code>[assumed:]</code>. This is the whole trick. An unsourced assumption on page 30 of a PRD reads exactly like a verified fact, and an agent will implement both with equal confidence.</li>
+        <li><strong>Never hand-edited to record a decision.</strong> The moment a ruling lands here, it is a PRD again and nobody can tell observation from wish. Decisions go to the brief.</li>
+        <li><strong>Wrong is cheap.</strong> If it is wrong, regenerate it. It is allowed to be wide precisely because it costs nothing to rebuild and nothing to throw away.</li>
+        <li><strong>Questions are multiple choice.</strong> Your PM cannot fill a blank page. Almost nobody can. They can tell you that Q1 is a bug and Q3 is obsolete, in about four minutes.</li>
+      </ul>
+    </article>
+
+    <article class="doc decided">
+      <div class="doc-head">
+        <p class="stamp">Document 2 &middot; decided</p>
+        <h3>The slice brief</h3>
+      </div>
+      <dl class="meta">
+        <dt>Path</dt><dd><code>slices/&lt;nnn&gt;-&lt;name&gt;.md</code>, one per slice</dd>
+        <dt>Author</dt><dd>You, with a named decider per row</dd>
+        <dt>Born</dt><dd>At the last responsible moment, never in a batch</dd>
+        <dt>Dies</dt><dd>At the flip, superseded by the suite</dd>
+        <dt>Lifespan</dt><dd>Days to two weeks</dd>
+      </dl>
+      <pre>---
+slice:    047-post-invoice
+demo:     A clerk posts a mixed-tax invoice and gets
+          the same GL lines the legacy app produces,
+          served by the new path.
+appetite: 9 judgment-hours &middot; ~2 wks wall clock
+          &middot; tokens order 10^1 USD
+toggle:   slice.invoice-post.v2 (legacy stays hot)
+blast:    no schema change, no shared refactor,
+          no new table
+frozen:   2026-11-12  (amend below, never rewrite)
+---
+
+## Keep / change / drop
+B1 tax split    KEEP    as observed
+                        [survey B1 &middot; PM 11-10]
+B2 period force KEEP    as observed
+                        [survey B2 &middot; PM 11-10]
+B3 negatives    CHANGE  reject with an error
+                        [survey B3 &middot; PM 11-10]
+B4 audit floor  DROP    always write the row
+                        [survey B4 &middot; Ctrlr 11-10]
+B5 rush price   DEFER   not this slice
+                        [survey B5 &middot; no owner]
+
+## Checks
+char/invoice_post_*.approved   unchanged (B1,B2)
+new/rejects_negative_line      new (B3)
+parallel-run: GL diff = 0 over 500 posts
+
+## No-gos
+The rush price table. Credit hold. Any migration.
+
+## Open
+B6 unverified, not exercised by this slice.
+
+## Decisions outstanding: 0</pre>
+      <ul class="rules">
+        <li><strong>One demo sentence, in the user's words.</strong> If you cannot write it without a conjunction, the slice is two slices.</li>
+        <li><strong>Decisions outstanding must read 0 to start.</strong> This is the gate that replaces the requirements meeting. Anything unresolved becomes a DEFER row and leaves the slice.</li>
+        <li><strong>Blast radius, not size, is what makes it cheap.</strong> A two-hour change carrying a schema migration is not cheap to be wrong about. A two-week change behind a toggle with the legacy path still hot is.</li>
+        <li><strong>Frozen at build start, append-only after.</strong> New learning goes in an <code>## Amendments</code> section with a date and a decider. Editing the brief in place erases the record you are trying to build.</li>
+      </ul>
+    </article>
+
+  </div>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>The learning cycle</h2>
+    <p>&ldquo;Cheap enough to be wrong&rdquo; is only meaningful if wrongness has somewhere to go. Four things can tell you a premise was wrong, and they differ by how long they take to speak up. The cost of correcting rises with that delay, which is the whole reason to invest in the fast ones.</p>
+  </div>
+
+  <figure>
+    <div class="rail">
+      <svg id="fig2" class="fig" viewBox="0 0 920 400" role="img" aria-label="Four nested correction loops returning to the slice premises, drawn on a latency axis. The shortest loop, minutes, is a characterization test disagreeing with the legacy oracle. Then hours, the PM marking up the survey questions. Then days, the parallel run diffing production inputs. The longest loop, weeks, is a user finding that correct behavior was still wrong.">
+        <defs>
+          <marker id="mk-a2" viewBox="0 0 9 9" refX="8" refY="4.5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0 0 L9 4.5 L0 9 z" style="fill: var(--accent)"></path>
+          </marker>
+          <marker id="mk-o2" viewBox="0 0 9 9" refX="8" refY="4.5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0 0 L9 4.5 L0 9 z" style="fill: var(--ochre)"></path>
+          </marker>
+        </defs>
+
+        <rect x="40" y="306" width="132" height="44" rx="3" style="fill: var(--paper-2); stroke: var(--rule)" stroke-width="1.2"></rect>
+        <text class="bx" x="106" y="326" text-anchor="middle" style="fill: var(--ink)">premises</text>
+        <text class="sub" x="106" y="341" text-anchor="middle" style="fill: var(--ink-2)">survey + brief</text>
+
+        <line x1="172" y1="330" x2="880" y2="330" style="stroke: var(--rule)" stroke-width="1.2"></line>
+
+        <g style="fill: var(--ink)">
+          <circle cx="270" cy="330" r="4"></circle>
+          <circle cx="440" cy="330" r="4"></circle>
+          <circle cx="630" cy="330" r="4"></circle>
+          <circle cx="830" cy="330" r="4"></circle>
+        </g>
+        <g class="mono" text-anchor="middle" style="fill: var(--ink-2)">
+          <text x="270" y="351">minutes</text>
+          <text x="440" y="351">hours</text>
+          <text x="630" y="351">days</text>
+          <text x="830" y="351">weeks</text>
+        </g>
+        <text class="tag" x="526" y="378" text-anchor="middle" style="fill: var(--ink-2)">latency from mistake to signal, and the cost of correcting it</text>
+
+        <path d="M 270 324 C 252 282, 215 276, 176 300" fill="none" style="stroke: var(--accent)" stroke-width="1.6" marker-end="url(#mk-a2)"></path>
+        <path d="M 440 324 C 402 218, 240 212, 176 292" fill="none" style="stroke: var(--accent)" stroke-width="1.6" marker-end="url(#mk-a2)"></path>
+        <path d="M 630 324 C 556 142, 258 140, 176 284" fill="none" style="stroke: var(--ochre)" stroke-width="1.6" marker-end="url(#mk-o2)"></path>
+        <path d="M 830 324 C 736 52, 256 50, 176 276" fill="none" style="stroke: var(--ochre)" stroke-width="1.6" marker-end="url(#mk-o2)"></path>
+
+        <g class="lbl">
+          <text x="262" y="262" style="fill: var(--accent)">a characterization test disagrees with the legacy oracle</text>
+          <text x="262" y="208" style="fill: var(--accent)">the PM marks up the survey's questions</text>
+          <text x="262" y="146" style="fill: var(--ochre)">the parallel run diffs real production inputs</text>
+          <text x="262" y="98" style="fill: var(--ochre)">someone uses it, and correct turned out to be wrong</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption><b>Four correction loops, nested by latency.</b> The two inner loops cost almost nothing and you can run them dozens of times a day, so the goal is to make them catch most of your wrongness. The outer two are the ones that hurt, and the parallel run exists specifically to pull the <em>weeks</em> loop inward to <em>days</em> before real users are involved. Teams skip the parallel run because it feels like duplicate work. It is the single highest-value step on the page.</figcaption>
+  </figure>
+
+  <div class="rail">
+    <table>
+      <caption>Where each kind of wrongness lands. A loop without addresses is just a meeting.</caption>
+      <thead>
+        <tr><th scope="col">What you learn</th><th scope="col">Where it lands</th><th scope="col">What actually changes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>The survey misread the legacy behavior</td><td>Regenerate the entry, fix the provenance tag</td><td>The survey. The brief is untouched, because no decision was wrong.</td></tr>
+        <tr><td>The legacy behavior is itself a bug</td><td>An amendment on the live brief, with a decider and a date</td><td>This slice's scope, once. If it needs a second amendment, stop and reshape.</td></tr>
+        <tr><td>A behavior exists that nobody surveyed</td><td>A new survey entry, then a new slice</td><td>The backlog. The current slice still ships.</td></tr>
+        <tr><td>Appetite was wrong by more than 2&times;</td><td>A finding</td><td>How you size the next slice. Never a renegotiation of this one.</td></tr>
+        <tr><td>The slice was too big to be wrong cheaply</td><td>A finding, then the slicing rule</td><td>The shaping gate. Usually by adding a new entry to the blast-radius list.</td></tr>
+        <tr><td>The same ruling recurs across three slices</td><td>An ADR</td><td>A durable <em>why</em>. This is the only path by which a document earns permanence.</td></tr>
+        <tr><td>Something you dropped turns out to be needed</td><td>A new slice</td><td>The backlog. Never a retro-edit of a shipped brief.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <h2>Two health signals</h2>
+    <p>Everything above is unfalsifiable on its own, which would make it exactly the thing it is trying to replace. These two numbers are the check.</p>
+  </div>
+
+  <div class="signals">
+    <div class="signal">
+      <h3>The survey shrinks <span class="arrow">&darr;</span></h3>
+      <p>Entries are deleted at each flip and added only one area ahead. If <code>survey/</code> is growing faster than it empties, you are surveying the whole app instead of the next slice.</p>
+    </div>
+    <div class="signal">
+      <h3>The suite grows <span class="arrow">&uarr;</span></h3>
+      <p>Every slice adds characterization tests that outlive it. This is the asset. It is the only artifact that encodes behavior in a form that can tell you it is wrong.</p>
+    </div>
+    <div class="signal">
+      <h3>If neither moved</h3>
+      <p>Six slices shipped, <code>survey/</code> no smaller, suite no larger: the loop is not running. You have a document practice, not a delivery practice.</p>
+    </div>
+  </div>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>Five ways this rots into a PRD</h2>
+    <ul class="rot">
+      <li><b>Surveying everything before shaping anything.</b> The survey is a just-in-time artifact too. Survey one area ahead. A complete survey of the whole app is a PRD that took agents to write instead of people.</li>
+      <li><b>Hand-editing the survey to record a ruling.</b> Now observation and intention are indistinguishable, and the provenance tags are lying.</li>
+      <li><b>Writing characterization tests from the survey instead of from the running system.</b> This one is quiet and fatal. Tests built on your misreading will pass, and you will have automated the misreading. Always derive them by exercising the legacy binary or its domain layer.</li>
+      <li><b>Editing a frozen brief in place.</b> The amendment log <em>is</em> the learning. Smoothing it over leaves you with no evidence about how often your premises are wrong, which is the one number that tells you whether slices are sized right.</li>
+      <li><b>A slice with a migration in it.</b> Irreversible, therefore not cheap to be wrong about, whatever the hour count says. Schema moves get their own slices, with their own backout.</li>
+    </ul>
+  </div>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>Your first two weeks</h2>
+    <ol class="seq">
+      <li>Pick the workflow with the highest log volume and the fewest unknowns, not the one the PM is loudest about. Survey it with agents. Two days.</li>
+      <li>Stand up the characterization harness against the legacy binary or its domain layer, before any new code exists. This is the capital investment and it is the thing that actually buys you velocity later, because it is what makes every subsequent slice safe to get wrong.</li>
+      <li>Take the survey's Questions section to the PM and BA as a markup exercise. Not an interview. Thirty minutes, and bring the usage numbers, because nothing deletes scope faster than &ldquo;this screen was opened four times last year.&rdquo;</li>
+      <li>Shape exactly one slice with decisions outstanding at 0. Build it. Flip it behind a toggle with the legacy path still hot and the diff running.</li>
+      <li>Delete the survey entry. Write one finding. Then do it again, and compare your appetite against what it actually cost.</li>
+    </ol>
+    <p class="muted">One thing to say upward, once: agents multiply throughput on well-specified work and multiply waste on vague work. The constraint here is business decisions per week, which is currently near zero. Steps 1 and 2 need none of them, which is why they come first and why they are where the real compression is available.</p>
+  </div>
+
+  <footer>Derived from XP's actual commitments rather than its artifacts: the oracle stands in for the on-site customer, characterization tests stand in for the story conversation, and the toggle plus the diff stand in for the weekly demo. The documents are allowed to exist because they are scheduled to die.</footer>
+
+</main>

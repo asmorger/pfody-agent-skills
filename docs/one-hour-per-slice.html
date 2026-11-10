@@ -1,0 +1,451 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>One Hour Per Slice</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: one reading column, with full-width scroll rails for the two timelines and the sample sheets. */
+  :root {
+    --paper: #eef0ef;
+    --paper-2: #f8f9f8;
+    --ink: #19222a;
+    --ink-2: #5b6b74;
+    --rule: #cfd7d7;
+    --accent: #126e63;
+    --ochre: #8a5f0c;
+    --font-head: "IBM Plex Sans Condensed", "Helvetica Neue", Arial, sans-serif;
+    --font-body: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #11161a; --paper-2: #171e23; --ink: #e2e8e6; --ink-2: #93a3ab;
+      --rule: #2a343a; --accent: #4cc0ad; --ochre: #d8a243; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #11161a; --paper-2: #171e23; --ink: #e2e8e6; --ink-2: #93a3ab;
+    --rule: #2a343a; --accent: #4cc0ad; --ochre: #d8a243; color-scheme: dark;
+  }
+
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 40px 72px;
+  }
+  main { max-width: 1010px; margin: 0 auto; display: flex; flex-direction: column; gap: 44px; }
+  .col { max-width: 66ch; display: flex; flex-direction: column; gap: 16px; }
+  .col > * { margin: 0; }
+
+  .eyebrow { font-family: var(--font-head); font-weight: 600; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-family: var(--font-head); font-weight: 700; font-size: clamp(30px, 6vw, 46px); line-height: 1.04; letter-spacing: -.01em; text-wrap: balance; margin: 0; }
+  h2 { font-family: var(--font-head); font-weight: 600; font-size: clamp(21px, 3.6vw, 27px); line-height: 1.16; text-wrap: balance; margin: 0; }
+  h3 { font-family: var(--font-head); font-weight: 600; font-size: 16px; letter-spacing: .02em; margin: 0; }
+  .lede { font-size: 18px; line-height: 1.55; }
+  .muted { color: var(--ink-2); }
+  code { font-family: var(--font-mono); font-size: .86em; }
+  .hr { height: 1px; background: var(--rule); border: 0; }
+
+  /* Two kinds of unknown */
+  .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 26px; }
+  .half { min-width: 0; display: flex; flex-direction: column; gap: 11px; padding-top: 14px; }
+  .half > * { margin: 0; }
+  .half.ours { border-top: 2px solid var(--rule); }
+  .half.yours { border-top: 2px solid var(--accent); }
+  .half .who { font-family: var(--font-head); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
+  .half.ours .who { color: var(--ink-2); }
+  .half.yours .who { color: var(--accent); }
+  .half p { font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+  .half .big { font-family: var(--font-head); font-weight: 700; font-size: 34px; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+  /* Sample sheets */
+  .sheet { background: var(--paper-2); border: 1px solid var(--rule); border-radius: 2px; padding: 22px 24px; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+  .sheet-top { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--rule); padding-bottom: 14px; }
+  .sheet-top h3 { font-size: 17px; }
+  .sheet-top .when { font-family: var(--font-head); font-size: 12px; color: var(--accent); font-weight: 600; }
+  .q { display: flex; flex-direction: column; gap: 7px; }
+  .q-line { display: flex; gap: 11px; align-items: baseline; }
+  .q-id { font-family: var(--font-mono); font-size: 11px; color: var(--accent); flex: none; padding-top: .18em; }
+  .q-ask { font-size: 15.5px; line-height: 1.5; }
+  .q-ev { font-family: var(--font-mono); font-size: 11.5px; line-height: 1.7; color: var(--ink-2); padding-left: 33px; }
+  .q-ev b { color: var(--ink); font-weight: 500; }
+  .picks { display: flex; flex-wrap: wrap; gap: 8px; padding-left: 33px; }
+  .pick { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-head); font-size: 12.5px; border: 1px solid var(--rule); border-radius: 2px; padding: 4px 11px 4px 9px; color: var(--ink-2); }
+  .pick i { width: 9px; height: 9px; flex: none; border: 1.3px solid var(--ink-2); border-radius: 1px; }
+  .pick.on { color: var(--accent); border-color: var(--accent); }
+  .pick.on i { background: var(--accent); border-color: var(--accent); }
+
+  /* Ruling table */
+  .rail { overflow-x: auto; max-width: 100%; }
+  table { border-collapse: collapse; min-width: 640px; font-size: 15px; }
+  caption { text-align: left; font-size: 14px; color: var(--ink-2); padding-bottom: 10px; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 20px 10px 0; border-bottom: 1px solid var(--rule); }
+  thead th { font-family: var(--font-head); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); border-bottom: 1.4px solid var(--ink-2); padding-bottom: 7px; }
+  tbody td:last-child { color: var(--ink-2); font-family: var(--font-mono); font-size: 11.5px; padding-right: 0; }
+  .tag-r { font-family: var(--font-head); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; white-space: nowrap; }
+  .tag-r.keep { color: var(--ink-2); border: 1px solid var(--rule); }
+  .tag-r.change { color: var(--accent); border: 1px solid var(--accent); }
+  .tag-r.drop { color: var(--ochre); border: 1px solid var(--ochre); }
+  .tag-r.defer { color: var(--ink-2); border: 1px dashed var(--ink-2); }
+
+  /* Figures */
+  figure { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  figcaption { max-width: 72ch; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+  figcaption b { color: var(--ink); font-weight: 600; }
+  svg.fig { display: block; width: 100%; height: auto; }
+  #fig1 { min-width: 920px; max-width: 960px; }
+  #fig2 { min-width: 900px; max-width: 960px; }
+  .fig .bar-l { font-family: var(--font-head); font-size: 11.5px; }
+  .fig .row-l { font-family: var(--font-head); font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+  .fig .ask { font-family: var(--font-head); font-size: 12px; font-weight: 600; }
+  .fig .mono { font-family: var(--font-mono); font-size: 10px; }
+  .fig .tag { font-family: var(--font-head); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
+  .fig .note { font-family: var(--font-head); font-size: 12.5px; font-weight: 600; }
+
+  /* Lists */
+  ul.plain, ol.seq { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 13px; }
+  ul.plain li { padding-left: 19px; position: relative; }
+  ul.plain li::before { content: ""; position: absolute; left: 0; top: .65em; width: 9px; height: 1.4px; background: var(--accent); }
+  ol.seq { counter-reset: s; }
+  ol.seq li { counter-increment: s; padding-left: 38px; position: relative; }
+  ol.seq li::before { content: counter(s, decimal-leading-zero); position: absolute; left: 0; top: .1em; font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
+  ul.plain b, ol.seq b { font-weight: 600; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .card { min-width: 0; padding: 16px 18px; background: var(--paper-2); border: 1px solid var(--rule); border-top: 2px solid var(--accent); border-radius: 2px; }
+  .card h3 { margin-bottom: 5px; }
+  .card p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
+  footer { font-size: 14px; color: var(--ink-2); max-width: 66ch; }
+</style>
+
+<main>
+
+  <header>
+    <div class="col">
+      <p class="eyebrow">Modernizing the desktop app &middot; for product</p>
+      <h1>One Hour Per Slice</h1>
+      <p class="lede">You are being asked to specify a system that nobody fully remembers how to describe. You don't have to. Most of what we need is already recorded in the old application, and we can read it out ourselves.</p>
+      <p class="muted">What we can't read out is what should be <em>different</em>. That part is yours, and it is much smaller than it looks. This page is what we need from you, when we need it, and what you get back each time.</p>
+    </div>
+  </header>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>There are two kinds of unknown, and they get confused</h2>
+    <p>&ldquo;We don't know the requirements&rdquo; is doing double duty right now. It covers two very different problems, and only one of them is waiting on you.</p>
+  </div>
+
+  <div class="split">
+    <div class="half ours">
+      <p class="who">We can answer this</p>
+      <p class="big">~80%</p>
+      <h3>What does the app do today?</h3>
+      <p>It's in the code, the database, the stored procedures, and twelve years of production logs. Nobody has to <em>remember</em> it and nobody has to <em>decide</em> it. It is a research task, and it is the thing our tooling is genuinely good at. When you can't tell us what the invoice screen does, that is not a gap we are blocked on.</p>
+    </div>
+    <div class="half yours">
+      <p class="who">Only you can answer this</p>
+      <p class="big">~20%</p>
+      <h3>What should be different?</h3>
+      <p>Which of today's behaviors are correct, which are bugs we've been living with, and which nobody needs any more. This is real product judgment and we cannot substitute for it. It is also a much shorter list than a full specification, and we will always bring it to you as a list, never as a blank page.</p>
+    </div>
+  </div>
+
+  <div class="col">
+    <p class="muted">The practical consequence: we stop asking you to describe the system and start asking you to rule on findings. Those are different cognitive tasks, and the second one is far easier and far more accurate. Nobody can fill a blank page. Everybody can tell you that item four is wrong.</p>
+  </div>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>What arrives in your inbox</h2>
+    <p>Before we build anything in an area, we read the old code and the logs and produce a short findings list. This is a real example from invoice posting, trimmed. The evidence lines matter: they tell you how much to trust each row.</p>
+  </div>
+
+  <div class="sheet">
+    <div class="sheet-top">
+      <h3>Findings: invoice posting</h3>
+      <p class="when">about 30 minutes of your time</p>
+    </div>
+
+    <div class="q">
+      <div class="q-line"><span class="q-id">01</span><span class="q-ask">When an invoice has a negative line, the old app silently drops that line and posts the rest. Is that intended?</span></div>
+      <p class="q-ev">found in &nbsp;<b>code</b>, invoice posting screen, confirmed by reading it<br>in the logs &nbsp;<b>0 times in 12 months</b> &mdash; this has never actually happened</p>
+      <div class="picks">
+        <span class="pick"><i></i>Correct, keep it</span>
+        <span class="pick on"><i></i>Bug, reject the invoice instead</span>
+        <span class="pick"><i></i>Don't know, find the SME</span>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-line"><span class="q-id">02</span><span class="q-ask">The &ldquo;rush&rdquo; flag reprices the order from a fixed table of 14 prices. Are those prices still right?</span></div>
+      <p class="q-ev">found in &nbsp;<b>a conversation with the BA</b>, 14 Oct &mdash; we have not verified this in code<br>in the logs &nbsp;<b>118 times in 12 months</b>, 3 of 23 users &mdash; table attached</p>
+      <div class="picks">
+        <span class="pick"><i></i>All 14 still correct</span>
+        <span class="pick"><i></i>Some wrong, marked up</span>
+        <span class="pick on"><i></i>Not this round, come back to it</span>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-line"><span class="q-id">03</span><span class="q-ask">Credit hold appears to be bypassed for customer class 7. Does class 7 still exist?</span></div>
+      <p class="q-ev">found in &nbsp;<b>a guess</b> &mdash; we think this is happening but could not prove it<br>in the logs &nbsp;<b>not measurable</b> from what we have today</p>
+      <div class="picks">
+        <span class="pick"><i></i>Yes, and the bypass is correct</span>
+        <span class="pick"><i></i>Yes, and that's a problem</span>
+        <span class="pick on"><i></i>Class 7 is gone, drop it</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <p class="muted"><strong>Read the evidence line before you answer.</strong> &ldquo;Found in code&rdquo; means we verified it. &ldquo;Found in a conversation&rdquo; means someone told us. &ldquo;Found in a guess&rdquo; means we are genuinely unsure and your answer carries more weight than ours. Mixing those three together without labels is exactly how large requirements documents mislead everybody, so we keep them separate and visible.</p>
+    <p class="muted">The log counts are there to help you delete things. Nothing shortens a project faster than finding out a screen was opened four times last year.</p>
+  </div>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>What you sign</h2>
+    <p>Your markup becomes a short ruling sheet for one slice of work. It is the only document in this process that carries your name, it fits on one screen, and it is settled before anyone starts building.</p>
+  </div>
+
+  <div class="rail">
+    <table>
+      <caption>Invoice posting, slice 047. Each row names who ruled and when, so six months from now nobody has to reconstruct it.</caption>
+      <thead>
+        <tr><th scope="col">Behavior in the old app</th><th scope="col">Your ruling</th><th scope="col">What that means</th><th scope="col">Ruled by</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Tax split across accounts by customer class</td><td><span class="tag-r keep">keep</span></td><td>New app matches the old app exactly</td><td>PM, 10 Nov</td></tr>
+        <tr><td>Posting date forced to period end when locked</td><td><span class="tag-r keep">keep</span></td><td>New app matches the old app exactly</td><td>PM, 10 Nov</td></tr>
+        <tr><td>Negative lines silently dropped</td><td><span class="tag-r change">change</span></td><td>New app rejects with a clear error</td><td>PM, 10 Nov</td></tr>
+        <tr><td>Audit row written only above zero</td><td><span class="tag-r drop">drop</span></td><td>New app always writes the audit row</td><td>Controller, 10 Nov</td></tr>
+        <tr><td>Rush flag repricing</td><td><span class="tag-r defer">defer</span></td><td>Out of this slice, stays on the list</td><td>no owner yet</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p class="muted"><strong>Defer is a real answer.</strong> It does not lose the item and it is not a failure. It moves the item back onto the findings list so the slice can start this week instead of waiting for an answer that needs a person who is on leave. Five deferred items and one shipped slice beats zero of both.</p>
+  </div>
+
+  <hr class="hr">
+
+  <figure>
+    <div class="rail">
+      <svg id="fig1" class="fig" viewBox="0 0 960 310" role="img" aria-label="A ten-day slice. The team reads the old system on days one to three, shapes the slice and writes checks on day four, builds on days five to seven, runs old and new side by side on days eight and nine, and switches over on day ten. Product is needed three times: thirty minutes on day three to confirm the findings list, twenty minutes on day four to rule keep, change or drop, and ten minutes on day ten to approve the switch. About one hour in total.">
+        <text class="row-l" x="96" y="64" text-anchor="end" style="fill: var(--ink-2)">the team</text>
+        <text class="row-l" x="96" y="164" text-anchor="end" style="fill: var(--accent)">you</text>
+
+        <!-- team lane -->
+        <g style="fill: var(--paper-2); stroke: var(--rule)" stroke-width="1.2">
+          <rect x="110" y="40" width="233" height="40" rx="3"></rect>
+          <rect x="351" y="40" width="71" height="40" rx="3"></rect>
+          <rect x="430" y="40" width="229" height="40" rx="3"></rect>
+          <rect x="667" y="40" width="150" height="40" rx="3"></rect>
+          <rect x="825" y="40" width="75" height="40" rx="3"></rect>
+        </g>
+        <g class="bar-l" style="fill: var(--ink-2)">
+          <text x="110" y="97">read the old system, draft the findings</text>
+          <text x="430" y="97">build it</text>
+          <text x="667" y="97">run old and new side by side</text>
+          <text x="351" y="112">shape the slice, write the checks</text>
+          <text x="825" y="112">switch over</text>
+        </g>
+
+        <!-- your lane -->
+        <g style="fill: var(--paper-2); stroke: var(--accent)" stroke-width="1.8">
+          <rect x="272" y="140" width="71" height="40" rx="3"></rect>
+          <rect x="351" y="140" width="71" height="40" rx="3"></rect>
+          <rect x="825" y="140" width="71" height="40" rx="3"></rect>
+        </g>
+        <g class="mono" text-anchor="middle" style="fill: var(--accent)">
+          <text x="307" y="164">30 min</text>
+          <text x="386" y="164">20 min</text>
+          <text x="860" y="164">10 min</text>
+        </g>
+        <g class="ask" style="fill: var(--ink)">
+          <text x="272" y="197">&ldquo;Is this findings list right?&rdquo;</text>
+          <text x="351" y="213">&ldquo;Keep, change, or drop?&rdquo;</text>
+          <text x="896" y="197" text-anchor="end">&ldquo;Switch it on?&rdquo;</text>
+        </g>
+
+        <!-- axis -->
+        <line x1="110" y1="240" x2="900" y2="240" style="stroke: var(--rule)" stroke-width="1.2"></line>
+        <g style="stroke: var(--rule)" stroke-width="1.2">
+          <line x1="110" y1="240" x2="110" y2="246"></line>
+          <line x1="189" y1="240" x2="189" y2="246"></line>
+          <line x1="268" y1="240" x2="268" y2="246"></line>
+          <line x1="347" y1="240" x2="347" y2="246"></line>
+          <line x1="426" y1="240" x2="426" y2="246"></line>
+          <line x1="505" y1="240" x2="505" y2="246"></line>
+          <line x1="584" y1="240" x2="584" y2="246"></line>
+          <line x1="663" y1="240" x2="663" y2="246"></line>
+          <line x1="742" y1="240" x2="742" y2="246"></line>
+          <line x1="821" y1="240" x2="821" y2="246"></line>
+          <line x1="900" y1="240" x2="900" y2="246"></line>
+        </g>
+        <g class="mono" text-anchor="middle" style="fill: var(--ink-2)">
+          <text x="149" y="260">1</text><text x="228" y="260">2</text><text x="307" y="260">3</text>
+          <text x="386" y="260">4</text><text x="465" y="260">5</text><text x="544" y="260">6</text>
+          <text x="623" y="260">7</text><text x="702" y="260">8</text><text x="781" y="260">9</text>
+          <text x="860" y="260">10</text>
+        </g>
+        <text class="tag" x="110" y="260" text-anchor="end" style="fill: var(--ink-2)">day</text>
+        <text class="note" x="900" y="288" text-anchor="end" style="fill: var(--accent)">your total per slice: about one hour</text>
+      </svg>
+    </div>
+    <figcaption><b>Where you are actually needed in a two-week slice.</b> Three short appointments, each answering one question, each with the material prepared in advance. Everything else runs without you. The two-week rhythm is not a target we are hoping to hit; it is the unit, and the slice is defined small enough to fit it.</figcaption>
+  </figure>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>Why we are not writing the full specification first</h2>
+    <p>This is the part most worth your scrutiny, because the alternative feels safer and isn't. The question is not how fast we can write things down. It is how many times, over the life of the project, a wrong assumption gets caught.</p>
+  </div>
+
+  <figure>
+    <div class="rail">
+      <svg id="fig2" class="fig" viewBox="0 0 960 310" role="img" aria-label="Two six-month timelines compared. In the first, a full specification is written for three months and built for three months, so the first working software and the first chance to discover a wrong assumption both arrive at month six. In the second, twelve two-week slices each end in working software and a chance to be proven wrong, twelve times instead of once.">
+        <g class="tag" style="fill: var(--ink-2)">
+          <rect x="604" y="14" width="2" height="14" style="fill: var(--accent)"></rect>
+          <text x="616" y="25" style="fill: var(--ink-2)">a chance to be proven wrong</text>
+          <path d="M 599 48 L 611 48 L 605 38 z" style="fill: var(--accent)"></path>
+          <text x="616" y="47" style="fill: var(--ink-2)">working software in your hands</text>
+        </g>
+
+        <!-- Option A -->
+        <text class="tag" x="90" y="74" style="fill: var(--ochre)">write the full specification first</text>
+        <rect x="90" y="84" width="405" height="34" rx="3" fill="none" style="stroke: var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 4"></rect>
+        <text class="bar-l" x="104" y="106" style="fill: var(--ink-2)">writing it down</text>
+        <rect x="499" y="84" width="401" height="34" rx="3" style="fill: var(--paper-2); stroke: var(--rule)" stroke-width="1.2"></rect>
+        <text class="bar-l" x="513" y="106" style="fill: var(--ink-2)">building to it</text>
+        <rect x="899" y="78" width="2" height="46" style="fill: var(--ochre)"></rect>
+        <path d="M 894 128 L 906 128 L 900 138 z" style="fill: var(--ochre)"></path>
+        <text class="bar-l" x="886" y="150" text-anchor="end" style="fill: var(--ochre)">one chance, six months in, after everything is built on it</text>
+
+        <!-- Option B -->
+        <text class="tag" x="90" y="190" style="fill: var(--accent)">one slice at a time</text>
+        <g style="fill: var(--paper-2); stroke: var(--accent)" stroke-width="1.2">
+          <rect x="90" y="200" width="60" height="34" rx="2"></rect>
+          <rect x="158" y="200" width="60" height="34" rx="2"></rect>
+          <rect x="225" y="200" width="60" height="34" rx="2"></rect>
+          <rect x="293" y="200" width="60" height="34" rx="2"></rect>
+          <rect x="360" y="200" width="60" height="34" rx="2"></rect>
+          <rect x="428" y="200" width="60" height="34" rx="2"></rect>
+          <rect x="495" y="200" width="60" height="34" rx="2"></rect>
+          <rect x="563" y="200" width="60" height="34" rx="2"></rect>
+          <rect x="630" y="200" width="60" height="34" rx="2"></rect>
+          <rect x="698" y="200" width="60" height="34" rx="2"></rect>
+          <rect x="765" y="200" width="60" height="34" rx="2"></rect>
+          <rect x="833" y="200" width="60" height="34" rx="2"></rect>
+        </g>
+        <g style="fill: var(--accent)">
+          <rect x="149" y="194" width="2" height="46"></rect>
+          <rect x="217" y="194" width="2" height="46"></rect>
+          <rect x="284" y="194" width="2" height="46"></rect>
+          <rect x="352" y="194" width="2" height="46"></rect>
+          <rect x="419" y="194" width="2" height="46"></rect>
+          <rect x="487" y="194" width="2" height="46"></rect>
+          <rect x="554" y="194" width="2" height="46"></rect>
+          <rect x="622" y="194" width="2" height="46"></rect>
+          <rect x="689" y="194" width="2" height="46"></rect>
+          <rect x="757" y="194" width="2" height="46"></rect>
+          <rect x="824" y="194" width="2" height="46"></rect>
+          <rect x="892" y="194" width="2" height="46"></rect>
+          <path d="M 144 244 L 156 244 L 150 254 z"></path>
+        </g>
+        <text class="bar-l" x="166" y="252" style="fill: var(--accent)">twelve chances, the first one two weeks from now, each small enough to absorb</text>
+
+        <!-- axis -->
+        <line x1="90" y1="276" x2="900" y2="276" style="stroke: var(--rule)" stroke-width="1.2"></line>
+        <g style="stroke: var(--rule)" stroke-width="1.2">
+          <line x1="90" y1="276" x2="90" y2="282"></line>
+          <line x1="225" y1="276" x2="225" y2="282"></line>
+          <line x1="360" y1="276" x2="360" y2="282"></line>
+          <line x1="495" y1="276" x2="495" y2="282"></line>
+          <line x1="630" y1="276" x2="630" y2="282"></line>
+          <line x1="765" y1="276" x2="765" y2="282"></line>
+          <line x1="900" y1="276" x2="900" y2="282"></line>
+        </g>
+        <g class="mono" text-anchor="middle" style="fill: var(--ink-2)">
+          <text x="90" y="296">now</text><text x="225" y="296">1</text><text x="360" y="296">2</text>
+          <text x="495" y="296">3</text><text x="630" y="296">4</text><text x="765" y="296">5</text>
+          <text x="900" y="296">6 months</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption><b>Same six months, same team, same people writing things down.</b> The difference is how often reality gets a vote. In the top row, every assumption made in month one stays unexamined until month six, and by then other work is built on top of it, which is what makes late discoveries expensive rather than merely annoying. In the bottom row the specification still gets written, just one slice of it at a time, and each piece is checked against the real system within days of being written.</figcaption>
+  </figure>
+
+  <div class="col">
+    <p class="muted">There is a second reason, specific to how we are building this. Our tooling multiplies output on work that is clearly defined and multiplies rework on work that is vague. Pointing it at a 200-page document written months before anyone tested an assumption produces a great deal of confidently wrong software, quickly. The clarity has to arrive just before the building, not long before it.</p>
+  </div>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>How we make switching over safe</h2>
+    <p>&ldquo;Ship every two weeks&rdquo; should make you nervous if it means users get exposed to half-finished work every two weeks. It doesn't. Three things sit between a finished slice and a user noticing anything.</p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h3>Automated checks</h3>
+      <p>Before we write new code, we drive the <em>old</em> application and record what it does as automated tests. The new code has to produce the same answers. If it doesn't, we find out in minutes, not in a UAT cycle.</p>
+    </div>
+    <div class="card">
+      <h3>A side-by-side run</h3>
+      <p>For a few days the new path runs in production alongside the old one, on real inputs, and we compare every result. Users are still on the old path the whole time. This catches the inputs nobody thought to imagine.</p>
+    </div>
+    <div class="card">
+      <h3>A switch, not a launch</h3>
+      <p>Going live is one setting, flipped per workflow, with the old path still running underneath. If something is wrong, it flips back the same day. No release, no weekend, no cutover event.</p>
+    </div>
+  </div>
+
+  <div class="col">
+    <p class="muted">This is also why you are only asked for ten minutes at the switch. By the time it reaches you, the question is not &ldquo;do you believe this works&rdquo; but &ldquo;here are the comparison numbers from four days of real traffic, and the differences are zero &mdash; shall we turn it on?&rdquo;</p>
+  </div>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>What this genuinely asks of you</h2>
+    <p>Being straight about the demands, because three of them cut against normal product instinct.</p>
+    <ul class="plain">
+      <li><b>Decisions on a clock, with incomplete information.</b> You will be asked to rule on things you would rather research. What protects you is not better research, it is that each ruling covers one slice and can be revisited in two weeks. Deciding wrongly and finding out quickly is cheaper here than deciding well and slowly.</li>
+      <li><b>Saying &ldquo;drop it&rdquo; out loud.</b> Legacy apps accumulate behavior nobody chose. Dropping it needs someone with authority to say so, and the usage numbers will usually back you up. Every drop is a feature we don't build, test, or support again.</li>
+      <li><b>Letting us tell you we were wrong.</b> Sometimes we will report that the old app does not do what our findings list said. That is the process working as designed and it should not read as a quality problem. The alternative is that we are wrong and nobody notices for five months.</li>
+      <li><b>No single document describing the finished system.</b> What accumulates instead is a growing set of automated checks, which is more reliable than prose because it cannot quietly go out of date. If you need a narrative document for a steering committee or an auditor, say so and we will write one deliberately, for that audience, on a schedule. We just won't pretend it is the source of truth.</li>
+    </ul>
+  </div>
+
+  <div class="col">
+    <h2>What you own, that we can't do for you</h2>
+    <ol class="seq">
+      <li><b>The order.</b> Which workflow we modernize next. We will tell you which ones are cheapest and best understood; the call is yours.</li>
+      <li><b>The rulings.</b> Keep, change, drop, or defer, with your name on each one.</li>
+      <li><b>The switch.</b> Approving each flip once the comparison numbers are in front of you.</li>
+      <li><b>Access to the one person who knows.</b> Occasionally a finding needs a specific long-tenured user or the controller. Getting us twenty minutes of their time is worth more than a week of our guessing.</li>
+    </ol>
+  </div>
+
+  <hr class="hr">
+
+  <div class="col">
+    <h2>What you can hold us to</h2>
+    <p>Two numbers, both checkable without taking our word for anything.</p>
+    <ul class="plain">
+      <li><b>Something works every two weeks.</b> Not a demo of a prototype. A real workflow, running in production, switchable. If a slice slips past two weeks, that is a signal we sized it wrong, and we owe you the reason.</li>
+      <li><b>The findings list shrinks as the test suite grows.</b> Each slice retires a chunk of the old app and leaves behind permanent automated checks. If after three months the open findings are not going down and the checks are not going up, something is wrong with how we are working and you are entitled to say so.</li>
+    </ul>
+    <p class="muted">And one thing to expect in the first few weeks: the earliest work produces no visible features at all. We are reading the old system and building the machinery that compares old against new. It is the investment that makes every later slice safe to get wrong, and it is the main reason the second month moves faster than the first.</p>
+  </div>
+
+  <footer>This is the product-side companion to the engineering working agreement, which covers the same process from the build side. Same slices, same rulings, same two-week rhythm; more detail about what the team does between your three appointments.</footer>
+
+</main>

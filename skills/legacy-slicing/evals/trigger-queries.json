@@ -1,0 +1,74 @@
+[
+  {
+    "query": "we're replacing a VB6 desktop app and nobody can tell me what the order screen actually does",
+    "should_trigger": true
+  },
+  {
+    "query": "survey the invoice posting area of the legacy app before we start rewriting it",
+    "should_trigger": true
+  },
+  {
+    "query": "how do I carve this modernisation into pieces small enough to be wrong cheaply?",
+    "should_trigger": true
+  },
+  {
+    "query": "write a slice brief for moving internal sign-in to Entra",
+    "should_trigger": true
+  },
+  {
+    "query": "are these security groups still used, or can we retire them?",
+    "should_trigger": true
+  },
+  {
+    "query": "the characterisation test disagrees with what our notes said the old system does",
+    "should_trigger": true
+  },
+  {
+    "query": "this slice has a column rename in it, is that ok?",
+    "should_trigger": true
+  },
+  {
+    "query": "we have 40 survey files and nothing has shipped yet",
+    "should_trigger": true
+  },
+  {
+    "query": "what questions should I take to the PM about the legacy user management screen?",
+    "should_trigger": true
+  },
+  {
+    "query": "the appetite was 9 hours and it took 40, where does that go?",
+    "should_trigger": true
+  },
+  {
+    "query": "strangle this legacy module one workflow at a time behind a feature toggle",
+    "should_trigger": true
+  },
+  {
+    "query": "draft a PRD from this SOW and these discovery notes",
+    "should_trigger": false
+  },
+  {
+    "query": "write developer-ready user stories with acceptance criteria for label voiding",
+    "should_trigger": false
+  },
+  {
+    "query": "build a knowledge index from the transcripts in this folder",
+    "should_trigger": false
+  },
+  {
+    "query": "break this accepted PRD into epics, features and stories",
+    "should_trigger": false
+  },
+  {
+    "query": "add a new greenfield reporting service to our architecture diagram",
+    "should_trigger": false
+  },
+  {
+    "query": "refactor this React component to use hooks",
+    "should_trigger": false
+  },
+  {
+    "query": "what does our ADR say about event sourcing?",
+    "should_trigger": false
+  }
+]

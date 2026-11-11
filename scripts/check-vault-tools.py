@@ -313,6 +313,53 @@ CASES = [
             "the generated block is stale",
         ],
     },
+    {
+        # A survey observes and a brief decides, so every defect here is a leak across that seam:
+        # a gate that reads clean because its one line is forty lines below the rulings, a ruling
+        # pointing at a behaviour nobody observed, a changed behaviour with no check behind it.
+        # None of them is visible by eye, which is why the example is mutated rather than reviewed.
+        "name": "legacy-slicing / slice.py check",
+        "script": "skills/legacy-slicing/scripts/slice.py",
+        "vault": "skills/legacy-slicing/examples",
+        "clean": ["check", "."],
+        "mutate": [
+            ("slices/reprint-a-label.md", [
+                # Building started on an unready slice.
+                ("## Decisions outstanding: 0", "## Decisions outstanding: 2"),
+                # A deferral with nothing behind it — the evasion this count exists to catch.
+                ("B05 rush repricing         DEFER   safe: the reprint path does not price",
+                 "B05 rush repricing         DEFER"),
+                # A ruling about a behaviour the survey does not define.
+                ("[survey B07 · PM 11-11]", "[survey B99 · PM 11-11]"),
+                # No golden master, so there is nothing for the new code to be wrong against.
+                ("char/label_reprint_*.approved", "dropped_the_reprint_master"),
+                ("char/label_create_*.approved", "dropped_the_create_master"),
+                # A parallel run with no threshold and no volume.
+                ("    5 working days. Every reprint resolves both paths and logs a label-row diff.\n"
+                 "    Flip required 0 diffs over at least 500 reprints. Actual: 0 over 612.",
+                 "    Ran both paths for a while and the diffs looked fine."),
+                # Flipped, so the survey should be gone.
+                ("status: frozen", "status: flipped"),
+            ]),
+            ("survey/label-printing.md", [
+                # An observation with no provenance, indistinguishable from a guess.
+                ("        [db: trigger tr_label_post]", ""),
+                # A reused behaviour id, which silently repoints whatever cites it.
+                ("B06  Credit hold appears to be bypassed",
+                 "B01  Credit hold appears to be bypassed"),
+            ]),
+        ],
+        "expect": [
+            "Decisions outstanding reads 2",
+            "ruling B05 DEFER gives no reason",
+            "cites B99, which survey/label-printing does not define",
+            "no 'char/' check",
+            "names no threshold and no volume",
+            "survives a flipped slice",
+            "B04 has no provenance tag",
+            "behaviour id B01 is defined twice",
+        ],
+    },
 ]
 
 

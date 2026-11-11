@@ -96,12 +96,20 @@ and a [story backlog](skills/user-story-builder/examples) with its generated ind
 | [`anchored-knowledge`](skills/anchored-knowledge) | Creates and audits a citable project knowledge vault | Python 3 for its lint and index generator |
 | [`agentic-prd`](skills/agentic-prd) | Creates and reviews agent-ready PRDs as a hub note over atomic requirement notes, then generates Epics, Features and Stories | Python 3 for its scripts |
 | [`user-story-builder`](skills/user-story-builder) | Writes sourced User Story notes and can publish them to Azure DevOps | Python 3 for its checker; `az` CLI to publish |
+| [`legacy-slicing`](skills/legacy-slicing) | Reads what a legacy system does out of its own code and logs into a disposable survey, then shapes one reversible slice of replacement at a time | nothing beyond the file tools |
 
 `agentic-prd` drafts from a knowledge base where one exists rather than from raw files, which is what
 `anchored-knowledge` builds; `anchored-knowledge` delegates every transcript to
 `transcript-knowledge-base` instead of parsing one itself. A PRD's requirements and a story's
 acceptance criteria are the same discipline at two altitudes, so `user-story-builder` and
 `agentic-prd` share their anti-inference rules and differ in what they take as input.
+
+`legacy-slicing` is the inverse case. The other four start from a source that states what *should*
+be true and guard against inventing the rest; it starts from a system that already behaves and has
+no record, so its source of record is the running software and its notes are written to be thrown
+away. That is why its two types are the only ones in the registry that are both `citable: false` and
+deliberately deleted: a ruling in a slice brief is what a requirement would cite, never the
+observation behind it.
 
 ## Install
 

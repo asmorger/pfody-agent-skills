@@ -224,6 +224,42 @@
       ]
     },
 
+    "survey": {
+      "owner": "legacy-slicing",
+      "layer": "derived",
+      "folder": "survey",
+      "id": null,
+      "status": ["surveyed", "reviewed", "sliced", "replaced"],
+      "group-by": "area",
+      "citable": false,
+      "body-budget": null,
+      "_": [
+        "What a legacy area actually does, read out of its own code, database and logs. Derived,",
+        "so it is regenerated rather than corrected, and `citable: false` because a survey is the",
+        "least trustworthy note in any vault by design -- it records what was observed, including",
+        "the lines tagged as guesses. A story or spec cites the ruling in the brief, never this.",
+        "It is also the only note type that is deleted on purpose: at the flip its content lives",
+        "in the characterisation suite, and keeping both is how the two start disagreeing."
+      ]
+    },
+    "slice-brief": {
+      "owner": "legacy-slicing",
+      "layer": "backlog",
+      "folder": "slices",
+      "id": "^SL-\\d{3}$",
+      "status": ["shaping", "frozen", "flipped", "abandoned"],
+      "group-by": "area",
+      "citable": false,
+      "body-budget": null,
+      "_": [
+        "One reversible unit of replacement work: the demo sentence, the appetite, the blast",
+        "radius, the keep/change/drop rulings against a survey's behaviour ids, and the checks that",
+        "must pass. Its status ladder is what the freeze means -- `shaping` while decisions are",
+        "still outstanding, `frozen` once building starts and the body may only be appended to,",
+        "`flipped` when the toggle is on and the suite has superseded it."
+      ]
+    },
+
     "prd-review": {
       "owner": "agentic-prd",
       "layer": "derived",

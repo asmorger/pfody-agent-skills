@@ -1,6 +1,6 @@
 ---
 type: survey
-status: reviewed           # surveyed | reviewed | sliced | replaced
+status: sliced
 area: label-printing
 entry: frmLabelPrint.vb:1-980; LabelSvc.cls:1-420; usp_CreateLabel; tr_label_post
 generated: 2026-11-10 from legacy@a3f91c2

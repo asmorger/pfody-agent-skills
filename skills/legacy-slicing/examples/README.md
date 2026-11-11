@@ -5,10 +5,14 @@ commit. The file paths, counts and dates are plausible fabrications in the neutr
 shipping-label domain the skills share, so the pair can be read end to end without a real codebase.
 Regenerate a survey against real code before trusting a line of anything shaped like this.
 
-One area, carried through one full cycle:
+One area, caught at the moment just before the flip:
 
-    survey/label-printing.md        the derived note, shown at `status: reviewed`
-    slices/reprint-a-label.md       the decided brief, shown at `status: flipped`
+    survey/label-printing.md        the derived note, at `status: sliced`
+    slices/reprint-a-label.md       the decided brief, at `status: frozen`
+
+The pair is shown pre-flip on purpose, because it is the only state in which both files legitimately
+exist. One step later the brief becomes `flipped` and the survey is deleted, which is why a surviving
+survey beside a flipped brief is one of the defects the checker reports.
 
 Read them in that order. What the pair is meant to show:
 

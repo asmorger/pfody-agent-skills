@@ -96,7 +96,7 @@ and a [story backlog](skills/user-story-builder/examples) with its generated ind
 | [`anchored-knowledge`](skills/anchored-knowledge) | Creates and audits a citable project knowledge vault | Python 3 for its lint and index generator |
 | [`agentic-prd`](skills/agentic-prd) | Creates and reviews agent-ready PRDs as a hub note over atomic requirement notes, then generates Epics, Features and Stories | Python 3 for its scripts |
 | [`user-story-builder`](skills/user-story-builder) | Writes sourced User Story notes and can publish them to Azure DevOps | Python 3 for its checker; `az` CLI to publish |
-| [`legacy-slicing`](skills/legacy-slicing) | Reads what a legacy system does out of its own code and logs into a disposable survey, then shapes one reversible slice of replacement at a time | nothing beyond the file tools |
+| [`legacy-slicing`](skills/legacy-slicing) | Reads what a legacy system does out of its own code and logs into a disposable survey, then shapes one reversible slice of replacement at a time | Python 3 for its checker |
 
 `agentic-prd` drafts from a knowledge base where one exists rather than from raw files, which is what
 `anchored-knowledge` builds; `anchored-knowledge` delegates every transcript to
@@ -245,6 +245,10 @@ Every skill that writes a vault ships a checker for its **output**:
     cd skills/transcript-knowledge-base
     python3 -m tkb.cli verify --vault <vault> --folder <transcripts>   # every quote, re-read
     cd tests && python3 -m unittest discover -s . -t .
+
+    cd skills/legacy-slicing/examples
+    python3 ../scripts/slice.py check .    # gates, citations, checks, tags, ids, cleanup
+    python3 ../scripts/slice.py signals .  # surveys outstanding, checks accumulated
 
 The three checkers share one implementation of everything underneath them —
 [`shared/vaultlib.py`](shared/vaultlib.py): notes, wikilinks, front matter, the taxonomy check, the

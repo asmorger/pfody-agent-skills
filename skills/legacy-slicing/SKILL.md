@@ -11,7 +11,7 @@ description: >
   flipped or deleted; and whenever a finding from a flipped slice has to change the next one. Not for
   greenfield scope, which `agentic-prd` owns, nor for writing the stories a shaped slice becomes,
   which `user-story-builder` owns.
-allowed-tools: Read, Write, Edit, Glob, Grep
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash(python3 *)
 metadata:
   requires: []
   related: [agentic-prd, user-story-builder]
@@ -61,6 +61,7 @@ Then find your task below and read only the files it names.
 | Sizing a slice, or arguing one is too big | `principles/blast-radius-not-size.md`, `anti-patterns/a-slice-with-a-migration-in-it.md` |
 | Switching a slice on, and cleaning up after | `practices/flip-a-slice.md` |
 | Something died, hurt or surprised you | `practices/file-a-finding.md` |
+| Running the checks, or reading the two health signals | `practices/run-the-checks.md` |
 | An area whose every workflow depends on it, such as sign-in | `practices/shape-a-slice.md` |
 | Reviewing a survey or a brief, or your own draft | `anti-patterns/` — scan the names; open what matches |
 
@@ -71,7 +72,19 @@ Then find your task below and read only the files it names.
     practices/      step-by-step procedures with a done-when checklist
     anti-patterns/  surveys and slices that fail — what they look like, why, what to do instead
     references/     the shared note taxonomy this skill's two types are registered in
+    scripts/        `slice.py check`, `slice.py signals`, and the shared `vaultlib.py`
     examples/ evals/   a worked survey and brief, and the trigger prompts
+
+## Checks
+
+    python3 <skill-folder>/scripts/slice.py check <workspace>
+    python3 <skill-folder>/scripts/slice.py signals <workspace>
+
+`check` exits non-zero on a brief frozen with decisions outstanding, a deferral with no reason, a
+ruling citing a behaviour no survey defines, a changed behaviour with no check, a missing golden
+master, a parallel run with no threshold, an untagged observation, a reused behaviour id, and a
+survey that outlived its flip. It judges none of the four things that actually go wrong
+([`practices/run-the-checks.md`](practices/run-the-checks.md)).
 
 ## Conventions this skill assumes
 

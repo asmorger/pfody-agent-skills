@@ -23,8 +23,8 @@ parallel-run
   ([`../principles/the-oracle-outranks-the-survey.md`](../principles/the-oracle-outranks-the-survey.md)).
 - **Record the golden master for the whole population**, even when the slice touches part of it. It
   costs nothing extra and it protects everything the slice could break.
-- **`new/` has exactly one entry per `CHANGE` ruling.** A `new/` check with no ruling behind it is
-  scope that arrived without a decision.
+- **`new/` has an entry per `CHANGE` and per `DROP` ruling.** A drop alters behaviour as much as a
+  change does, and a `new/` check with no ruling behind it is scope that arrived without a decision.
 - **`parallel-run` needs a threshold and a volume**, both stated. "Looks fine" is not a criterion,
   and a diff of zero over four reprints proves nothing.
 - A `KEEP` ruling needs no new check — it is covered by the golden master, which is the point of

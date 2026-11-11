@@ -2,7 +2,7 @@
 id: SL-007
 aliases: [SL-007]
 type: slice-brief
-status: flipped            # shaping | frozen | flipped | abandoned
+status: frozen
 area: label-printing
 demo: A clerk reprints a label and the superseded one is voided, with the new
       path serving the reprint button.
@@ -12,7 +12,6 @@ blast: one additive nullable column (LABEL.SUPERSEDED_BY); no schema migration;
        no shared-code refactor; no change to label creation; no change to the
        void-reason vocabulary; no change to the four reports
 frozen: 2026-11-13
-flipped: 2026-11-27
 ---
 
 # SL-007 — Reprint a label
